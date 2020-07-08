@@ -7,6 +7,7 @@ public class Project {
     private String title;
     private String description;
     private String resources;
+    private String status;
 
     public void setProjectID(int projectID) {
         this.projectID = projectID;
@@ -54,5 +55,13 @@ public class Project {
 
     public String getResources() {
         return resources;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
