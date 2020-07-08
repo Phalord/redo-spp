@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import java.lang.Integer?>
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="borderPane"
+            fx:controller="com.spp.gui.controller.ControllerPractitionerHome">
+    <fx:define>
+        <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
+        <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
+    </fx:define>
+    <center>
+        <BorderPane>
+            <center>
+                <VBox alignment="CENTER" spacing="15">
+                    <Button id="projectSection" text="Sección Proyecto" prefWidth="$BUTTON_SIZE" onAction="#goProjectSection"/>
+                    <Button id="generateDocumentation" text="Generar Documentación" prefWidth="$BUTTON_SIZE" onAction="#generateDocumentation"/>
+                    <Button id="uploadDocumentation" text="Subir Documentación" prefWidth="$BUTTON_SIZE" onAction="#uploadDocumentation"/>
+                    <padding>
+                        <Insets topRightBottomLeft="50"/>
+                    </padding>
+                </VBox>
+            </center>
+            <padding>
+                <Insets topRightBottomLeft="50" />
+            </padding>
+         <left>
+            <Region BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Region BorderPane.alignment="CENTER" />
+         </right>
+         <top>
+            <Label text="Practicante" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </top>
+        </BorderPane>
+    </center>
+   <left>
+      <Region BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Region BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+       <MenuBar BorderPane.alignment="CENTER">
+           <Menu fx:id="topMenu" mnemonicParsing="false">
+               <MenuItem mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
+           </Menu>
+       </MenuBar>
+   </top>
+
+</BorderPane>
