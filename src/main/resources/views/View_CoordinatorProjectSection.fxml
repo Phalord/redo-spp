@@ -43,7 +43,7 @@
                 <Region BorderPane.alignment="CENTER" />
             </right>
             <top>
-                <Label text="Generar Documentación" BorderPane.alignment="CENTER">
+                <Label text="Sección Proyecto" BorderPane.alignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -63,7 +63,7 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu fx:id="topMenu" mnemonicParsing="false">
-                <MenuItem mnemonicParsing="false" text="Cerrar Sesión"/>
+                <MenuItem mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
             </Menu>
         </MenuBar>
     </top>

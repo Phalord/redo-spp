@@ -52,7 +52,7 @@ public class ControllerCoordinatorHome {
             ControllerCoordinatorProjectSection controllerCoordinatorProjectSection =
                     loader.getController();
             controllerCoordinatorProjectSection.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 40));
+            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerCoordinatorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
@@ -68,6 +68,7 @@ public class ControllerCoordinatorHome {
                     .getResource("/views/View_PractitionerSection.fxml"));
             viewFile = loader.load();
             ControllerPractitionerSection controllerPractitionerSection = loader.getController();
+            controllerPractitionerSection.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerCoordinatorHome.class.getName())

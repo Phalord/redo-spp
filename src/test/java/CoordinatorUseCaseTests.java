@@ -3,7 +3,7 @@ import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Practitioner;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CoordinatorUseCaseTests {
@@ -20,7 +20,8 @@ public class CoordinatorUseCaseTests {
         practitioner.setActive(true);
         IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
         if (iUserDAO.addUser(practitioner)) {
-            assertNotNull(iUserDAO.getUserByUsername(practitioner.getUsername()));
+            assertEquals(practitioner.getUsername(),
+                    iUserDAO.getUserByUsername(practitioner.getUsername()).getUsername());
         } else {
             fail("Error de conexión");
         }

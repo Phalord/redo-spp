@@ -41,6 +41,12 @@ public class ControllerGenerateDocumentation {
         backScene();
     }
 
+    @FXML
+    private void logOut() {
+        closeWindow();
+        displayLogin();
+    }
+
     private void notYetSupportedDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -62,6 +68,29 @@ public class ControllerGenerateDocumentation {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGenerateDocumentation.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+        }
+    }
+
+    private void somethingWentWrong() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Algo ha salido mal");
+        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
+        alert.showAndWait();
+    }
+
+    private void closeWindow() {
+        Stage stage1 = (Stage) borderPane.getScene().getWindow();
+        stage1.close();
+    }
+
+    private void displayLogin() {
+        try {
+            new ControllerLogin().display();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            somethingWentWrong();
         }
     }
 }

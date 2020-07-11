@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -41,6 +42,12 @@ public class ControllerCoordinatorProjectSection {
     }
 
     @FXML
+    private void logOut() {
+        closeWindow();
+        displayLogin();
+    }
+
+    @FXML
     private void back() {
         backScene();
     }
@@ -58,6 +65,29 @@ public class ControllerCoordinatorProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerCoordinatorProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+        }
+    }
+
+    private void somethingWentWrong() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Algo ha salido mal");
+        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
+        alert.showAndWait();
+    }
+
+    private void closeWindow() {
+        Stage stage1 = (Stage) borderPane.getScene().getWindow();
+        stage1.close();
+    }
+
+    private void displayLogin() {
+        try {
+            new ControllerLogin().display();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerCoordinatorProjectSection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            somethingWentWrong();
         }
     }
 }
