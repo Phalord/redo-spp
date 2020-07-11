@@ -1,7 +1,6 @@
 package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.ProjectDAO;
-import com.spp.model.dataaccess.idao.CRUD;
 import com.spp.model.domain.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
