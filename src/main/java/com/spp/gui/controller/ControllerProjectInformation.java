@@ -33,7 +33,7 @@ public class ControllerProjectInformation {
     }
 
     @FXML
-    public void closeWindow() {
+    private void closeWindow() {
         Stage stage1 = (Stage) borderPane.getScene().getWindow();
         stage1.close();
     }

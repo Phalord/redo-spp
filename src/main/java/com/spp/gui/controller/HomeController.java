@@ -18,10 +18,12 @@ public class HomeController implements IWindowGUI {
     public HomeController(String accountType, String username) {
         switch (accountType) {
             case PRACTITIONER:
-                buildStage(new Stage(), "Practicante");
+                buildStage(new Stage(), accountType);
                 buildPractitionerHomeScene(username);
                 break;
             case COORDINATOR:
+                buildStage(new Stage(), accountType);
+                buildCoordinatorHomeScene(username);
                 break;
             case PROFESSOR:
                 break;
@@ -49,18 +51,35 @@ public class HomeController implements IWindowGUI {
         alert.showAndWait();
     }
 
-    private void buildPractitionerHomeScene(String userName) {
+    private void buildPractitionerHomeScene(String username) {
         Parent viewFile;
         try {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/views/View_PractitionerHome.fxml"));
             viewFile = loader.load();
             ControllerPractitionerHome controllerPractitionerHome = loader.getController();
-            controllerPractitionerHome.setTopMenuText(userName);
+            controllerPractitionerHome.setTopMenuText(username);
             window.setScene(new Scene(viewFile, 600, 400));
             window.setResizable(false);
         } catch (IOException ioException) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, ioException.getMessage(), ioException);
+            Logger.getLogger(HomeController.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+        }
+    }
+
+    private void buildCoordinatorHomeScene(String username) {
+        Parent viewFile;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_CoordinatorHome.fxml"));
+            viewFile = loader.load();
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(username);
+            window.setScene(new Scene(viewFile, 600, 400));
+            window.setResizable(false);
+        } catch (IOException ioException) {
+            Logger.getLogger(HomeController.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
         }
     }
 }

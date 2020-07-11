@@ -32,7 +32,7 @@ public class ControllerLogin {
     }
 
     @FXML
-    public void logIn() {
+    private void logIn() {
         IUserDAO<User> iUserDAO = new UserDAO();
         String username = usernameField.getText();
         String password = passwordField.getText();
