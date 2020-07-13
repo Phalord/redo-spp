@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
 public class ControllerPractitionerHome {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
@@ -45,9 +47,9 @@ public class ControllerPractitionerHome {
     private void setProjectSectionScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ProjectSection.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_ProjectSection.fxml"));
             viewFile = loader.load();
             ControllerProjectSection controllerProjectSection = loader.getController();
             controllerProjectSection.setTopMenuText(topMenu.getText());
@@ -55,16 +57,16 @@ public class ControllerPractitionerHome {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
     }
 
     private void setGenerateDocumentationScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_GenerateDocumentation.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_GenerateDocumentation.fxml"));
             viewFile = loader.load();
             ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
             controllerGenerateDocumentation.setTopMenuText(topMenu.getText());
@@ -72,7 +74,7 @@ public class ControllerPractitionerHome {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
     }
 
@@ -80,14 +82,6 @@ public class ControllerPractitionerHome {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Funcionamiento sin implementar");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
-        alert.showAndWait();
-    }
-
-    private void somethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Algo ha salido mal");
         alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
         alert.showAndWait();
     }
@@ -103,7 +97,7 @@ public class ControllerPractitionerHome {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
     }
 }

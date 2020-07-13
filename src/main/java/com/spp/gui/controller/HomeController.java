@@ -16,16 +16,16 @@ public class HomeController implements IWindowGUI {
     private Stage window;
 
     public HomeController(String accountType, String username) {
+        buildStage(new Stage(), accountType);
         switch (accountType) {
             case PRACTITIONER:
-                buildStage(new Stage(), accountType);
                 buildPractitionerHomeScene(username);
                 break;
             case COORDINATOR:
-                buildStage(new Stage(), accountType);
                 buildCoordinatorHomeScene(username);
                 break;
             case PROFESSOR:
+                buildProfessorHomeScene(username);
                 break;
             default:
                 somethingWentWrong();
@@ -53,9 +53,9 @@ public class HomeController implements IWindowGUI {
 
     private void buildPractitionerHomeScene(String username) {
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_PractitionerHome.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_PractitionerHome.fxml"));
             viewFile = loader.load();
             ControllerPractitionerHome controllerPractitionerHome = loader.getController();
             controllerPractitionerHome.setTopMenuText(username);
@@ -69,12 +69,28 @@ public class HomeController implements IWindowGUI {
 
     private void buildCoordinatorHomeScene(String username) {
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_CoordinatorHome.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_CoordinatorHome.fxml"));
             viewFile = loader.load();
             ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
             controllerCoordinatorHome.setTopMenuText(username);
+            window.setScene(new Scene(viewFile, 600, 400));
+            window.setResizable(false);
+        } catch (IOException ioException) {
+            Logger.getLogger(HomeController.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+        }
+    }
+
+    private void buildProfessorHomeScene(String username) {
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ProfessorHome.fxml"));
+        try {
+            viewFile = loader.load();
+            ControllerProfessorHome controllerProfessorHome = loader.getController();
+            controllerProfessorHome.setTopMenuText(username);
             window.setScene(new Scene(viewFile, 600, 400));
             window.setResizable(false);
         } catch (IOException ioException) {

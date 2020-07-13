@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.spp.gui.Dialog.displaySomethingWentWrong;
-
-public class ControllerPractitionerSection {
+public class ControllerProfessorHome {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
 
@@ -24,51 +22,36 @@ public class ControllerPractitionerSection {
     }
 
     @FXML
-    private void registerPractitioner() {
-
+    private void goActivitySection() {
+        setActivitySectionScene();
     }
 
     @FXML
-    private void assignPractitioner() {
+    private void gradeEvidence() {
 
     }
 
-    @FXML
-    private void goPractitionerList() {
-
-    }
-
-    @FXML
-    private void deletePractitioner() {
-
-    }
-
-    @FXML
-    private void back() {
-        backScene();
+    private void setActivitySectionScene() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ActivitySection.fxml"));
+        try {
+            viewFile = loader.load();
+            ControllerActivitySection controllerActivitySection = loader.getController();
+            controllerActivitySection.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile, 600, 400));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerProfessorHome.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            somethingWentWrong();
+        }
     }
 
     @FXML
     private void logOut() {
         closeWindow();
         displayLogin();
-    }
-
-    private void backScene() {
-        Stage window = (Stage) borderPane.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/views/View_CoordinatorHome.fxml"));
-        Parent viewFile;
-        try {
-            viewFile = loader.load();
-            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
-            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
-        } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerSection.class.getName())
-                    .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
-        }
     }
 
     private void closeWindow() {
@@ -80,9 +63,17 @@ public class ControllerPractitionerSection {
         try {
             new ControllerLogin().display();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            somethingWentWrong();
         }
+    }
+
+    private void somethingWentWrong() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText("Algo ha salido mal");
+        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
+        alert.showAndWait();
     }
 }
