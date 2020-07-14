@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
 public class ControllerActivitySection {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
@@ -53,16 +55,8 @@ public class ControllerActivitySection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
-    }
-
-    private void somethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Algo ha salido mal");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
-        alert.showAndWait();
     }
 
     private void backScene() {
@@ -77,7 +71,7 @@ public class ControllerActivitySection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerActivitySection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
     }
 }

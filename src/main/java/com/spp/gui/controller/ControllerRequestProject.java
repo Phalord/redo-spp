@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
 public class ControllerRequestProject {
     @FXML private FlowPane projectCards;
     @FXML private Menu topMenu;
@@ -77,13 +79,5 @@ public class ControllerRequestProject {
             Logger.getLogger(ControllerRequestProject.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
         }
-    }
-
-    private void displaySomethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Algo ha salido mal");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle. Seguimos en desarrollo.");
-        alert.showAndWait();
     }
 }

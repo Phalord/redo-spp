@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
 public class ControllerProjectSection {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
@@ -56,7 +58,6 @@ public class ControllerProjectSection {
         backScene();
     }
 
-    //TODO
     private void setRequestProjectScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
@@ -96,14 +97,6 @@ public class ControllerProjectSection {
         alert.setHeaderText("No tiene proyecto");
         alert.setContentText(String.format("Actualmente no se encuentra asignado a ningún %s",
                 "proyecto. Por favor genere su solicitud."));
-        alert.showAndWait();
-    }
-
-    private void displaySomethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Algo ha salido mal");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle. Seguimos en desarrollo.");
         alert.showAndWait();
     }
 

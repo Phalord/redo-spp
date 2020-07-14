@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
 public class ControllerPractitionerHome {
@@ -35,7 +36,7 @@ public class ControllerPractitionerHome {
 
     @FXML
     private void uploadDocumentation() {
-        notYetSupportedDialog();
+        displayNotYetSupportedDialog();
     }
 
     @FXML
@@ -76,14 +77,6 @@ public class ControllerPractitionerHome {
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }
-    }
-
-    private void notYetSupportedDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Funcionamiento sin implementar");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
-        alert.showAndWait();
     }
 
     private void closeWindow() {

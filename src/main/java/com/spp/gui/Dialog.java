@@ -12,4 +12,11 @@ public class Dialog {
         alert.showAndWait();
     }
 
+    public static void displayNotYetSupportedDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Funcionamiento sin implementar");
+        alert.setContentText("Función a implementar en siguientes versiones.");
+        alert.showAndWait();
+    }
 }

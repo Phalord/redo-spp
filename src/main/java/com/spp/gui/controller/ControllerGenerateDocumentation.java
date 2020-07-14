@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
 public class ControllerGenerateDocumentation {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
@@ -47,6 +49,7 @@ public class ControllerGenerateDocumentation {
         displayLogin();
     }
 
+    //Una vez implementado estos 3 casos de uso, se borra este método. POR FA NO LO DEJEN!!!!!
     private void notYetSupportedDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -71,14 +74,6 @@ public class ControllerGenerateDocumentation {
         }
     }
 
-    private void somethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText("Algo ha salido mal");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
-        alert.showAndWait();
-    }
-
     private void closeWindow() {
         Stage stage1 = (Stage) borderPane.getScene().getWindow();
         stage1.close();
@@ -90,7 +85,7 @@ public class ControllerGenerateDocumentation {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGenerateDocumentation.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            somethingWentWrong();
+            displaySomethingWentWrong();
         }
     }
 }
