@@ -10,7 +10,7 @@
             xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:id="borderPane"
-            fx:controller="com.spp.gui.controller.ControllerGenerateDocumentation">
+            fx:controller="com.spp.gui.controller.ControllerProfessorHome">
     <fx:define>
         <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
         <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
@@ -19,10 +19,8 @@
         <BorderPane>
             <center>
                 <VBox alignment="CENTER" spacing="15">
-                    <Button id="generatePartialReport" text="Generar Reporte Parcial" prefWidth="$BUTTON_SIZE" onAction="#generatePartialReport"/>
-                    <Button id="generateMonthlyReport" text="Generar Reporte Mensual" prefWidth="$BUTTON_SIZE" onAction="#generateMonthlyReport"/>
-                    <Button id="generateSelfAppraisal" text="Generar Autoevaluación" prefWidth="$BUTTON_SIZE" onAction="#generateSelfAppraisal"/>
-                    <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
+                    <Button id="activitySection" text="Sección Proyecto" prefWidth="$BUTTON_SIZE" onAction="#goActivitySection"/>
+                    <Button id="gradeEvidence" text="Practicante" prefWidth="$BUTTON_SIZE" onAction="#gradeEvidence"/>
                     <padding>
                         <Insets topRightBottomLeft="50"/>
                     </padding>
@@ -38,7 +36,7 @@
                 <Region BorderPane.alignment="CENTER" />
             </right>
             <top>
-                <Label text="Generar Documentación" BorderPane.alignment="CENTER">
+                <Label text="Profesor" BorderPane.alignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>

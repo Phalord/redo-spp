@@ -89,7 +89,6 @@ public class RelatedCompanyDAO implements IRelatedCompanyDAO {
             Logger.getLogger(RelatedCompanyDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
-
         return result;
     }
 

@@ -9,19 +9,17 @@
 <BorderPane prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:id="borderPane"
-            fx:controller="com.spp.gui.controller.ControllerGenerateDocumentation">
+            fx:controller="com.spp.gui.controller.ControllerActivitySection">
     <fx:define>
         <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
         <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
     </fx:define>
     <center>
-        <BorderPane>
+        <BorderPane fx:id="borderPane">
             <center>
                 <VBox alignment="CENTER" spacing="15">
-                    <Button id="generatePartialReport" text="Generar Reporte Parcial" prefWidth="$BUTTON_SIZE" onAction="#generatePartialReport"/>
-                    <Button id="generateMonthlyReport" text="Generar Reporte Mensual" prefWidth="$BUTTON_SIZE" onAction="#generateMonthlyReport"/>
-                    <Button id="generateSelfAppraisal" text="Generar Autoevaluación" prefWidth="$BUTTON_SIZE" onAction="#generateSelfAppraisal"/>
+                    <Button id="generateActivity" text="Generar Actividad" prefWidth="$BUTTON_SIZE" onAction="#generateActivity"/>
+                    <Button id="deliveredActivities" text="Actividades Entregadas" prefWidth="$BUTTON_SIZE" onAction="#goDeliveredActivities"/>
                     <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
                     <padding>
                         <Insets topRightBottomLeft="50"/>
@@ -38,7 +36,7 @@
                 <Region BorderPane.alignment="CENTER" />
             </right>
             <top>
-                <Label text="Generar Documentación" BorderPane.alignment="CENTER">
+                <Label text="Sección Actividad" BorderPane.alignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -62,5 +60,4 @@
             </Menu>
         </MenuBar>
     </top>
-
 </BorderPane>

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -32,7 +33,7 @@ public class ControllerLogin {
     }
 
     @FXML
-    public void logIn() {
+    private void logIn() {
         IUserDAO<User> iUserDAO = new UserDAO();
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -55,13 +56,19 @@ public class ControllerLogin {
     }
 
     private void incorrectCredentials() {
-        logInMessage.setTextFill(Color.rgb(210, 39, 30));
-        logInMessage.setText("Usuario o contraseña incorrectas. Por favor intente nuevamente.");
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Credenciales Incorrectas");
+        alert.setContentText("Usuario o contraseña incorrectas. Por favor intente nuevamente.");
+        alert.showAndWait();
     }
 
     private void incorrectUserName() {
-        logInMessage.setTextFill(Color.rgb(210, 39, 30));
-        logInMessage.setText("Formato de nombre de usuario incorrecto. Intente nuevamente.");
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Nombre de Usuario incorrecto");
+        alert.setContentText("Formato de nombre de usuario incorrecto. Intente nuevamente.");
+        alert.showAndWait();
     }
 
     private void closeWindow() {

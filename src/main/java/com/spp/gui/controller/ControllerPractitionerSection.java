@@ -13,10 +13,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
-public class ControllerPractitionerHome {
+public class ControllerPractitionerSection {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
 
@@ -25,18 +24,28 @@ public class ControllerPractitionerHome {
     }
 
     @FXML
-    private void goProjectSection() {
-        setProjectSectionScene();
+    private void registerPractitioner() {
+
     }
 
     @FXML
-    private void generateDocumentation() {
-        setGenerateDocumentationScene();
+    private void assignPractitioner() {
+
     }
 
     @FXML
-    private void uploadDocumentation() {
-        displayNotYetSupportedDialog();
+    private void goPractitionerList() {
+
+    }
+
+    @FXML
+    private void deletePractitioner() {
+
+    }
+
+    @FXML
+    private void back() {
+        backScene();
     }
 
     @FXML
@@ -45,35 +54,18 @@ public class ControllerPractitionerHome {
         displayLogin();
     }
 
-    private void setProjectSectionScene() {
+    private void backScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
-        Parent viewFile;
         FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/views/View_ProjectSection.fxml"));
+                .getResource("/views/View_CoordinatorHome.fxml"));
+        Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerProjectSection controllerProjectSection = loader.getController();
-            controllerProjectSection.setTopMenuText(topMenu.getText());
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
-                    .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
-        }
-    }
-
-    private void setGenerateDocumentationScene() {
-        Stage window = (Stage) borderPane.getScene().getWindow();
-        Parent viewFile;
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("/views/View_GenerateDocumentation.fxml"));
-        try {
-            viewFile = loader.load();
-            ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
-            controllerGenerateDocumentation.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
-        } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }

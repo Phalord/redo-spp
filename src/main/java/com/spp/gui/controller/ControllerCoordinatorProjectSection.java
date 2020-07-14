@@ -15,32 +15,32 @@ import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
-public class ControllerGenerateDocumentation {
+public class ControllerCoordinatorProjectSection {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
 
-    public void setTopMenuText(String username) {
+    public final void setTopMenuText(String username) {
         topMenu.setText(username);
     }
 
     @FXML
-    private void generatePartialReport() {
-        notYetSupportedDialog();
+    private void registerProject() {
+
     }
 
     @FXML
-    private void generateMonthlyReport() {
-        notYetSupportedDialog();
+    private void updateProject() {
+
     }
 
     @FXML
-    private void generateSelfAppraisal() {
-        notYetSupportedDialog();
+    private void goProjectList() {
+
     }
 
     @FXML
-    private void back() {
-        backScene();
+    private void deleteProject() {
+
     }
 
     @FXML
@@ -49,13 +49,9 @@ public class ControllerGenerateDocumentation {
         displayLogin();
     }
 
-    //Una vez implementado estos 3 casos de uso, se borra este método. POR FA NO LO DEJEN!!!!!
-    private void notYetSupportedDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Funcionamiento sin implementar");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle. Seguimos en desarrollo.");
-        alert.showAndWait();
+    @FXML
+    private void back() {
+        backScene();
     }
 
     private void backScene() {
@@ -63,13 +59,13 @@ public class ControllerGenerateDocumentation {
         Parent viewFile;
         try {
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_PractitionerHome.fxml"));
+                    .getResource("/views/View_CoordinatorHome.fxml"));
             viewFile = loader.load();
-            ControllerPractitionerHome controllerPractitionerHome = loader.getController();
-            controllerPractitionerHome.setTopMenuText(topMenu.getText());
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+            Logger.getLogger(ControllerCoordinatorProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
         }
     }
@@ -83,7 +79,7 @@ public class ControllerGenerateDocumentation {
         try {
             new ControllerLogin().display();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+            Logger.getLogger(ControllerCoordinatorProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }

@@ -58,7 +58,7 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu fx:id="topMenu" mnemonicParsing="false">
-                <MenuItem mnemonicParsing="false" text="Cerrar Sesión"/>
+                <MenuItem mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
             </Menu>
         </MenuBar>
     </top>

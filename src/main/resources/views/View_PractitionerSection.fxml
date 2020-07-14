@@ -10,7 +10,7 @@
             xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:id="borderPane"
-            fx:controller="com.spp.gui.controller.ControllerGenerateDocumentation">
+            fx:controller="com.spp.gui.controller.ControllerPractitionerSection">
     <fx:define>
         <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
         <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
@@ -19,9 +19,14 @@
         <BorderPane>
             <center>
                 <VBox alignment="CENTER" spacing="15">
-                    <Button id="generatePartialReport" text="Generar Reporte Parcial" prefWidth="$BUTTON_SIZE" onAction="#generatePartialReport"/>
-                    <Button id="generateMonthlyReport" text="Generar Reporte Mensual" prefWidth="$BUTTON_SIZE" onAction="#generateMonthlyReport"/>
-                    <Button id="generateSelfAppraisal" text="Generar Autoevaluación" prefWidth="$BUTTON_SIZE" onAction="#generateSelfAppraisal"/>
+                    <HBox spacing="15">
+                        <Button id="registerPractitioner" text="Registrar Practicante" prefWidth="$BUTTON_SIZE" onAction="#registerPractitioner"/>
+                        <Button id="assignProject" text="Asignar Proyecto" prefWidth="$BUTTON_SIZE" onAction="#assignPractitioner"/>
+                    </HBox>
+                    <HBox spacing="15">
+                        <Button id="practitionerList" text="Lista de Practicantes" prefWidth="$BUTTON_SIZE" onAction="#goPractitionerList"/>
+                        <Button id="deletePractitioner" text="Eliminar Practicante" prefWidth="$BUTTON_SIZE" onAction="#deletePractitioner"/>
+                    </HBox>
                     <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
                     <padding>
                         <Insets topRightBottomLeft="50"/>
@@ -38,7 +43,7 @@
                 <Region BorderPane.alignment="CENTER" />
             </right>
             <top>
-                <Label text="Generar Documentación" BorderPane.alignment="CENTER">
+                <Label text="Sección Practicante" BorderPane.alignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>

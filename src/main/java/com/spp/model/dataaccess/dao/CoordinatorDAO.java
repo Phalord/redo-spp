@@ -83,7 +83,7 @@ public class CoordinatorDAO implements ICoordinatorDAO {
 
     private boolean insertIntoUserTable(Coordinator coordinator) {
         boolean result = false;
-        String query = "INSERT INTO User(Username,password,name,surname,userType,status VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO User(Username,password,name,surname,userType,status) VALUES (?,?,?,?,?,?)";
         String passwordAux = BCrypt.hashpw(coordinator.getPassword(), BCrypt.gensalt(10));
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -92,6 +92,7 @@ public class CoordinatorDAO implements ICoordinatorDAO {
             preparedStatement.setString(3, coordinator.getName());
             preparedStatement.setString(4, coordinator.getSurnames());
             preparedStatement.setString(5, coordinator.getUserType());
+            preparedStatement.setBoolean(6, coordinator.isActive());
             int numberRowsAffected = preparedStatement.executeUpdate();
             result = (numberRowsAffected > 0);
         } catch (SQLException sqlException) {

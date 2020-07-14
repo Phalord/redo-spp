@@ -6,6 +6,7 @@ public class ProjectResponsible {
     private String name;
     private String surname;
     private String phone;
+    private int relatedCompanyID;
 
     public void setProjectResponsibleID(int projectResponsibleID) {
         this.projectResponsibleID = projectResponsibleID;
@@ -45,5 +46,13 @@ public class ProjectResponsible {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setRelatedCompanyID(int relatedCompanyID) {
+        this.relatedCompanyID = relatedCompanyID;
+    }
+
+    public int getRelatedCompanyID() {
+        return relatedCompanyID;
     }
 }
