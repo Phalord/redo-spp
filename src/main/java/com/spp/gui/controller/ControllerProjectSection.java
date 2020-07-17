@@ -77,19 +77,20 @@ public class ControllerProjectSection {
     private void setRequestProjectScene(List<Project> availableProjects) {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ProjectRequest.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_ProjectRequest.fxml"));
             viewFile = loader.load();
-            ControllerRequestProject controllerRequestProject = loader.getController();
-            controllerRequestProject.setTopMenuText(topMenu.getText());
-            controllerRequestProject.populateTable(availableProjects);
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerRequestProject controllerRequestProject = loader.getController();
+        controllerRequestProject.setTopMenuText(topMenu.getText());
+        controllerRequestProject.populateTable(availableProjects);
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     private void displayProjectInformation(Project project) {
@@ -101,6 +102,7 @@ public class ControllerProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
             return;
         }
         ControllerProjectInformation controllerProjectInformation = loader.getController();
@@ -156,16 +158,18 @@ public class ControllerProjectSection {
     private void backScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_PractitionerHome.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_PractitionerHome.fxml"));
             viewFile = loader.load();
-            ControllerPractitionerHome controllerPractitionerHome = loader.getController();
-            controllerPractitionerHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+            return;
         }
+        ControllerPractitionerHome controllerPractitionerHome = loader.getController();
+        controllerPractitionerHome.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 }

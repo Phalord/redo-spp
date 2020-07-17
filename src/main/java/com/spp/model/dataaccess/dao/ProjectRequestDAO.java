@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +45,7 @@ public class ProjectRequestDAO implements IProjectRequestDAO {
     }
 
     @Override
-    public ProjectRequest getProjectRequestByStudentEnrollment(String studentEnrollment) {
+    public final ProjectRequest getProjectRequestByStudentEnrollment(String studentEnrollment) {
         ProjectRequest projectRequest = null;
         String query = "SELECT ProjectRequestID, StudentEnrollment, status FROM ProjectRequest WHERE StudentEnrollment = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -63,6 +64,28 @@ public class ProjectRequestDAO implements IProjectRequestDAO {
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
         return projectRequest;
+    }
+
+    @Override
+    public final List<ProjectRequest> getPendingRequests() {
+        List<ProjectRequest> projectRequests = new ArrayList<>();
+        String query = "SELECT ProjectRequestID,requestedAt,studentEnrollment FROM ProjectRequest WHERE status = true";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                ProjectRequest projectRequest = new ProjectRequest();
+                projectRequest.setProjectRequestID(resultSet.getInt("ProjectRequestID"));
+                projectRequest.setRequestedAt(resultSet.getTimestamp("requestedAt"));
+                projectRequest.setRequestedBy(resultSet.getString("studentEnrollment"));
+                projectRequests.add(projectRequest);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectRequestDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            projectRequests = null;
+        }
+        return projectRequests;
     }
 
     private int getProjectRequestID(ProjectRequest projectRequest) {
