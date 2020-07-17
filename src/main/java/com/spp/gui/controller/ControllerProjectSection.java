@@ -1,8 +1,10 @@
 package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.ProjectDAO;
+import com.spp.model.dataaccess.dao.ProjectRequestDAO;
 import com.spp.model.dataaccess.idao.CRUD;
 import com.spp.model.dataaccess.idao.IProjectDAO;
+import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,14 +44,18 @@ public class ControllerProjectSection {
 
     @FXML
     private void requestProject() {
-        IProjectDAO iProjectDAO = new ProjectDAO();
-        List<Project> availableProjects = iProjectDAO.getAvailableProjects();
-        if (availableProjects == null) {
-            displayConnectionError();
-        } else if (availableProjects.isEmpty()) {
-            displayNoAvailableProjects();
+        if (validateNotAlreadyRequested()) {
+            IProjectDAO iProjectDAO = new ProjectDAO();
+            List<Project> availableProjects = iProjectDAO.getAvailableProjects();
+            if (availableProjects == null) {
+                displayConnectionError();
+            } else if (availableProjects.isEmpty()) {
+                displayNoAvailableProjects();
+            } else {
+                setRequestProjectScene(availableProjects);
+            }
         } else {
-            setRequestProjectScene(availableProjects);
+            displayAlreadyRequested();
         }
     }
 
@@ -62,6 +68,11 @@ public class ControllerProjectSection {
     @FXML
     private void back() {
         backScene();
+    }
+
+    private boolean validateNotAlreadyRequested() {
+        IProjectRequestDAO iProjectRequestDAO = new ProjectRequestDAO();
+        return (iProjectRequestDAO.getProjectRequestByStudentEnrollment(topMenu.getText()) == null);
     }
 
     private void setRequestProjectScene(List<Project> availableProjects) {
@@ -132,6 +143,14 @@ public class ControllerProjectSection {
         alert.setHeaderText("No hay proyectos disponibles");
         alert.setContentText(String.format("Actualmente no existen proyectos disponibles para %s",
                 "solicitar."));
+        alert.showAndWait();
+    }
+
+    private void displayAlreadyRequested() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Proyecto Solicitado");
+        alert.setContentText("Ya se ha enviado una solicitud de proyecto.");
         alert.showAndWait();
     }
 

@@ -43,6 +43,28 @@ public class ProjectRequestDAO implements IProjectRequestDAO {
         return false;
     }
 
+    @Override
+    public ProjectRequest getProjectRequestByStudentEnrollment(String studentEnrollment) {
+        ProjectRequest projectRequest = null;
+        String query = "SELECT ProjectRequestID, StudentEnrollment, status FROM ProjectRequest WHERE StudentEnrollment = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    projectRequest = new ProjectRequest();
+                    projectRequest.setProjectRequestID(resultSet.getInt("ProjectRequestID"));
+                    projectRequest.setRequestedBy(resultSet.getString("StudentEnrollment"));
+                    projectRequest.setPending(resultSet.getBoolean("status"));
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectRequestDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return projectRequest;
+    }
+
     private int getProjectRequestID(ProjectRequest projectRequest) {
         int result = 0;
         String query = "SELECT ProjectRequestID FROM ProjectRequest WHERE StudentEnrollment = ?";

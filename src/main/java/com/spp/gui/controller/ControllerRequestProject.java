@@ -1,11 +1,9 @@
 package com.spp.gui.controller;
 
-import com.mysql.cj.conf.BooleanProperty;
 import com.spp.model.dataaccess.dao.ProjectRequestDAO;
 import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Project;
 import com.spp.model.domain.ProjectRequest;
-import com.spp.model.domain.RelatedCompany;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +19,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
