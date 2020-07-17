@@ -16,12 +16,13 @@
     <center>
         <BorderPane fx:id="borderPane">
             <center>
-                <ScrollPane id="scrollProjects" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
-                    <Label fx:id="noProjectsMessage"/>
-                    <FlowPane fx:id="projectCards">
-
-                    </FlowPane>
-                </ScrollPane>
+                <TableView fx:id="availableProjectsTable">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="38"/>
+                        <TableColumn fx:id="titleColumn" text="Título" prefWidth="220"/>
+                        <TableColumn fx:id="requestColumn" text="Solicitar" prefWidth="120"/>
+                    </columns>
+                </TableView>
             </center>
             <padding>
                 <Insets bottom="15" top="50" right="50" left="50" />

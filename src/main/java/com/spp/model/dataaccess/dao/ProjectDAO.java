@@ -21,7 +21,7 @@ public class ProjectDAO implements IProjectDAO {
     }
 
     @Override
-    public Project getProjectByStudentEnrollment(String studentEnrollment) {
+    public final Project getProjectByStudentEnrollment(String studentEnrollment) {
         Project project = null;
         String query = "SELECT Project.ProjectID, title, description, resources FROM ProjectAssignment INNER JOIN Project ON ProjectAssignment.ProjectID = Project.ProjectID AND ProjectAssignment.PractitionerAssigned = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -44,7 +44,7 @@ public class ProjectDAO implements IProjectDAO {
     }
 
     @Override
-    public List<Project> getListed() {
+    public final List<Project> getListed() {
         List<Project> projects = new ArrayList<>();
         String query = "SELECT ProjectID, title, available FROM Project";
         try (Connection connection = mySQLConnection.getConnection();
@@ -66,7 +66,7 @@ public class ProjectDAO implements IProjectDAO {
     }
 
     @Override
-    public Project getByID(int id) {
+    public final Project getByID(int id) {
         Project project = null;
         String query = "SELECT * FROM Project WHERE ProjectID = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -90,12 +90,50 @@ public class ProjectDAO implements IProjectDAO {
     }
 
     @Override
-    public boolean addElement(Project project) {
-        return false;
+    public final boolean addElement(Project project) {
+        boolean result = false;
+        String query = "INSERT INTO Project(title,description,resources,available,RelatedCompanyID,ProjectResponsibleID) VALUES (?,?,?,?,?,?)";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, project.getTitle());
+            preparedStatement.setString(2, project.getDescription());
+            preparedStatement.setString(3, project.getResources());
+            preparedStatement.setString(4, project.getStatus());
+            preparedStatement.setInt(5, project.getRequestedBy().getRelatedCompanyID());
+            preparedStatement.setInt(6,
+                    project.getRequestedBy().getEmployee().getProjectResponsibleID());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 
     @Override
     public boolean deleteElement(int id) {
         return false;
+    }
+
+    public final List<Project> getAvailableProjects() {
+        List<Project> projects = new ArrayList<>();
+        String query = "SELECT * FROM Project WHERE available = 'Available'";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Project project = new Project();
+                project.setProjectID(resultSet.getInt("ProjectID"));
+                project.setTitle(resultSet.getString("title"));
+                project.setStatus(resultSet.getString("Available"));
+                projects.add(project);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            return null;
+        }
+        return projects;
     }
 }

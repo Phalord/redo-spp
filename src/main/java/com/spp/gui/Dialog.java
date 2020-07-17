@@ -19,4 +19,8 @@ public class Dialog {
         alert.setContentText("Función a implementar en siguientes versiones.");
         alert.showAndWait();
     }
+
+    public static void displayConnectionError() {
+
+    }
 }

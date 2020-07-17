@@ -1,6 +1,8 @@
 package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.ProjectDAO;
+import com.spp.model.dataaccess.idao.CRUD;
+import com.spp.model.dataaccess.idao.IProjectDAO;
 import com.spp.model.domain.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +14,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
 public class ControllerProjectSection {
@@ -30,13 +34,7 @@ public class ControllerProjectSection {
         ProjectDAO iProjectDAO = new ProjectDAO();
         Project project = iProjectDAO.getProjectByStudentEnrollment(topMenu.getText());
         if (project != null) {
-            try {
-                new ControllerProjectInformation().display(project);
-            } catch (IOException ioException) {
-                Logger.getLogger(ControllerProjectSection.class.getName())
-                        .log(Level.SEVERE, ioException.getMessage(), ioException);
-                displaySomethingWentWrong();
-            }
+            displayProjectInformation(project);
         } else {
             displayNoProjectAssigned();
         }
@@ -44,7 +42,15 @@ public class ControllerProjectSection {
 
     @FXML
     private void requestProject() {
-        setRequestProjectScene();
+        IProjectDAO iProjectDAO = new ProjectDAO();
+        List<Project> availableProjects = iProjectDAO.getAvailableProjects();
+        if (availableProjects == null) {
+            displayConnectionError();
+        } else if (availableProjects.isEmpty()) {
+            displayNoAvailableProjects();
+        } else {
+            setRequestProjectScene(availableProjects);
+        }
     }
 
     @FXML
@@ -58,7 +64,7 @@ public class ControllerProjectSection {
         backScene();
     }
 
-    private void setRequestProjectScene() {
+    private void setRequestProjectScene(List<Project> availableProjects) {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
         try {
@@ -67,13 +73,33 @@ public class ControllerProjectSection {
             viewFile = loader.load();
             ControllerRequestProject controllerRequestProject = loader.getController();
             controllerRequestProject.setTopMenuText(topMenu.getText());
-            controllerRequestProject.loadProjects();
+            controllerRequestProject.populateTable(availableProjects);
             window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }
+    }
+
+    private void displayProjectInformation(Project project) {
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ProjectInformation.fxml"));
+        try {
+            viewFile = loader.load();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerProjectSection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            return;
+        }
+        ControllerProjectInformation controllerProjectInformation = loader.getController();
+        controllerProjectInformation.buildScene(project);
+        Stage window = new Stage();
+        window.setScene(new Scene(viewFile, 600, 400));
+        window.setResizable(false);
+        window.setTitle(project.getTitle());
+        window.showAndWait();
     }
 
     private void closeWindow() {
@@ -97,6 +123,15 @@ public class ControllerProjectSection {
         alert.setHeaderText("No tiene proyecto");
         alert.setContentText(String.format("Actualmente no se encuentra asignado a ningún %s",
                 "proyecto. Por favor genere su solicitud."));
+        alert.showAndWait();
+    }
+
+    private void displayNoAvailableProjects() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("No hay proyectos disponibles");
+        alert.setContentText(String.format("Actualmente no existen proyectos disponibles para %s",
+                "solicitar."));
         alert.showAndWait();
     }
 

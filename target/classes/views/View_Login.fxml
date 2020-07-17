@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.spp.gui.controller.ControllerLogin"
@@ -11,10 +12,13 @@
 
     <center>
         <VBox spacing="15" alignment="CENTER">
-            <Label text="Inicio de Sesión"/>
+            <Label text="Inicio de Sesión">
+                <font>
+                    <Font size="25" name="Arial"/>
+                </font>
+            </Label>
             <TextField fx:id="usernameField" promptText="Matrícula"/>
             <PasswordField fx:id="passwordField" promptText="Contraseña"/>
-            <Label fx:id="logInMessage" wrapText="true"/>
             <Button id="buttonLogIn" text="Iniciar Sesión" onAction="#logIn"/>
             <padding>
                 <Insets topRightBottomLeft="30"/>

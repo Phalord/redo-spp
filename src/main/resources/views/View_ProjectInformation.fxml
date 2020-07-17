@@ -28,15 +28,15 @@
                 <VBox alignment="BASELINE_LEFT" spacing="15">
                     <HBox alignment="BASELINE_LEFT" spacing="20">
                         <Label text="Encargado:"/>
-                        <Label fx:id="projectResponsible" text="Encargado"/>
+                        <Label fx:id="projectResponsibleName" text="Encargado"/>
                     </HBox>
                     <VBox spacing="5">
                         <Label text="Descripción:"/>
-                        <Text fx:id="projectDescription" text="Descripción del Proyecto"/>
+                        <Text fx:id="projectDescription" text="Descripción del Proyecto" wrappingWidth="450"/>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Recursos:"/>
-                        <Text fx:id="projectResources" text="Recursos del Proyecto"/>
+                        <Text fx:id="projectResources" text="Recursos del Proyecto" wrappingWidth="450"/>
                     </VBox>
                 </VBox>
             </center>
