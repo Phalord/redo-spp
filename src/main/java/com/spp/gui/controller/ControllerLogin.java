@@ -8,10 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -23,7 +21,6 @@ public class ControllerLogin {
     private final Stage window = new Stage();
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
-    @FXML private Label logInMessage;
 
     public void display() throws IOException {
         Parent viewFile = FXMLLoader.load(getClass().getResource("/views/View_Login.fxml"));
@@ -40,7 +37,7 @@ public class ControllerLogin {
         if (validateUserName(username)) {
             User user = iUserDAO.getUserByUsername(username);
             if (user != null) {
-                if (BCrypt.checkpw(password, iUserDAO.getUserByUsername(username).getPassword())) {
+                if (BCrypt.checkpw(password, user.getPassword())) {
                     HomeController homeController = new HomeController(user.getUserType(), username);
                     homeController.display();
                     closeWindow();
