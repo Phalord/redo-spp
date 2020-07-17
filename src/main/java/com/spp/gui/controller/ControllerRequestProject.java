@@ -1,7 +1,10 @@
 package com.spp.gui.controller;
 
 import com.mysql.cj.conf.BooleanProperty;
+import com.spp.model.dataaccess.dao.ProjectRequestDAO;
+import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Project;
+import com.spp.model.domain.ProjectRequest;
 import com.spp.model.domain.RelatedCompany;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +32,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.gui.Dialog.displaySuccessDialog;
 
 public class ControllerRequestProject {
     @FXML private Menu topMenu;
@@ -123,11 +128,23 @@ public class ControllerRequestProject {
         } else if (selectedProjects.size() > 3) {
             displayInvalidSelection();
         } else {
+            ProjectRequest projectRequest = new ProjectRequest();
+            projectRequest.setRequestedBy(topMenu.getText());
+            projectRequest.setPending(true);
             for (Project project: selectedProjects) {
-                System.out.println(project.getTitle());
+                projectRequest.getProjectOptions().add(project);
+            }
+            IProjectRequestDAO iProjectRequestDAO = new ProjectRequestDAO();
+            if (iProjectRequestDAO.addElement(projectRequest)) {
+                displaySuccessDialog("Solicitud enviada exitosamente");
+                back();
+            } else {
+                displayConnectionError();
             }
         }
     }
+
+
 
     private void displaySelectSomeProjects() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
