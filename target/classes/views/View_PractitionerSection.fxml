@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import java.lang.Integer?>
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="borderPane"
+            fx:controller="com.spp.gui.controller.ControllerPractitionerSection">
+    <fx:define>
+        <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
+        <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
+    </fx:define>
+    <center>
+        <BorderPane>
+            <center>
+                <VBox alignment="CENTER" spacing="15">
+                    <HBox spacing="15">
+                        <Button id="registerPractitioner" text="Registrar Practicante" prefWidth="$BUTTON_SIZE" onAction="#registerPractitioner"/>
+                        <Button id="assignProject" text="Asignar Proyecto" prefWidth="$BUTTON_SIZE" onAction="#assignProject"/>
+                    </HBox>
+                    <HBox spacing="15">
+                        <Button id="practitionerList" text="Lista de Practicantes" prefWidth="$BUTTON_SIZE" onAction="#goPractitionerList"/>
+                        <Button id="deletePractitioner" text="Eliminar Practicante" prefWidth="$BUTTON_SIZE" onAction="#deletePractitioner"/>
+                    </HBox>
+                    <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
+                    <padding>
+                        <Insets topRightBottomLeft="50"/>
+                    </padding>
+                </VBox>
+            </center>
+            <padding>
+                <Insets topRightBottomLeft="50" />
+            </padding>
+            <left>
+                <Region BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+                <Region BorderPane.alignment="CENTER" />
+            </right>
+            <top>
+                <Label text="Sección Practicante" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </top>
+        </BorderPane>
+    </center>
+    <left>
+        <Region BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Region BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <Region BorderPane.alignment="CENTER" />
+    </bottom>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <Menu fx:id="topMenu" mnemonicParsing="false">
+                <MenuItem mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
+</BorderPane>

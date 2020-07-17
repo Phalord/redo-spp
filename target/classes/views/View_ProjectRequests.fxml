@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import java.lang.Integer?>
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.spp.gui.controller.ControllerProjectRequests">
+    <fx:define>
+        <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
+    </fx:define>
+    <center>
+        <BorderPane fx:id="borderPane">
+            <center>
+                <TableView fx:id="pendingRequestsTable">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="38"/>
+                        <TableColumn fx:id="requestedByColumn" text="Solicitante" prefWidth="200"/>
+                        <TableColumn fx:id="requestedAtColumn" text="Fecha de Solicitud" prefWidth="140"/>
+                    </columns>
+                </TableView>
+            </center>
+            <padding>
+                <Insets bottom="15" top="50" right="50" left="50" />
+            </padding>
+            <left>
+                <Region BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+                <Region BorderPane.alignment="CENTER" />
+            </right>
+            <top>
+                <Label text="Solicitudes de Proyecto" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </top>
+        </BorderPane>
+    </center>
+    <left>
+        <Region BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Region BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <HBox alignment="CENTER" spacing="15">
+            <Button id="back" text="Atrás" onAction="#back" alignment="CENTER" prefWidth="$BACK_BUTTON_SIZE"/>
+            <padding>
+                <Insets bottom="50"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <Menu fx:id="topMenu" mnemonicParsing="false">
+                <MenuItem mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
+</BorderPane>
