@@ -9,10 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 
 public class PractitionerDAO implements IPractitionerDAO {
     private final MySQLConnection mySQLConnection;
@@ -117,5 +119,31 @@ public class PractitionerDAO implements IPractitionerDAO {
                     .log(Level.SEVERE, sqlException.getMessage());
         }
         return result;
+    }
+    
+    public static void fillPractitionerTable(Connection mySQLConnection, ObservableList<Practitioner> listPractitioner) {
+        String query = "SELECT * FROM Practitioner INNER JOIN User ON Practitioner.Username = User.Username";
+        try {
+            Statement instruction = mySQLConnection.createStatement();
+            ResultSet resultQuery = instruction.executeQuery(query);
+            while(resultQuery.next()){
+                Practitioner practitioner = new Practitioner();
+                fillPractitioner(practitioner, resultQuery);
+                listPractitioner.add(practitioner);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName()).log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+    }
+
+    private static void fillPractitioner(Practitioner practitioner, ResultSet resultSet) throws SQLException{
+        practitioner.setUsername(resultSet.getString("Username"));
+        practitioner.setPassword(resultSet.getString("password"));
+        practitioner.setName(resultSet.getString("name"));
+        practitioner.setSurnames(resultSet.getString("surname"));
+        practitioner.setUserType(resultSet.getString("userType"));
+        practitioner.setActive(resultSet.getBoolean("status"));
+        practitioner.setShift(resultSet.getString("shift"));
+        //practitioner.setGroupID(resultSet.getString("GroupID"));
     }
 }

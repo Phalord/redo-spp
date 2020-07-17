@@ -31,7 +31,19 @@ public class ControllerPractitionerSection {
 
     @FXML
     private void registerPractitioner() {
-
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_AddPractitioner.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+            ControllerAddPractitioner controllerAddPractitioner = loader.getController();
+            window.setScene(new Scene(viewFile));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerAddPractitioner.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
     }
 
     @FXML
