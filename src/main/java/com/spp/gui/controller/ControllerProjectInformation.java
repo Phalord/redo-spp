@@ -13,6 +13,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import static com.spp.gui.Dialog.displayConnectionError;
+
 
 public class ControllerProjectInformation {
     @FXML private BorderPane borderPane;
@@ -28,20 +30,24 @@ public class ControllerProjectInformation {
 
     public final void buildScene(Project project) {
         getProjectInformation(project);
-        setResponsibleInformation(project);
     }
 
     private void getProjectInformation(Project project) {
         CRUD<Project> projectCRUD = new ProjectDAO();
         project = projectCRUD.getByID(project.getProjectID());
-        projectDescription.setText(project.getDescription());
-        projectResources.setText(project.getResources());
+        if (project != null) {
+            projectDescription.setText(project.getDescription());
+            projectResources.setText(project.getResources());
+            setResponsibleInformation(project);
+        } else {
+            displayConnectionError();
+        }
     }
 
     private void setResponsibleInformation(Project project) {
         IProjectResponsibleDAO iProjectResponsibleDAO = new ProjectResponsibleDAO();
         ProjectResponsible projectResponsible =
-                iProjectResponsibleDAO.getResponsibleByCompanyID(project.getProjectID());
+                iProjectResponsibleDAO.getResponsibleByCompanyID(project.getRequestedBy().getRelatedCompanyID());
         if (projectResponsible != null) {
             projectResponsibleName.setText(String
                     .format("%s %s", projectResponsible.getName(), projectResponsible.getSurname()));

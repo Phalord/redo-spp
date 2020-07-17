@@ -2,6 +2,7 @@ package com.spp.gui.controller;
 
 import com.mysql.cj.conf.BooleanProperty;
 import com.spp.model.domain.Project;
+import com.spp.model.domain.RelatedCompany;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SelectionMode;
@@ -35,7 +37,7 @@ public class ControllerRequestProject {
     @FXML private TableView<Project> availableProjectsTable;
     @FXML private TableColumn<Project, Integer> idColumn;
     @FXML private TableColumn<Project, String> titleColumn;
-    @FXML private TableColumn<Project, String> requestColumn;
+    @FXML private TableColumn<Project, String> relatedCompanyColumn;
 
     public final void setTopMenuText(String username) {
         topMenu.setText(username);
@@ -44,6 +46,7 @@ public class ControllerRequestProject {
     public final void populateTable(List<Project> availableProjects) {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("projectID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        relatedCompanyColumn.setCellValueFactory(new PropertyValueFactory<>("requestedBy"));
         initializeDetailsColumn();
         ObservableList<Project> availableProjectsOL =
                 FXCollections.observableArrayList(availableProjects);
@@ -113,7 +116,33 @@ public class ControllerRequestProject {
 
     @FXML
     private void request() {
-        displaySomethingWentWrong();
+        ObservableList<Project> selectedProjects =
+                availableProjectsTable.getSelectionModel().getSelectedItems();
+        if (selectedProjects.isEmpty()) {
+            displaySelectSomeProjects();
+        } else if (selectedProjects.size() > 3) {
+            displayInvalidSelection();
+        } else {
+            for (Project project: selectedProjects) {
+                System.out.println(project.getTitle());
+            }
+        }
+    }
+
+    private void displaySelectSomeProjects() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Sin selecciones");
+        alert.setContentText("Seleccione de 1 a 3 proyectos para su solicitud.");
+        alert.showAndWait();
+    }
+
+    private void displayInvalidSelection() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Selección inválida");
+        alert.setContentText("Ha seleccionado más de 3 proyectos. Quite selecciones para continuar.");
+        alert.showAndWait();
     }
 
     private void closeWindow() {

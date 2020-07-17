@@ -2,6 +2,7 @@ package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IProjectDAO;
 import com.spp.model.domain.Project;
+import com.spp.model.domain.RelatedCompany;
 import com.spp.utils.MySQLConnection;
 
 import java.sql.Connection;
@@ -80,6 +81,9 @@ public class ProjectDAO implements IProjectDAO {
                     project.setDescription(resultSet.getString("description"));
                     project.setResources(resultSet.getString("resources"));
                     project.setStatus(resultSet.getString("available"));
+                    RelatedCompany relatedCompany = new RelatedCompany();
+                    relatedCompany.setRelatedCompanyID(resultSet.getInt("RelatedCompanyID"));
+                    project.setRequestedBy(relatedCompany);
                 }
             }
         } catch (SQLException sqlException) {
@@ -118,7 +122,7 @@ public class ProjectDAO implements IProjectDAO {
 
     public final List<Project> getAvailableProjects() {
         List<Project> projects = new ArrayList<>();
-        String query = "SELECT * FROM Project WHERE available = 'Available'";
+        String query = "SELECT p.ProjectID, p.title, p.Available, rc.name, rc.email FROM Project p INNER JOIN RelatedCompany rc on p.RelatedCompanyID = rc.RelatedCompanyID WHERE available = 'Available'";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -127,6 +131,10 @@ public class ProjectDAO implements IProjectDAO {
                 project.setProjectID(resultSet.getInt("ProjectID"));
                 project.setTitle(resultSet.getString("title"));
                 project.setStatus(resultSet.getString("Available"));
+                RelatedCompany relatedCompany = new RelatedCompany();
+                relatedCompany.setName(resultSet.getString("name"));
+                relatedCompany.setEmail(resultSet.getString("email"));
+                project.setRequestedBy(relatedCompany);
                 projects.add(project);
             }
         } catch (SQLException sqlException) {

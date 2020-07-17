@@ -19,8 +19,8 @@
                 <TableView fx:id="availableProjectsTable">
                     <columns>
                         <TableColumn fx:id="idColumn" text="ID" prefWidth="38"/>
-                        <TableColumn fx:id="titleColumn" text="Título" prefWidth="220"/>
-                        <TableColumn fx:id="requestColumn" text="Solicitar" prefWidth="120"/>
+                        <TableColumn fx:id="titleColumn" text="Título" prefWidth="200"/>
+                        <TableColumn fx:id="relatedCompanyColumn" text="Compañía Vinculada" prefWidth="140"/>
                     </columns>
                 </TableView>
             </center>

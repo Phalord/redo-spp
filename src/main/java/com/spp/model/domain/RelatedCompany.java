@@ -82,4 +82,9 @@ public class RelatedCompany {
     public String getState() {
         return state;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
