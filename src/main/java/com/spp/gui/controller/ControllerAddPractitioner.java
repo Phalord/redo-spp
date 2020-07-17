@@ -4,7 +4,7 @@ import static com.spp.gui.Dialog.displayCancelConfirmation;
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
-import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
@@ -98,7 +98,7 @@ public class ControllerAddPractitioner implements Initializable {
                     if (iUserDAO.addUser(practitioner)) {
                         listPractitioner.add(practitioner);
                         displayUsernameDialog(username);
-                        displaySuccessDialog();
+                        displayRecordSuccessDialog();
                         cleanTextField();
                     } else {
                         displayRecordAlreadyExist();
