@@ -98,7 +98,6 @@ public class ProfessorDAO implements IProfessorDAO {
         } catch (SQLException sqlException) {
             Logger.getLogger(ProfessorDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            return false;
         }
         return result;
     }
