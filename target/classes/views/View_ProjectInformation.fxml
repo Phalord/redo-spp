@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import java.lang.Integer?>
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="borderPane"
+            fx:controller="com.spp.gui.controller.ControllerProjectInformation">
+    <fx:define>
+        <Integer fx:id="BUTTON_SIZE" fx:value="200"/>
+        <Integer fx:id="BACK_BUTTON_SIZE" fx:value="100"/>
+    </fx:define>
+    <center>
+        <BorderPane>
+            <top>
+                <Label text="Información Proyecto" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </top>
+            <center>
+                <VBox alignment="BASELINE_LEFT" spacing="15">
+                    <HBox alignment="BASELINE_LEFT" spacing="20">
+                        <Label text="Encargado:"/>
+                        <Label fx:id="projectResponsible" text="Encargado"/>
+                    </HBox>
+                    <VBox spacing="5">
+                        <Label text="Descripción:"/>
+                        <Text fx:id="projectDescription" text="Descripción del Proyecto"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Recursos:"/>
+                        <Text fx:id="projectResources" text="Recursos del Proyecto"/>
+                    </VBox>
+                </VBox>
+            </center>
+            <bottom>
+                <Button text="Cerrar" onAction="#closeWindow"/>
+            </bottom>
+            <padding>
+                <Insets topRightBottomLeft="50" />
+            </padding>
+        </BorderPane>
+    </center>
+    <left>
+        <Region BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Region BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <Region BorderPane.alignment="CENTER" />
+    </bottom>
+    <top>
+        <Region BorderPane.alignment="CENTER" />
+    </top>
+
+</BorderPane>
