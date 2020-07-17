@@ -2,7 +2,6 @@ package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.ProjectDAO;
 import com.spp.model.dataaccess.dao.ProjectRequestDAO;
-import com.spp.model.dataaccess.idao.CRUD;
 import com.spp.model.dataaccess.idao.IProjectDAO;
 import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Project;
