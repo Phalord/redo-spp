@@ -66,9 +66,7 @@ public class ControllerRequestProject {
                     {
                         button.setOnAction((ActionEvent event) -> {
                             Project project = getTableView().getItems().get(getIndex());
-                            if (displayConfirmationDialog("¿Desea realizar la solicitud?")) {
-                                displayProjectInformation(project);
-                            }
+                            displayProjectInformation(project);
                         });
                     }
 
@@ -121,6 +119,12 @@ public class ControllerRequestProject {
 
     @FXML
     private void request() {
+        if (displayConfirmationDialog("¿Desea realizar la solicitud?")) {
+            requestProject();
+        }
+    }
+
+    private void requestProject() {
         ObservableList<Project> selectedProjects =
                 availableProjectsTable.getSelectionModel().getSelectedItems();
         if (selectedProjects.isEmpty()) {
