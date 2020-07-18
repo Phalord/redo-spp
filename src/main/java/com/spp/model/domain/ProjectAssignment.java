@@ -4,57 +4,66 @@ import java.sql.Timestamp;
 
 public class ProjectAssignment {
     private int projectAssignmentID;
+    private Coordinator assignedBy;
     private Practitioner practitioner;
     private Project project;
     private Timestamp createdAt;
     private short grade;
     private String status;
 
-    public void setProjectAssignmentID(int projectAssignmentID) {
+    public final void setProjectAssignmentID(int projectAssignmentID) {
         this.projectAssignmentID = projectAssignmentID;
     }
 
-    public int getProjectAssignmentID() {
+    public final int getProjectAssignmentID() {
         return projectAssignmentID;
     }
 
-    public void setPractitioner(Practitioner practitioner) {
+    public void setAssignedBy(Coordinator assignedBy) {
+        this.assignedBy = assignedBy;
+    }
+
+    public Coordinator getAssignedBy() {
+        return assignedBy;
+    }
+
+    public final void setPractitioner(Practitioner practitioner) {
         this.practitioner = practitioner;
     }
 
-    public Practitioner getPractitioner() {
+    public final Practitioner getPractitioner() {
         return practitioner;
     }
 
-    public void setProject(Project project) {
+    public final void setProject(Project project) {
         this.project = project;
     }
 
-    public Project getProject() {
+    public final Project getProject() {
         return project;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public final void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getCreatedAt() {
+    public final Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setGrade(short grade) {
+    public final void setGrade(short grade) {
         this.grade = grade;
     }
 
-    public short getGrade() {
+    public final short getGrade() {
         return grade;
     }
 
-    public void setStatus(String status) {
+    public final void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public final String getStatus() {
         return status;
     }
 }

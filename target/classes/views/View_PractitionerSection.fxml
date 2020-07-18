@@ -21,7 +21,7 @@
                 <VBox alignment="CENTER" spacing="15">
                     <HBox spacing="15">
                         <Button id="registerPractitioner" text="Registrar Practicante" prefWidth="$BUTTON_SIZE" onAction="#registerPractitioner"/>
-                        <Button id="assignProject" text="Asignar Proyecto" prefWidth="$BUTTON_SIZE" onAction="#assignPractitioner"/>
+                        <Button id="assignProject" text="Asignar Proyecto" prefWidth="$BUTTON_SIZE" onAction="#assignProject"/>
                     </HBox>
                     <HBox spacing="15">
                         <Button id="practitionerList" text="Lista de Practicantes" prefWidth="$BUTTON_SIZE" onAction="#goPractitionerList"/>

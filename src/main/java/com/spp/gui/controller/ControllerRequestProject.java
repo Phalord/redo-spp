@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
@@ -118,6 +119,12 @@ public class ControllerRequestProject {
 
     @FXML
     private void request() {
+        if (displayConfirmationDialog("¿Desea realizar la solicitud?")) {
+            requestProject();
+        }
+    }
+
+    private void requestProject() {
         ObservableList<Project> selectedProjects =
                 availableProjectsTable.getSelectionModel().getSelectedItems();
         if (selectedProjects.isEmpty()) {
@@ -140,8 +147,6 @@ public class ControllerRequestProject {
             }
         }
     }
-
-
 
     private void displaySelectSomeProjects() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -177,16 +182,17 @@ public class ControllerRequestProject {
     private void backScene() {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_ProjectSection.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_ProjectSection.fxml"));
             viewFile = loader.load();
-            ControllerProjectSection controllerProjectSection = loader.getController();
-            controllerProjectSection.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerRequestProject.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            return;
         }
+        ControllerProjectSection controllerProjectSection = loader.getController();
+        controllerProjectSection.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 }

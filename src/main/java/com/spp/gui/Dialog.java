@@ -23,6 +23,15 @@ public class Dialog {
         alert.showAndWait();
     }
 
+    public static boolean displayConfirmationDialog(String message) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
+    }
+
     public static void displayConnectionError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
@@ -51,32 +60,32 @@ public class Dialog {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("¿Esta seguro que desea realizar el registro con esos datos?");
+        alert.setContentText("Â¿EstÃ¡ seguro que desea realizar el registro con esos datos?");
         Optional<ButtonType> result = alert.showAndWait();
-        return (result.get() == ButtonType.OK);
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
     }
     
     public static boolean displayCancelConfirmation() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("¿Esta seguro de que desea cancelar?, No se guardará ningún cambio");
+        alert.setContentText("Â¿Esta seguro de que desea cancelar?, No se guardarÃ¡ ningÃºn cambio");
         Optional<ButtonType> result = alert.showAndWait();
-        return (result.get() == ButtonType.OK);
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
     }
     
     public static void displayRecordSuccessDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Registro exitoso");
-        alert.setContentText("¡Se ha realizado el registro exitosamente!");
+        alert.setContentText("Â¿Se ha realizado el registro exitosamente!");
         alert.showAndWait();      
     }
     
     public static void displayEmptyFields() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
-        alert.setHeaderText("Campos vacíos");
+        alert.setHeaderText("Campos vacÃ­os");
         alert.setContentText("Debe llenar todos los campos");
         alert.showAndWait(); 
     }
