@@ -171,6 +171,14 @@ public class ProjectDAO implements IProjectDAO {
 
     @Override
     public boolean assignProject(ProjectAssignment projectAssignment) {
+        if (makeAssignation(projectAssignment)) {
+            return setProjectUnavailable(projectAssignment.getProject().getProjectID());
+        } else {
+            return false;
+        }
+    }
+
+    private boolean makeAssignation(ProjectAssignment projectAssignment) {
         boolean result = false;
         String query = "INSERT INTO ProjectAssignment(status,AssignedBy,PractitionerAssigned, ProjectID) VALUES (?,?,?,?)";
         try (Connection connection = mySQLConnection.getConnection();
@@ -179,6 +187,21 @@ public class ProjectDAO implements IProjectDAO {
             preparedStatement.setString(2, projectAssignment.getAssignedBy().getUsername());
             preparedStatement.setString(3, projectAssignment.getPractitioner().getUsername());
             preparedStatement.setInt(4, projectAssignment.getProject().getProjectID());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
+    }
+
+    private boolean setProjectUnavailable(int projectID) {
+        boolean result = false;
+        String query = "UPDATE Project SET available = 'Unavailable' WHERE ProjectID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, projectID);
             int numberRowsAffected = preparedStatement.executeUpdate();
             result = (numberRowsAffected > 0);
         } catch (SQLException sqlException) {

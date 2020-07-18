@@ -132,7 +132,7 @@ public class ControllerProjectRequests {
         try {
             viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerRequestProject.class.getName())
+            Logger.getLogger(ControllerProjectRequests.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             return;
         }

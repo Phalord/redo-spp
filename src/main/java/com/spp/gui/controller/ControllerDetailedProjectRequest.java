@@ -1,7 +1,9 @@
 package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.ProjectDAO;
+import com.spp.model.dataaccess.dao.ProjectRequestDAO;
 import com.spp.model.dataaccess.idao.IProjectDAO;
+import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Coordinator;
 import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Project;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
@@ -109,8 +112,9 @@ public class ControllerDetailedProjectRequest {
                     {
                         button.setOnAction((ActionEvent event) -> {
                             Project project = getTableView().getItems().get(getIndex());
-
-                            assignProject(project, projectAssignment);
+                            if (displayConfirmationDialog("¿Desea realizar la asignación?")) {
+                                assignProject(project, projectAssignment);
+                            }
                         });
                     }
 
@@ -142,9 +146,14 @@ public class ControllerDetailedProjectRequest {
         projectAssignment.setPractitioner(practitioner);
         IProjectDAO iProjectDAO = new ProjectDAO();
         if (iProjectDAO.assignProject(projectAssignment)) {
-            displaySuccessDialog(String
-                    .format("El proyecto %s se ha asignado correctamente.", project.getTitle()));
-            //goBackToPractitionerSection();
+            IProjectRequestDAO iProjectRequestDAO = new ProjectRequestDAO();
+            if (iProjectRequestDAO.deleteElement(projectRequest.getProjectRequestID())) {
+                displaySuccessDialog(String
+                        .format("El proyecto %s se ha asignado correctamente.", project.getTitle()));
+                displayPractitionerSection();
+            } else {
+                displayConnectionError();
+            }
         } else {
             displayConnectionError();
         }
@@ -170,7 +179,22 @@ public class ControllerDetailedProjectRequest {
         window.showAndWait();
     }
 
-    //private void
+    private void displayPractitionerSection() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_PractitionerSection.fxml"));
+        try {
+            viewFile = loader.load();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerDetailedProjectRequest.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            return;
+        }
+        ControllerPractitionerSection controllerPractitionerSection = loader.getController();
+        controllerPractitionerSection.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
+    }
 
     private List<Project> getRequestedProjects(ProjectRequest projectRequest) {
         IProjectDAO iProjectDAO = new ProjectDAO();
@@ -217,7 +241,7 @@ public class ControllerDetailedProjectRequest {
         }
         ControllerProjectRequests controllerProjectRequests = loader.getController();
         controllerProjectRequests.setTopMenuText(topMenu.getText());
-        controllerProjectRequests.populateTable(pendingProjectRequests);
+        controllerProjectRequests.populateTable(getPendingProjectRequests());
         window.setScene(new Scene(viewFile, 600, 400));
     }
 }

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
@@ -65,7 +66,9 @@ public class ControllerRequestProject {
                     {
                         button.setOnAction((ActionEvent event) -> {
                             Project project = getTableView().getItems().get(getIndex());
-                            displayProjectInformation(project);
+                            if (displayConfirmationDialog("¿Desea realizar la solicitud?")) {
+                                displayProjectInformation(project);
+                            }
                         });
                     }
 

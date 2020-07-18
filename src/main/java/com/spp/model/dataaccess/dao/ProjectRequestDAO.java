@@ -41,7 +41,18 @@ public class ProjectRequestDAO implements IProjectRequestDAO {
 
     @Override
     public final boolean deleteElement(int id) {
-        return false;
+        boolean result = false;
+        String query = "UPDATE ProjectRequest SET status = false WHERE ProjectRequestID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProjectRequestDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 
     @Override
