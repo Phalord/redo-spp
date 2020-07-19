@@ -55,6 +55,7 @@ public class UserDAO implements IUserDAO<User> {
                     user.setUsername(resultSet.getString("Username"));
                     user.setUserType(resultSet.getString("userType"));
                     user.setPassword(resultSet.getString("password"));
+                    user.setActive(resultSet.getBoolean("status"));
                 }
             }
         } catch (SQLException sqlException) {

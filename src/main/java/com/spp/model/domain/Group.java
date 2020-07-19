@@ -12,67 +12,67 @@ public class Group {
     private byte quota;
     private byte weeklyHours;
 
-    public void setGroupID(int groupID) {
+    public final void setGroupID(int groupID) {
         this.groupID = groupID;
     }
 
-    public void setLecturer(Professor lecturer) {
+    public final void setLecturer(Professor lecturer) {
         this.lecturer = lecturer;
     }
 
-    public Professor getLecturer() {
+    public final Professor getLecturer() {
         return lecturer;
     }
 
-    public void setStudents(List<Practitioner> students) {
+    public final void setStudents(List<Practitioner> students) {
         this.students = students;
     }
 
-    public List<Practitioner> getStudents() {
+    public final List<Practitioner> getStudents() {
         return students;
     }
 
-    public int getGroupID() {
+    public final int getGroupID() {
         return groupID;
     }
 
-    public void setEducationalExperience(String educationalExperience) {
+    public final void setEducationalExperience(String educationalExperience) {
         this.educationalExperience = educationalExperience;
     }
 
-    public String getEducationalExperience() {
+    public final String getEducationalExperience() {
         return educationalExperience;
     }
 
-    public void setNrc(String nrc) {
+    public final void setNrc(String nrc) {
         this.nrc = nrc;
     }
 
-    public String getNrc() {
+    public final String getNrc() {
         return nrc;
     }
 
-    public void setShift(String shift) {
+    public final void setShift(String shift) {
         this.shift = shift;
     }
 
-    public String getShift() {
+    public final String getShift() {
         return shift;
     }
 
-    public void setQuota(byte quota) {
+    public final void setQuota(byte quota) {
         this.quota = quota;
     }
 
-    public byte getQuota() {
+    public final byte getQuota() {
         return quota;
     }
 
-    public void setWeeklyHours(byte weeklyHours) {
+    public final void setWeeklyHours(byte weeklyHours) {
         this.weeklyHours = weeklyHours;
     }
 
-    public byte getWeeklyHours() {
+    public final byte getWeeklyHours() {
         return weeklyHours;
     }
 }

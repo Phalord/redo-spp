@@ -64,13 +64,14 @@ public class ControllerAddPractitioner implements Initializable {
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public final void initialize(URL url, ResourceBundle rb) {
         listPractitioner = FXCollections.observableArrayList();
         MySQLConnection mySQLConnection = new MySQLConnection();
         try {
             practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
         } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            Logger.getLogger(ControllerAddPractitioner.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
@@ -83,7 +84,7 @@ public class ControllerAddPractitioner implements Initializable {
             String username = this.usernameTextField.getText();
             String name = this.nameTextField.getText();
             String surnames = this.surnamesTextField.getText();
-            String radioButton = this.radioButtonEvening.isSelected()?"Morning":"Afternoon";
+            String radioButton = this.radioButtonEvening.isSelected()?"Matutino":"Vespertino";
             Practitioner practitioner = new Practitioner();
             if (validatePractitionerEnrollment(username)) {
                 practitioner.setUsername(username);
@@ -105,7 +106,7 @@ public class ControllerAddPractitioner implements Initializable {
                     }   
                 }                
             } else {
-                displayNotValidEnrrollment();
+                displayNotValidEnrollment();
             }
         } else {
             displayEmptyFields();
@@ -184,11 +185,11 @@ public class ControllerAddPractitioner implements Initializable {
         alert.showAndWait();   
     }
     
-    private void displayNotValidEnrrollment() {
+    private void displayNotValidEnrollment() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Matricula inv·lida");
-        alert.setContentText("Matricula inv·lida. La primera letra debe ser una s min˙cula seguida de 8 digitos numÈricos");
+        alert.setHeaderText("Matricula inv√°lida");
+        alert.setContentText("Matricula inv√°lida. La primera letra debe ser una s min√∫scula seguida de 8 d√≠gitos num√©ricos");
         alert.showAndWait(); 
     }
     

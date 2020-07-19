@@ -3,6 +3,7 @@ package com.spp.model.domain;
 public class Practitioner extends User {
     private ProjectAssignment projectAssignment;
     private String shift;
+    private int groupID;
 
     public Practitioner() {
         super();
@@ -15,28 +16,13 @@ public class Practitioner extends User {
     }
 
     @Override
-    public boolean disable() {
-        return super.disable();
-    }
-
-    @Override
-    public final void setUsername(String username) {
-        super.setUsername(username);
-    }
-
-    @Override
-    public final String getUsername() {
-        return super.getUsername();
+    public void disable() {
+        super.disable();
     }
 
     @Override
     public final void setPassword(String password) {
         super.setPassword(password);
-    }
-
-    @Override
-    public final String getPassword() {
-        return super.getPassword();
     }
 
     @Override
@@ -59,32 +45,27 @@ public class Practitioner extends User {
         return super.getSurnames();
     }
 
-    @Override
-    public final void setUserType(String userType) {
-        super.setUserType(userType);
-    }
-
-    @Override
-    public final String getUserType() {
-        return super.getUserType();
-    }
-
-    @Override
-    public final void setActive(boolean active) {
-        super.setActive(active);
-    }
-
-    @Override
-    public final boolean isActive() {
-        return super.isActive();
-    }
-
-    public void setShift(String shift) {
+    public final void setShift(String shift) {
         this.shift = shift;
     }
 
-    public String getShift() {
+    public final String getShift() {
         return shift;
     }
 
+    public final void setProjectAssignment(ProjectAssignment projectAssignment) {
+        this.projectAssignment = projectAssignment;
+    }
+
+    public final ProjectAssignment getProjectAssignment() {
+        return projectAssignment;
+    }
+
+    public final void setGroupID(int groupID) {
+        this.groupID = groupID;
+    }
+
+    public final int getGroupID() {
+        return groupID;
+    }
 }
