@@ -21,7 +21,7 @@
                 <VBox alignment="CENTER" spacing="15">
                     <Button id="generatePartialReport" text="Generar Reporte Parcial" prefWidth="$BUTTON_SIZE" onAction="#generatePartialReport"/>
                     <Button id="generateMonthlyReport" text="Generar Reporte Mensual" prefWidth="$BUTTON_SIZE" onAction="#generateMonthlyReport"/>
-                    <Button id="generateSelfAppraisal" text="Generar Autoevaluación" prefWidth="$BUTTON_SIZE" onAction="#generateSelfAppraisal"/>
+                    <Button id="generateSelfAppraisal" text="Generar Auto-evaluación" prefWidth="$BUTTON_SIZE" onAction="#generateSelfAppraisal"/>
                     <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
                     <padding>
                         <Insets topRightBottomLeft="50"/>

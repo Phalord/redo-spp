@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class PartialReport extends Report {
+    private String partialPeriod;
     private short projectHoursCovered;
     private byte reportNumber;
 
@@ -65,6 +66,14 @@ public class PartialReport extends Report {
     @Override
     public final byte getGrade() {
         return super.getGrade();
+    }
+
+    public void setPartialPeriod(String partialPeriod) {
+        this.partialPeriod = partialPeriod;
+    }
+
+    public String getPartialPeriod() {
+        return partialPeriod;
     }
 
     public final void setProjectHoursCovered(short projectHoursCovered) {

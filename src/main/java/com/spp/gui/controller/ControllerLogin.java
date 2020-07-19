@@ -2,6 +2,7 @@ package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.UserDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
+import com.spp.model.domain.Professor;
 import com.spp.model.domain.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,22 +38,27 @@ public class ControllerLogin {
         if (validateUserName(username)) {
             User user = iUserDAO.getUserByUsername(username);
             if (user != null) {
-                if (BCrypt.checkpw(password, user.getPassword())) {
-                    HomeController homeController = new HomeController(user.getUserType(), username);
-                    homeController.display();
-                    closeWindow();
+                if (user.isActive()) {
+                    if (BCrypt.checkpw(password, user.getPassword())) {
+                        HomeController homeController =
+                                new HomeController(user.getUserType(), username);
+                        homeController.display();
+                        closeWindow();
+                    } else {
+                        displayIncorrectCredentials();
+                    }
                 } else {
-                    incorrectCredentials();
+                    displayIncorrectCredentials();
                 }
             } else {
-                incorrectCredentials();
+                displayIncorrectCredentials();
             }
         } else {
-            incorrectUserName();
+            displayIncorrectUserName();
         }
     }
 
-    private void incorrectCredentials() {
+    private void displayIncorrectCredentials() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("Credenciales Incorrectas");
@@ -60,7 +66,7 @@ public class ControllerLogin {
         alert.showAndWait();
     }
 
-    private void incorrectUserName() {
+    private void displayIncorrectUserName() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("Nombre de Usuario incorrecto");

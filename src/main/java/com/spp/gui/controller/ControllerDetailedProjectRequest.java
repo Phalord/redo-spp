@@ -203,7 +203,7 @@ public class ControllerDetailedProjectRequest {
 
     @FXML
     private void back() {
-        backScene();
+        setBackScene();
     }
 
     @FXML
@@ -227,8 +227,7 @@ public class ControllerDetailedProjectRequest {
         }
     }
 
-    private void backScene() {
-        Stage window = (Stage) borderPane.getScene().getWindow();
+    private void setBackScene() {
         Parent viewFile;
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/views/View_ProjectRequests.fxml"));
@@ -242,6 +241,7 @@ public class ControllerDetailedProjectRequest {
         ControllerProjectRequests controllerProjectRequests = loader.getController();
         controllerProjectRequests.setTopMenuText(topMenu.getText());
         controllerProjectRequests.populateTable(getPendingProjectRequests());
+        Stage window = (Stage) borderPane.getScene().getWindow();
         window.setScene(new Scene(viewFile, 600, 400));
     }
 }
