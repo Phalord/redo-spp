@@ -1,5 +1,6 @@
 package com.spp.gui.controller;
 
+import com.spp.model.domain.Activity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,9 +20,18 @@ import static com.spp.gui.Dialog.displaySomethingWentWrong;
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
+    private List<Activity> openActivities = null;
 
     public final void setTopMenuText(String username) {
         topMenu.setText(username);
+    }
+
+    public final void setOpenActivities(List<Activity> openActivities) {
+        this.openActivities = openActivities;
+    }
+
+    private List<Activity> getOpenActivities() {
+        return openActivities;
     }
 
     @FXML

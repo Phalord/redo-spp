@@ -1,5 +1,8 @@
 package com.spp.gui.controller;
 
+import com.spp.model.dataaccess.dao.ActivityDAO;
+import com.spp.model.dataaccess.idao.IActivityDAO;
+import com.spp.model.domain.Activity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +13,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConnectionError;
+import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
 public class ControllerGenerateDocumentation {
@@ -25,7 +32,16 @@ public class ControllerGenerateDocumentation {
 
     @FXML
     private void generatePartialReport() {
-        displayGenerateMonthlyReport();
+        IActivityDAO iActivityDAO = new ActivityDAO();
+        List<Activity> openActivities = iActivityDAO.getOpenPractitionerActivities(
+                topMenu.getText(), new Timestamp(System.currentTimeMillis()));
+        if (openActivities == null) {
+            displayConnectionError();
+        } else if (openActivities.isEmpty()) {
+            displayNoActivitiesToReport();
+        } else {
+            displayGeneratePartialReport(openActivities);
+        }
     }
 
     @FXML
@@ -58,7 +74,7 @@ public class ControllerGenerateDocumentation {
         alert.showAndWait();
     }
 
-    private void displayGenerateMonthlyReport() {
+    private void displayGeneratePartialReport(List<Activity> openActivities) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/views/View_GeneratePartialReport.fxml"));
         Parent viewFile;
@@ -72,6 +88,7 @@ public class ControllerGenerateDocumentation {
         }
         ControllerGeneratePartialReport controllerGeneratePartialReport = loader.getController();
         controllerGeneratePartialReport.setTopMenuText(topMenu.getText());
+        controllerGeneratePartialReport.setOpenActivities(openActivities);
         Stage window = (Stage) borderPane.getScene().getWindow();
         window.setScene(new Scene(viewFile, 650, 400));
     }

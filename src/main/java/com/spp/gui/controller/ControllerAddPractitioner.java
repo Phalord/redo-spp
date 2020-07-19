@@ -66,13 +66,7 @@ public class ControllerAddPractitioner implements Initializable {
     @Override
     public final void initialize(URL url, ResourceBundle rb) {
         listPractitioner = FXCollections.observableArrayList();
-        MySQLConnection mySQLConnection = new MySQLConnection();
-        try {
-            practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
-        } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName())
-                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-        }
+        practitionerDAO.fillPractitionerTable(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
         validateTextFields();

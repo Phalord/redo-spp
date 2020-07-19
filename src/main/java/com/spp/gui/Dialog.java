@@ -8,7 +8,7 @@ import javafx.scene.control.ButtonType;
 public class Dialog {
 
     public static void displaySomethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Algo ha salido mal");
         alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
@@ -16,7 +16,7 @@ public class Dialog {
     }
 
     public static void displayNotYetSupportedDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Funcionamiento sin implementar");
         alert.setContentText("Función a implementar en siguientes versiones.");
@@ -33,7 +33,7 @@ public class Dialog {
     }
 
     public static void displayConnectionError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Error de Conexión");
         alert.setContentText("Fallo al conectar con el servidor. Verifique su conexión a internet.");
@@ -41,15 +41,15 @@ public class Dialog {
     }
 
     public static void displaySuccessDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Operación Exitosa");
         alert.setContentText(message);
         alert.showAndWait();
     }
     
-     public static void displayRecordAlreadyExist() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public static void displayRecordAlreadyExist() {
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("No se pudo realizar el registro");
         alert.setContentText("El registro ya se encuentra en la base de datos. Intente otro");
@@ -75,7 +75,7 @@ public class Dialog {
     }
     
     public static void displayRecordSuccessDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Registro exitoso");
         alert.setContentText("¿Se ha realizado el registro exitosamente!");
@@ -83,10 +83,18 @@ public class Dialog {
     }
     
     public static void displayEmptyFields() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("Campos vacíos");
         alert.setContentText("Debe llenar todos los campos");
         alert.showAndWait(); 
+    }
+
+    public static void displayNoActivitiesToReport() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Sin Actividades Abiertas");
+        alert.setContentText("No cuenta con actividades asignadas por entregar");
+        alert.showAndWait();
     }
 }

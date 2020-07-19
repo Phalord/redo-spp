@@ -15,9 +15,9 @@ public class ProfessorUseCaseTests {
     @Test
     public void addActivity() {
         Activity activity = new Activity();
-        activity.setTitle("Actividad de Prueba 3");
+        activity.setTitle("Actividad de Prueba 4");
         activity.setDescription("Esta actividad está siendo ingresada desde la clase ProfessorUseCaseTests");
-        activity.setEstimatedCompletionHours((short) 28);
+        activity.setEstimatedCompletionHours((short) 6);
         Practitioner practitioner = new Practitioner();
         practitioner.setUsername("s11223331");
         activity.setDeliveredBy(practitioner);
@@ -27,7 +27,7 @@ public class ProfessorUseCaseTests {
         activity.setCreatedBy(professor);
         CRUD<Activity> activityCRUD = new ActivityDAO();
         if (activityCRUD.addElement(activity)) {
-            assertTrue(activity.getTitle().equalsIgnoreCase(activityCRUD.getByID(9).getTitle()));
+            assertTrue(activity.getTitle().equalsIgnoreCase(activityCRUD.getByID(11).getTitle()));
         } else {
             fail("No se guardó");
         }
