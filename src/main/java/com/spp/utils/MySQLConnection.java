@@ -21,7 +21,8 @@ public class MySQLConnection {
         try {
             loadProperties();
         } catch (FileNotFoundException exception) {
-            Logger.getLogger(MySQLConnection.class.getName()).log(Level.SEVERE, exception.getMessage(), exception);
+            Logger.getLogger(MySQLConnection.class.getName())
+                    .log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -52,6 +53,7 @@ public class MySQLConnection {
 
     private void connect() throws SQLException {
         String driver = "jdbc:mysql://";
-        connection = DriverManager.getConnection(String.format("%s%s", driver, database), username, password);
+        connection = DriverManager.getConnection(String.format("%s%s%s",
+                driver, database,"?zeroDateTimeBehavior=convertToNull"), username, password);
     }
 }
