@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="redo-spp" />
         <module name="spp" />
+        <module name="redo-spp" />
       </profile>
     </annotationProcessing>
   </component>
