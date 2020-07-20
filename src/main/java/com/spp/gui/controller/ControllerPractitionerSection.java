@@ -1,7 +1,10 @@
 package com.spp.gui.controller;
 
+import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.dao.ProjectRequestDAO;
+import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.dataaccess.idao.IProjectRequestDAO;
+import com.spp.model.domain.Group;
 import com.spp.model.domain.ProjectRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +34,26 @@ public class ControllerPractitionerSection {
 
     @FXML
     private void registerPractitioner() {
+        IGroupDAO iGroupDAO = new GroupDAO();
+        List<Group> availableGroups = iGroupDAO.getAvailableGroups();
+        if (availableGroups == null) {
+            displayConnectionError();
+        } else if (availableGroups.isEmpty()) {
+            displayNoAvailableGroups();
+        } else {
+            displayAddPractitionerScene(availableGroups);
+        }
+    }
+
+    public static void displayNoAvailableGroups() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("No hay Grupos disponibles");
+        alert.setContentText("No se encontraron grupos con capacidad para otro Practicante.");
+        alert.showAndWait();
+    }
+
+    private void displayAddPractitionerScene(List<Group> availableGroups) {
         Stage window = (Stage) borderPane.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/views/View_AddPractitioner.fxml"));
@@ -38,6 +61,7 @@ public class ControllerPractitionerSection {
         try {
             viewFile = loader.load();
             ControllerAddPractitioner controllerAddPractitioner = loader.getController();
+            controllerAddPractitioner.initialize(availableGroups);
             window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerAddPractitioner.class.getName())

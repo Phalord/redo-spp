@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 
 public class GroupDAO implements IGroupDAO {
     private final MySQLConnection mySQLConnection = new MySQLConnection();
@@ -35,6 +34,27 @@ public class GroupDAO implements IGroupDAO {
                 professor.setUsername(resultSet.getString("Username"));
                 professor.setName(resultSet.getString("name"));
                 group.setLecturer(professor);
+                groups.add(group);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            groups = null;
+        }
+        return groups;
+    }
+
+    @Override
+    public final List<Group> getAvailableGroups() {
+        List<Group> groups = new ArrayList<>();
+        String query = "SELECT GroupID, nrc FROM ClassGroup WHERE availableQuota > 0";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Group group = new Group();
+                group.setGroupID(resultSet.getInt("GroupID"));
+                group.setNrc(resultSet.getString("nrc"));
                 groups.add(group);
             }
         } catch (SQLException sqlException) {
@@ -98,22 +118,5 @@ public class GroupDAO implements IGroupDAO {
     @Override
     public boolean deleteElement(int id) {
         return false;
-    }
-    
-    public final void getGroupID(ObservableList<Group> listGroup) {
-        String query = "SELECT * FROM ClassGroup";
-        try (Connection connection = mySQLConnection.getConnection();
-             Statement instruction = connection.createStatement();
-             ResultSet resultSet = instruction.executeQuery(query)) {
-            while(resultSet.next()){
-                Group group = new  Group();
-                group.setGroupID(resultSet.getInt("GroupID"));
-                group.setNrc(resultSet.getString("nrc"));
-                listGroup.add(group);
-            }
-        } catch (SQLException sqlException) {
-            Logger.getLogger(PractitionerDAO.class.getName())
-                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-        }
     }
 }
