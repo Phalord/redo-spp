@@ -12,8 +12,6 @@ import com.spp.model.domain.Practitioner;
 import com.spp.utils.MySQLConnection;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -175,12 +173,7 @@ public class ControllerAddPractitioner implements Initializable {
     private void refreshTableView() {
         listPractitioner.clear();
         listPractitioner = FXCollections.observableArrayList();
-        try (Connection connection = mySQLConnection.getConnection();) {
-            practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
-        } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, 
-                    sqlException.getMessage(), sqlException);
-        }
+        practitionerDAO.fillPractitionerTable(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
     }

@@ -7,7 +7,6 @@ import static com.spp.gui.Dialog.displaySuccessDisableDialog;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Practitioner;
-import com.spp.utils.MySQLConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -46,11 +45,9 @@ public class ControllerDeletePractitioner implements Initializable {
     @FXML private TableColumn<Practitioner, String> statusColumn;
     private ObservableList<Practitioner> listPractitioner;
     private final PractitionerDAO practitionerDAO;
-    private final MySQLConnection mySQLConnection;
     
     public ControllerDeletePractitioner() {
         this.practitionerDAO = new PractitionerDAO();
-        mySQLConnection = new MySQLConnection();
     }
     
     public final void setTopMenuText(String username) {
@@ -60,12 +57,7 @@ public class ControllerDeletePractitioner implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         listPractitioner = FXCollections.observableArrayList();
-        try (Connection connection = mySQLConnection.getConnection();) {
-            practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
-        } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, 
-                    sqlException.getMessage(), sqlException);
-        }
+        practitionerDAO.fillPractitionerTable(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
     }
@@ -132,12 +124,7 @@ public class ControllerDeletePractitioner implements Initializable {
     private void refreshTableView() {
         listPractitioner.clear();
         listPractitioner = FXCollections.observableArrayList();
-        try (Connection connection = mySQLConnection.getConnection();) {
-            practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
-        } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, 
-                    sqlException.getMessage(), sqlException);
-        }
+        practitionerDAO.fillPractitionerTable(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
     }
