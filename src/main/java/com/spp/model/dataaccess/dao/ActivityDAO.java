@@ -2,6 +2,7 @@ package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IActivityDAO;
 import com.spp.model.domain.Activity;
+import com.spp.model.domain.PartialReport;
 import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
@@ -38,6 +39,69 @@ public class ActivityDAO implements IActivityDAO {
                 createdBy.setUsername(resultSet.getString("CreatedBy"));
                 activity.setCreatedBy(createdBy);
                 activities.add(activity);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ActivityDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            activities = null;
+        }
+        return activities;
+    }
+
+    @Override
+    public List<Activity> getPractitionerActivities(String studentEnrollment) {
+        List<Activity> activities = new ArrayList<>();
+        String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Activity activity = new Activity();
+                    activity.setActivityID(resultSet.getInt("ActivityID"));
+                    activity.setTitle("title");
+                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
+                    Practitioner deliveredBy = new Practitioner();
+                    deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
+                    activity.setDeliveredBy(deliveredBy);
+                    Professor createdBy = new Professor();
+                    createdBy.setUsername(resultSet.getString("CreatedBy"));
+                    activity.setCreatedBy(createdBy);
+                    activities.add(activity);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ActivityDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            activities = null;
+        }
+        return activities;
+    }
+
+    @Override
+    public List<Activity> getOpenPractitionerActivities(String studentEnrollment,
+                                                        Timestamp actualTime) {
+        List<Activity> activities = new ArrayList<>();
+        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND deliveredAt = '0000-00-00'";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            preparedStatement.setTimestamp(2, actualTime);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Activity activity = new Activity();
+                    activity.setActivityID(resultSet.getInt("ActivityID"));
+                    activity.setTitle(resultSet.getString("title"));
+                    activity.setDescription(resultSet.getString("description"));
+                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
+                    Practitioner deliveredBy = new Practitioner();
+                    deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
+                    activity.setDeliveredBy(deliveredBy);
+                    Professor createdBy = new Professor();
+                    createdBy.setUsername(resultSet.getString("CreatedBy"));
+                    activity.setCreatedBy(createdBy);
+                    activities.add(activity);
+                }
             }
         } catch (SQLException sqlException) {
             Logger.getLogger(ActivityDAO.class.getName())
@@ -103,63 +167,21 @@ public class ActivityDAO implements IActivityDAO {
         return false;
     }
 
-    public List<Activity> getPractitionerActivities(String studentEnrollment) {
-        List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ?";
+    @Override
+    public boolean reportActivity(Activity activity, PartialReport partialReport) {
+        boolean result = false;
+        String query = "UPDATE Activity SET ReportID = ?, deliveredAt = ? WHERE ActivityID = ?";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, studentEnrollment);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    Activity activity = new Activity();
-                    activity.setActivityID(resultSet.getInt("ActivityID"));
-                    activity.setTitle("title");
-                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
-                    Practitioner deliveredBy = new Practitioner();
-                    deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
-                    activity.setDeliveredBy(deliveredBy);
-                    Professor createdBy = new Professor();
-                    createdBy.setUsername(resultSet.getString("CreatedBy"));
-                    activity.setCreatedBy(createdBy);
-                    activities.add(activity);
-                }
-            }
-        } catch (SQLException sqlException) {
+            preparedStatement.setString(1, partialReport.getReportID());
+            preparedStatement.setTimestamp(2, activity.getDeliveredAt());
+            preparedStatement.setInt(3, activity.getActivityID());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException){
             Logger.getLogger(ActivityDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            activities = null;
         }
-        return activities;
-    }
-
-    public List<Activity> getOpenPractitionerActivities(String studentEnrollment,
-                                                        Timestamp actualTime) {
-        List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND deliveredAt = '0000-00-00'";
-        try (Connection connection = mySQLConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, studentEnrollment);
-            preparedStatement.setTimestamp(2, actualTime);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    Activity activity = new Activity();
-                    activity.setActivityID(resultSet.getInt("ActivityID"));
-                    activity.setTitle("title");
-                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
-                    Practitioner deliveredBy = new Practitioner();
-                    deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
-                    activity.setDeliveredBy(deliveredBy);
-                    Professor createdBy = new Professor();
-                    createdBy.setUsername(resultSet.getString("CreatedBy"));
-                    activity.setCreatedBy(createdBy);
-                    activities.add(activity);
-                }
-            }
-        } catch (SQLException sqlException) {
-            Logger.getLogger(ActivityDAO.class.getName())
-                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            activities = null;
-        }
-        return activities;
+        return result;
     }
 }

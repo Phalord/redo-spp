@@ -12,12 +12,12 @@ public class MonthlyReport extends Report {
     }
 
     @Override
-    public final void setReportID(int reportID) {
+    public final void setReportID(String reportID) {
         super.setReportID(reportID);
     }
 
     @Override
-    public final int getReportID() {
+    public final String getReportID() {
         return super.getReportID();
     }
 

@@ -18,6 +18,11 @@ public class TextValidator {
         String regex = "^[c][0-9]{8}";
         return coordinatorEmployeeNumber.matches(regex);
     }
+    
+    public static boolean validateAdministratorEmployeeNumber(String administratorEmployeeNumber) {
+        String regex = "^[r][0-9]{8}";
+        return administratorEmployeeNumber.matches(regex);
+    }
 
     public static boolean validateEmail(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance();

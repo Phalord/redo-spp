@@ -33,6 +33,19 @@ public class CoordinatorUseCaseTests {
             fail("Error de conexión");
         }
     }
+    
+    @Test
+    public void deletePractitioner() {
+        Practitioner practitioner = new Practitioner();
+        practitioner.setUsername("s18012155");
+        IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
+        if (iUserDAO.deleteUser(practitioner)) {
+            assertEquals(practitioner.getUsername(),
+                    iUserDAO.getUserByUsername(practitioner.getUsername()).getUsername());
+        } else {
+            fail("Error de conexión");
+        }        
+    }
 
     @Test
     public void registerRelatedCompany() {

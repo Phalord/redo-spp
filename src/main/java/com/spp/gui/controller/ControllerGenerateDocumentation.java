@@ -88,7 +88,7 @@ public class ControllerGenerateDocumentation {
         }
         ControllerGeneratePartialReport controllerGeneratePartialReport = loader.getController();
         controllerGeneratePartialReport.setTopMenuText(topMenu.getText());
-        controllerGeneratePartialReport.setOpenActivities(openActivities);
+        controllerGeneratePartialReport.initializeScene(openActivities);
         Stage window = (Stage) borderPane.getScene().getWindow();
         window.setScene(new Scene(viewFile, 650, 400));
     }

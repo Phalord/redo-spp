@@ -4,18 +4,18 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public abstract class Report {
-    private int reportID;
+    private String reportID;
     private List<Activity> activities;
     private String reportType;
     private String teacherObservations;
     private Timestamp reportedAt;
     private byte grade;
 
-    protected void setReportID(int reportID) {
+    protected void setReportID(String reportID) {
         this.reportID = reportID;
     }
 
-    protected int getReportID() {
+    protected String getReportID() {
         return reportID;
     }
 
@@ -57,5 +57,9 @@ public abstract class Report {
 
     protected byte getGrade() {
         return grade;
+    }
+
+    protected void generateFolio(Timestamp timestamp, String studentEnrollment) {
+        setReportID(String.format("%s--%s", timestamp.toString(), studentEnrollment));
     }
 }

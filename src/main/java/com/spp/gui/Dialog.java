@@ -65,6 +65,15 @@ public class Dialog {
         return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
     }
     
+    public static boolean displayDeleteConfirmation() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Esta seguro que desea cambiar a 'no activo' el registro seleccionado?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return (result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent());
+    }
+    
     public static boolean displayCancelConfirmation() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -89,12 +98,36 @@ public class Dialog {
         alert.setContentText("Debe llenar todos los campos");
         alert.showAndWait(); 
     }
+    
+    public static void displaySuccessDisableDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Eliminación exitosa");
+        alert.setContentText("El registro seleccionado ahora esta inactivo");
+        alert.showAndWait();  
+    } 
 
     public static void displayNoActivitiesToReport() {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Warning Dialog");
+        alert.setTitle("Information Dialog");
         alert.setHeaderText("Sin Actividades Abiertas");
         alert.setContentText("No cuenta con actividades asignadas por entregar");
+        alert.showAndWait();
+    }
+
+    public static void displayTooManyCharacters(short characterLength) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Límite de caracteres excedido");
+        alert.setContentText(String.format("El límite de es de %d. caracteres", characterLength));
+        alert.showAndWait();
+    }
+
+    public static void displayNoActivitiesAdded() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Sin actividades a reportar");
+        alert.setContentText("No ha añadido ninguna actividad para reportar.");
         alert.showAndWait();
     }
 }
