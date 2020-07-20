@@ -58,7 +58,7 @@
                                         <Font size="15"/>
                                     </font>
                                 </Label>
-                                <Button fx:id="addActivity" text="Añadir Actividad"  onAction="#addActivity"/>
+                                <Button text="Añadir Actividad"  onAction="#addActivity"/>
                             </HBox>
                             <TableView fx:id="activitiesToReportTable">
                                 <columns>
@@ -99,7 +99,7 @@
     </right>
     <bottom>
         <HBox alignment="BASELINE_CENTER" spacing="15">
-            <Button  text="Atrás"  prefWidth="105" onAction="#back"/>
+            <Button  text="Atrás"  prefWidth="105" onAction="#goBack"/>
             <Button text="Generar Reporte" prefWidth="105" onAction="#generatePartialReport"/>
             <padding>
                 <Insets bottom="40"/>

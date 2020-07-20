@@ -32,7 +32,6 @@ import static com.spp.gui.Dialog.displaySomethingWentWrong;
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
-    @FXML private Button addActivity;
     @FXML private TableView<Activity> activitiesToReportTable;
     @FXML private TableColumn<Activity, String> titleColumn;
     @FXML private TableColumn<Activity, String> descriptionColumn;
@@ -47,13 +46,13 @@ public class ControllerGeneratePartialReport {
         setOpenActivities(openActivities);
     }
 
-    private void setOpenActivities(List<Activity> openActivities) {
+    public final void setOpenActivities(List<Activity> openActivities) {
         this.openActivities = openActivities;
     }
 
-    private void initializeActivitiesToReportTable() {
+    public final void initializeActivitiesToReportTable() {
         ObservableList<Activity> openActivitiesOL =
-                FXCollections.observableArrayList(openActivities);
+                FXCollections.observableArrayList(getOpenActivities());
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         activitiesToReportTable.setItems(openActivitiesOL);
@@ -73,7 +72,7 @@ public class ControllerGeneratePartialReport {
     }
 
     @FXML
-    private void back() {
+    private void goBack() {
         setBackScene();
     }
 
