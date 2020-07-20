@@ -4,75 +4,93 @@ import java.sql.Timestamp;
 
 public class Activity {
     private int activityID;
-    private Professor creator;
+    private Professor createdBy;
     private Practitioner deliveredBy;
     private String title;
     private String description;
     private Timestamp deliveredAt;
+    private Timestamp dueDate;
     private short estimatedCompletionHours;
     private short actualCompletionHours;
+    private int ReportID;
 
-    public void setActivityID(int activityID) {
+    public final void setActivityID(int activityID) {
         this.activityID = activityID;
     }
 
-    public int getActivityID() {
+    public final int getActivityID() {
         return activityID;
     }
 
-    public void setCreator(Professor creator) {
-        this.creator = creator;
+    public final void setCreatedBy(Professor createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public Professor getCreator() {
-        return creator;
+    public final Professor getCreatedBy() {
+        return createdBy;
     }
 
-    public void setDeliveredBy(Practitioner deliveredBy) {
+    public final void setDeliveredBy(Practitioner deliveredBy) {
         this.deliveredBy = deliveredBy;
     }
 
-    public Practitioner getDeliveredBy() {
+    public final Practitioner getDeliveredBy() {
         return deliveredBy;
     }
 
-    public void setTitle(String title) {
+    public final void setTitle(String title) {
         this.title = title;
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public void setDescription(String description) {
+    public final void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setDeliveredAt(Timestamp deliveredAt) {
+    public final void setDeliveredAt(Timestamp deliveredAt) {
         this.deliveredAt = deliveredAt;
     }
 
-    public Timestamp getDeliveredAt() {
+    public final Timestamp getDeliveredAt() {
         return deliveredAt;
     }
 
-    public void setEstimatedCompletionHours(short estimatedCompletionHours) {
+    public final void setDueDate(Timestamp dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public final Timestamp getDueDate() {
+        return dueDate;
+    }
+
+    public final void setEstimatedCompletionHours(short estimatedCompletionHours) {
         this.estimatedCompletionHours = estimatedCompletionHours;
     }
 
-    public short getEstimatedCompletionHours() {
+    public final short getEstimatedCompletionHours() {
         return estimatedCompletionHours;
     }
 
-    public void setActualCompletionHours(short actualCompletionHours) {
+    public final void setActualCompletionHours(short actualCompletionHours) {
         this.actualCompletionHours = actualCompletionHours;
     }
 
-    public short getActualCompletionHours() {
+    public final short getActualCompletionHours() {
         return actualCompletionHours;
+    }
+
+    public final void setReportID(int reportID) {
+        ReportID = reportID;
+    }
+
+    public final int getReportID() {
+        return ReportID;
     }
 }

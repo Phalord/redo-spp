@@ -15,11 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CoordinatorDAO implements ICoordinatorDAO {
-    private final MySQLConnection mySQLConnection;
-
-    public CoordinatorDAO() {
-        mySQLConnection = new MySQLConnection();
-    }
+    private final MySQLConnection mySQLConnection = new MySQLConnection();
 
     @Override
     public List<Coordinator> getAllUsers() {
