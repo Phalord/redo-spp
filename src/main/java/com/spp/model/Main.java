@@ -8,6 +8,7 @@ public class Main extends Application {
     public static final String PRACTITIONER = "Practitioner";
     public static final String PROFESSOR = "Professor";
     public static final String COORDINATOR = "Coordinator";
+    public static final String ADMINISTRATOR = "Administrator";
 
     public static void main(String[] args) {
         launch(args);

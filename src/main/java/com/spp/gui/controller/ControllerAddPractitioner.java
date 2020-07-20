@@ -12,6 +12,7 @@ import com.spp.model.domain.Practitioner;
 import com.spp.utils.MySQLConnection;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,14 +40,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 
 public class ControllerAddPractitioner implements Initializable {
+        
+    @FXML private Menu topMenu;
     @FXML private BorderPane borderPaneAddPractitioner;
-    @FXML Button registerButton;
-    @FXML RadioButton radioButtonEvening;
-    @FXML RadioButton radioButtonMorning;
-    @FXML TextField usernameTextField;
-    @FXML TextField nameTextField;
-    @FXML TextField surnamesTextField;
-    @FXML ToggleGroup shiftGroup;
+    @FXML private RadioButton radioButtonEvening;
+    @FXML private RadioButton radioButtonMorning;
+    @FXML private TextField usernameTextField;
+    @FXML private TextField nameTextField;
+    @FXML private TextField surnamesTextField;
+    @FXML private ToggleGroup shiftGroup;
     @FXML private TableView<Practitioner> tableViewPractitioner;
     @FXML private TableColumn<Practitioner, String> userColumn;
     @FXML private TableColumn<Practitioner, String> passwordColumn;
@@ -58,19 +60,25 @@ public class ControllerAddPractitioner implements Initializable {
     @FXML private TableColumn<Practitioner, String> statusColumn;
     private ObservableList<Practitioner> listPractitioner;
     private final PractitionerDAO practitionerDAO;
+    private final MySQLConnection mySQLConnection;
 
     public ControllerAddPractitioner() {
         this.practitionerDAO = new PractitionerDAO();
+        mySQLConnection = new MySQLConnection();        
+    }
+    
+    public final void setTopMenuText(String username) {
+        topMenu.setText(username);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         listPractitioner = FXCollections.observableArrayList();
-        MySQLConnection mySQLConnection = new MySQLConnection();
-        try {
+        try (Connection connection = mySQLConnection.getConnection();) {
             practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
         } catch (SQLException sqlException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, 
+                    sqlException.getMessage(), sqlException);
         }
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
@@ -99,6 +107,7 @@ public class ControllerAddPractitioner implements Initializable {
                         listPractitioner.add(practitioner);
                         displayUsernameDialog(username);
                         displayRecordSuccessDialog();
+                        refreshTableView();
                         cleanTextField();
                     } else {
                         displayRecordAlreadyExist();
@@ -121,7 +130,6 @@ public class ControllerAddPractitioner implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_CoordinatorHome.fxml"));
                 viewFile = loader.load();
                 ControllerCoordinatorHome coordinatorHomeController = loader.getController();
-                coordinatorHomeController = loader.getController();
                 window.setScene(new Scene(viewFile));
             } catch (IOException ioException) {
                 Logger.getLogger(ControllerAddPractitioner.class.getName())
@@ -167,6 +175,19 @@ public class ControllerAddPractitioner implements Initializable {
         surnamesTextField.setText("");
         radioButtonEvening.setSelected(false);
         radioButtonMorning.setSelected(false);
+    }
+    
+    private void refreshTableView() {
+        listPractitioner.clear();
+        listPractitioner = FXCollections.observableArrayList();
+        try (Connection connection = mySQLConnection.getConnection();) {
+            practitionerDAO.fillPractitionerTable(mySQLConnection.getConnection(),listPractitioner);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ControllerAddPractitioner.class.getName()).log(Level.SEVERE, 
+                    sqlException.getMessage(), sqlException);
+        }
+        tableViewPractitioner.setItems(listPractitioner);
+        linkColumnsWithAttributes();
     }
     
     private boolean validateEmpty() {

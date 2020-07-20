@@ -56,6 +56,15 @@ public class Dialog {
         return (result.get() == ButtonType.OK);
     }
     
+    public static boolean displayDeleteConfirmation() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Esta seguro que desea cambiar a 'no activo' el registro seleccionado?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return (result.get() == ButtonType.OK);
+    }
+    
     public static boolean displayCancelConfirmation() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -80,4 +89,12 @@ public class Dialog {
         alert.setContentText("Debe llenar todos los campos");
         alert.showAndWait(); 
     }
+    
+    public static void displaySuccessDisableDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Eliminación exitosa");
+        alert.setContentText("El registro seleccionado ahora esta inactivo");
+        alert.showAndWait();  
+    } 
 }

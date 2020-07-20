@@ -76,6 +76,7 @@ public class ControllerLogin {
     private boolean validateUserName(String userName) {
         return (validatePractitionerEnrollment(userName) ||
                 validateCoordinatorEmployeeNumber(userName) ||
-                validateProfessorEmployeeNumber(userName));
+                validateProfessorEmployeeNumber(userName) ||
+                validateAdministratorEmployeeNumber(userName));
     }
 }
