@@ -9,12 +9,12 @@ public class PartialReport extends Report {
     private byte reportNumber;
 
     @Override
-    public final void setReportID(int reportID) {
+    public final void setReportID(String reportID) {
         super.setReportID(reportID);
     }
 
     @Override
-    public final int getReportID() {
+    public final String getReportID() {
         return super.getReportID();
     }
 
@@ -66,6 +66,11 @@ public class PartialReport extends Report {
     @Override
     public final byte getGrade() {
         return super.getGrade();
+    }
+
+    @Override
+    public final void generateFolio(Timestamp timestamp, String studentEnrollment) {
+        super.generateFolio(timestamp, studentEnrollment);
     }
 
     public void setPartialPeriod(String partialPeriod) {

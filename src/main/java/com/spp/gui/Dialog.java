@@ -105,4 +105,12 @@ public class Dialog {
         alert.setContentText(String.format("El límite de es de %d. caracteres", characterLength));
         alert.showAndWait();
     }
+
+    public static void displayNoActivitiesAdded() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Sin actividades a reportar");
+        alert.setContentText("No ha añadido ninguna actividad para reportar.");
+        alert.showAndWait();
+    }
 }

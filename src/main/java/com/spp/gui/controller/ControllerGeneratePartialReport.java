@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConfirmationDialog;
+import static com.spp.gui.Dialog.displayNoActivitiesAdded;
+import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
@@ -76,7 +79,13 @@ public class ControllerGeneratePartialReport {
 
     @FXML
     private void generatePartialReport() {
-        displayNotYetSupportedDialog();
+        if (activitiesToReportTable.getItems().isEmpty()) {
+            displayNoActivitiesAdded();
+        } else {
+            if (displayConfirmationDialog("¿Desea generar el reporte parcial de actividades?")) {
+                displayNotYetSupportedDialog();
+            }
+        }
     }
 
     @FXML
