@@ -72,7 +72,22 @@ public class PractitionerDAO implements IPractitionerDAO {
 
     @Override
     public boolean deleteUser(Practitioner practitioner) {
-        return false;
+        return (updateStatusUserTable(practitioner));
+    }
+        
+    private boolean updateStatusUserTable(Practitioner practitioner) {
+        boolean result = false;
+        String query = "UPDATE User SET status = false WHERE username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, practitioner.getUsername());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName()).log(Level.SEVERE, 
+                    sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 
     private boolean insertIntoUserTable(Practitioner practitioner) {
@@ -113,7 +128,7 @@ public class PractitionerDAO implements IPractitionerDAO {
         return result;
     }
     
-    public final void fillPractitionerTable(ObservableList<Practitioner> listPractitioner) {
+    public final void getPractitionerInformation(ObservableList<Practitioner> listPractitioner) {
         String query = "SELECT * FROM Practitioner INNER JOIN User ON Practitioner.Username = User.Username";
         try (Connection connection = mySQLConnection.getConnection();
              Statement instruction = connection.createStatement();
