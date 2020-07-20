@@ -97,4 +97,12 @@ public class Dialog {
         alert.setContentText("No cuenta con actividades asignadas por entregar");
         alert.showAndWait();
     }
+
+    public static void displayTooManyCharacters(short characterLength) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Límite de caracteres excedido");
+        alert.setContentText(String.format("El límite de es de %d. caracteres", characterLength));
+        alert.showAndWait();
+    }
 }

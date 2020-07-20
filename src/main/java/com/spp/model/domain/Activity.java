@@ -93,4 +93,9 @@ public class Activity {
     public final int getReportID() {
         return ReportID;
     }
+
+    @Override
+    public final String toString() {
+        return getTitle();
+    }
 }

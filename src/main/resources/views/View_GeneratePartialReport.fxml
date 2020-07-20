@@ -58,12 +58,12 @@
                                         <Font size="15"/>
                                     </font>
                                 </Label>
-                                <Button text="Añadir Actividad"/>
+                                <Button fx:id="addActivity" text="Añadir Actividad"  onAction="#addActivity"/>
                             </HBox>
-                            <TableView>
+                            <TableView fx:id="activitiesToReportTable">
                                 <columns>
-                                    <TableColumn text="Título" prefWidth="120"/>
-                                    <TableColumn text="Descripción" prefWidth="141"/>
+                                    <TableColumn fx:id="titleColumn" text="Título" prefWidth="120"/>
+                                    <TableColumn fx:id="descriptionColumn" text="Descripción" prefWidth="141"/>
                                 </columns>
                             </TableView>
                         </VBox>
