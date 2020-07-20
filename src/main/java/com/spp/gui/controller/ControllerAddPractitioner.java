@@ -40,7 +40,7 @@ import javafx.stage.Stage;
 import org.apache.commons.lang3.RandomStringUtils;
 
 
-public class ControllerAddPractitioner implements Initializable {
+public class ControllerAddPractitioner {
         
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPaneAddPractitioner;
@@ -61,27 +61,22 @@ public class ControllerAddPractitioner implements Initializable {
     @FXML private ToggleGroup shiftGroup;
     @FXML private ComboBox<Group> groupIDComboBox;
     private ObservableList<Practitioner> observableListPractitioner;
-    private ObservableList<Group> observableListGroup;
     private final PractitionerDAO practitionerDAO;
-    private final GroupDAO groupDAO;
 
     public ControllerAddPractitioner() {
         this.practitionerDAO = new PractitionerDAO();
-        this.groupDAO = new GroupDAO();
     }
     
     public final void setTopMenuText(String username) {
         topMenu.setText(username);
     }
-    
-    @Override
-    public final void initialize(URL url, ResourceBundle rb) {
+
+    public final void initialize(List<Group> availableGroups) {
         observableListPractitioner = FXCollections.observableArrayList();
-        observableListGroup = FXCollections.observableArrayList();
         practitionerDAO.getPractitionerInformation(observableListPractitioner);
-        groupDAO.getGroupID(observableListGroup);
+        ObservableList<Group> availableGroupsOL = FXCollections.observableArrayList(availableGroups);
         tableViewPractitioner.setItems(observableListPractitioner);
-        groupIDComboBox.setItems(observableListGroup);
+        groupIDComboBox.getItems().setAll(availableGroupsOL);
         linkColumnsWithAttributes();
         validateTextFields();
     }

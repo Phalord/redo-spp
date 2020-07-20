@@ -10,7 +10,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.spp.gui.controller.ControllerSetActualActivityCompletionHours"
+            fx:controller="com.spp.gui.controller.ControllerSetActivityInfo"
             prefHeight="250.0" prefWidth="450.0">
     <top>
         <StackPane>
@@ -41,8 +41,8 @@
     </center>
     <bottom>
         <HBox alignment="BASELINE_CENTER" spacing="15">
-            <Button text="Cancelar" prefWidth="100"/>
-            <Button text="Añadir" prefWidth="100"/>
+            <Button text="Cancelar" prefWidth="100" onAction="#cancel"/>
+            <Button fx:id="addActivity" text="Añadir" prefWidth="100"/>
             <padding>
                 <Insets bottom="30"/>
             </padding>

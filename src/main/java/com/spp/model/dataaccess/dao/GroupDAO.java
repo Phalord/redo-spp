@@ -2,7 +2,6 @@ package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.domain.Group;
-import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
 import java.sql.Connection;
@@ -14,15 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 
 public class GroupDAO implements IGroupDAO {
     private final MySQLConnection mySQLConnection = new MySQLConnection();
     
     @Override
-    public List<Group> getListed() {
+    public final List<Group> getListed() {
         List<Group> groups = new ArrayList<>();
-        String query = "SELECT GroupID, educationalExperience, nrc, quota, shift, weeklyHours, Lecturer FROM ClassGroup";
+        String query = "SELECT CP.GroupID, CP.educationalExperience, CP.nrc, CP.quota, P.Username, U.name FROM ClassGroup CP INNER JOIN Professor P on CP.Lecturer = P.Username INNER JOIN User U on P.Username = U.Username";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -30,13 +28,12 @@ public class GroupDAO implements IGroupDAO {
                 Group group = new Group();
                 group.setGroupID(resultSet.getInt("GroupID"));
                 group.setEducationalExperience(resultSet.getString("educationalExperience"));
-                group.setShift(resultSet.getString("shift"));
                 group.setNrc(resultSet.getString("nrc"));
                 group.setQuota(resultSet.getByte("quota"));
-                group.setWeeklyHours(resultSet.getByte("weeklyHours"));
-                Practitioner student = new Practitioner();
-                student.setUsername(resultSet.getString("Lecturer"));
-                group.setStudents((List<Practitioner>) student);
+                Professor professor = new Professor();
+                professor.setUsername(resultSet.getString("Username"));
+                professor.setName(resultSet.getString("name"));
+                group.setLecturer(professor);
                 groups.add(group);
             }
         } catch (SQLException sqlException) {
@@ -48,35 +45,78 @@ public class GroupDAO implements IGroupDAO {
     }
 
     @Override
-    public Group getByID(int id) {
+    public final List<Group> getAvailableGroups() {
+        List<Group> groups = new ArrayList<>();
+        String query = "SELECT GroupID, nrc FROM ClassGroup WHERE availableQuota > 0";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Group group = new Group();
+                group.setGroupID(resultSet.getInt("GroupID"));
+                group.setNrc(resultSet.getString("nrc"));
+                groups.add(group);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            groups = null;
+        }
+        return groups;
+    }
+
+    @Override
+    public final Group getByID(int groupID) {
         Group group = null;
+        String query = "SELECT CP.GroupID, CP.educationalExperience, CP.nrc, CP.quota, CP.shift, CP.weeklyHours, U.Username, U.name FROM ClassGroup CP INNER JOIN Professor P on CP.Lecturer = P.Username INNER JOIN User U on P.Username = U.Username WHERE CP.GroupID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, groupID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    group = new Group();
+                    group.setGroupID(resultSet.getInt("GroupID"));
+                    group.setEducationalExperience(resultSet.getString("educationalExperience"));
+                    group.setNrc(resultSet.getString("nrc"));
+                    group.setQuota(resultSet.getByte("quota"));
+                    group.setShift(resultSet.getString("shift"));
+                    group.setWeeklyHours(resultSet.getByte("weeklyHours"));
+                    Professor professor = new Professor();
+                    professor.setUsername(resultSet.getString("Username"));
+                    professor.setName(resultSet.getString("name"));
+                    group.setLecturer(professor);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
         return group;
     }
 
     @Override
-    public boolean addElement(Group t) {
-        return false;
+    public final boolean addElement(Group group) {
+        boolean result = false;
+        String query = "INSERT INTO ClassGroup(educationalExperience, nrc, quota, shift, weeklyHours, availableQuota) VALUES (?,?,?,?,?,?)";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, group.getEducationalExperience());
+            preparedStatement.setString(2, group.getNrc());
+            preparedStatement.setByte(3, group.getQuota());
+            preparedStatement.setString(4, group.getShift());
+            preparedStatement.setByte(5, group.getWeeklyHours());
+            preparedStatement.setByte(6, group.getQuota());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 
     @Override
     public boolean deleteElement(int id) {
         return false;
-    }
-    
-    public final void getGroupID(ObservableList<Group> listGroup) {
-        String query = "SELECT * FROM ClassGroup";
-        try (Connection connection = mySQLConnection.getConnection();
-             Statement instruction = connection.createStatement();
-             ResultSet resultSet = instruction.executeQuery(query)) {
-            while(resultSet.next()){
-                Group group = new Group();
-                group.setGroupID(resultSet.getInt("GroupID"));
-                group.setNrc(resultSet.getString("nrc"));
-                listGroup.add(group);
-            }
-        } catch (SQLException sqlException) {
-            Logger.getLogger(PractitionerDAO.class.getName())
-                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-        }
     }
 }
