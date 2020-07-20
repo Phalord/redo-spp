@@ -1,4 +1,5 @@
 AdministratorUseCaseTests.class
+ProfessorUseCaseTests.class
 CoordinatorUseCaseTests.class
 TextValidatorTest.class
 DatabaseConnectionTest.class

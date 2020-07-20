@@ -5,13 +5,15 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
+import com.spp.model.dataaccess.dao.GroupDAO;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
+import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
-import com.spp.utils.MySQLConnection;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -46,7 +49,6 @@ public class ControllerAddPractitioner implements Initializable {
     @FXML private TextField usernameTextField;
     @FXML private TextField nameTextField;
     @FXML private TextField surnamesTextField;
-    @FXML private ToggleGroup shiftGroup;
     @FXML private TableView<Practitioner> tableViewPractitioner;
     @FXML private TableColumn<Practitioner, String> userColumn;
     @FXML private TableColumn<Practitioner, String> passwordColumn;
@@ -56,13 +58,16 @@ public class ControllerAddPractitioner implements Initializable {
     @FXML private TableColumn<Practitioner, String> shiftColumn;
     @FXML private TableColumn<Practitioner, String> groupIDColumn;
     @FXML private TableColumn<Practitioner, String> statusColumn;
-    private ObservableList<Practitioner> listPractitioner;
+    @FXML private ToggleGroup shiftGroup;
+    @FXML private ComboBox<Group> groupIDComboBox;
+    private ObservableList<Practitioner> observableListPractitioner;
+    private ObservableList<Group> observableListGroup;
     private final PractitionerDAO practitionerDAO;
-    private final MySQLConnection mySQLConnection;
+    private final GroupDAO groupDAO;
 
     public ControllerAddPractitioner() {
         this.practitionerDAO = new PractitionerDAO();
-        mySQLConnection = new MySQLConnection();        
+        this.groupDAO = new GroupDAO();
     }
     
     public final void setTopMenuText(String username) {
@@ -71,9 +76,12 @@ public class ControllerAddPractitioner implements Initializable {
     
     @Override
     public final void initialize(URL url, ResourceBundle rb) {
-        listPractitioner = FXCollections.observableArrayList();
-        practitionerDAO.fillPractitionerTable(listPractitioner);
-        tableViewPractitioner.setItems(listPractitioner);
+        observableListPractitioner = FXCollections.observableArrayList();
+        observableListGroup = FXCollections.observableArrayList();
+        practitionerDAO.getPractitionerInformation(observableListPractitioner);
+        groupDAO.getGroupID(observableListGroup);
+        tableViewPractitioner.setItems(observableListPractitioner);
+        groupIDComboBox.setItems(observableListGroup);
         linkColumnsWithAttributes();
         validateTextFields();
     }
@@ -85,19 +93,20 @@ public class ControllerAddPractitioner implements Initializable {
             String name = this.nameTextField.getText();
             String surnames = this.surnamesTextField.getText();
             String radioButton = this.radioButtonEvening.isSelected()?"Matutino":"Vespertino";
+            int groupID = groupIDComboBox.getValue().getGroupID();
             Practitioner practitioner = new Practitioner();
             if (validatePractitionerEnrollment(username)) {
                 practitioner.setUsername(username);
                 practitioner.setName(name);
                 practitioner.setSurnames(surnames);
                 practitioner.setShift(radioButton);
+                practitioner.setGroupID(groupID);
                 practitioner.setPassword(generatePassword());
                 practitioner.setUserType("Practitioner");
                 practitioner.setActive(true);  
                 if (displayRecordConfirmation()) {
                     IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
                     if (iUserDAO.addUser(practitioner)) {
-                        listPractitioner.add(practitioner);
                         displayUsernameDialog(username);
                         displayRecordSuccessDialog();
                         refreshTableView();
@@ -139,6 +148,7 @@ public class ControllerAddPractitioner implements Initializable {
         userTypeColumn.setCellValueFactory(new PropertyValueFactory<>("userType"));
         shiftColumn.setCellValueFactory(new PropertyValueFactory<>("shift"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
+        groupIDColumn.setCellValueFactory(new PropertyValueFactory<>("groupID"));
     }
     
     public void validateTextFields() {
@@ -168,13 +178,14 @@ public class ControllerAddPractitioner implements Initializable {
         surnamesTextField.setText("");
         radioButtonEvening.setSelected(false);
         radioButtonMorning.setSelected(false);
+        groupIDComboBox.setValue(null);
     }
     
     private void refreshTableView() {
-        listPractitioner.clear();
-        listPractitioner = FXCollections.observableArrayList();
-        practitionerDAO.fillPractitionerTable(listPractitioner);
-        tableViewPractitioner.setItems(listPractitioner);
+        observableListPractitioner.clear();
+        observableListPractitioner = FXCollections.observableArrayList();
+        practitionerDAO.getPractitionerInformation(observableListPractitioner);
+        tableViewPractitioner.setItems(observableListPractitioner);
         linkColumnsWithAttributes();
     }
     
@@ -182,6 +193,7 @@ public class ControllerAddPractitioner implements Initializable {
         return (usernameTextField.getText().isEmpty() ||
                 nameTextField.getText().isEmpty() || 
                 surnamesTextField.getText().isEmpty() ||
+                groupIDComboBox.getValue() == null ||
                 shiftGroup.getSelectedToggle() == null);
     }
     
@@ -196,8 +208,8 @@ public class ControllerAddPractitioner implements Initializable {
     private void displayNotValidEnrollment() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Matricula inválida");
-        alert.setContentText("Matricula inválida. La primera letra debe ser una s minúscula seguida de 8 dígitos numéricos");
+        alert.setHeaderText("Matricula invÃ¡lida");
+        alert.setContentText("Matricula invÃ¡lida. La primera letra debe ser una s minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
         alert.showAndWait(); 
     }
     

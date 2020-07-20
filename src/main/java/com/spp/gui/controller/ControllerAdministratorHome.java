@@ -13,7 +13,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class ControllerAdministratorHome{
+public class ControllerAdministratorHome {
 
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;

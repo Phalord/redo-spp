@@ -128,7 +128,7 @@ public class PractitionerDAO implements IPractitionerDAO {
         return result;
     }
     
-    public final void fillPractitionerTable(ObservableList<Practitioner> listPractitioner) {
+    public final void getPractitionerInformation(ObservableList<Practitioner> listPractitioner) {
         String query = "SELECT * FROM Practitioner INNER JOIN User ON Practitioner.Username = User.Username";
         try (Connection connection = mySQLConnection.getConnection();
              Statement instruction = connection.createStatement();

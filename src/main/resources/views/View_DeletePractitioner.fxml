@@ -16,7 +16,7 @@
             <TableColumn fx:id="surnameColumn" prefWidth="120.0" resizable="false" text="Surname" />
             <TableColumn fx:id="userTypeColumn" prefWidth="100.0" resizable="false" text="UserType" />
             <TableColumn fx:id="shiftColumn" prefWidth="100.0" resizable="false" text="Shift" />
-            <TableColumn resizable="false" text="GroupID" />
+            <TableColumn fx:id="groupIDColumn" resizable="false" text="GroupID" />
             <TableColumn fx:id="statusColumn" resizable="false" text="Status" />
         </columns>
       </TableView>

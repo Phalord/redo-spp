@@ -1,6 +1,7 @@
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\IProjectDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\Practitioner.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\dao\ProjectResponsibleDAO.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerGeneratePartialReport.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\IProfessorDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\CRUD.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerPractitionerHome.java
@@ -24,6 +25,8 @@ D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\Professor.
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerProfessorSection.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerAddProfessor.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\dao\PractitionerDAO.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerSetActualActivityCompletionHours.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerDetailedProjectRequest.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerDeletePractitioner.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\dao\RelatedCompanyDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerGenerateDocumentation.java
@@ -33,6 +36,7 @@ D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\Coordinato
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\ProjectAssignment.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\HomeController.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\utils\MySQLConnection.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\IActivityDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\MonthlyReport.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\Activity.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerAddPractitioner.java
@@ -47,9 +51,11 @@ D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\Project.ja
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\Dialog.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\ICoordinatorDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerProjectInformation.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\dao\ActivityDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\idao\IRelatedCompanyDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\dataaccess\dao\ProjectRequestDAO.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerProjectSection.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerLogin.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\User.java
+D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\gui\controller\ControllerProjectRequests.java
 D:\Jeff_\Documents\GitHub\redo-spp\src\main\java\com\spp\model\domain\RelatedCompany.java

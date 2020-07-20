@@ -9,8 +9,6 @@ import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Practitioner;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +55,7 @@ public class ControllerDeletePractitioner implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         listPractitioner = FXCollections.observableArrayList();
-        practitionerDAO.fillPractitionerTable(listPractitioner);
+        practitionerDAO.getPractitionerInformation(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
     }
@@ -119,12 +117,13 @@ public class ControllerDeletePractitioner implements Initializable {
         userTypeColumn.setCellValueFactory(new PropertyValueFactory<>("userType"));
         shiftColumn.setCellValueFactory(new PropertyValueFactory<>("shift"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
+        groupIDColumn.setCellValueFactory(new PropertyValueFactory<>("groupID"));
     }
     
     private void refreshTableView() {
         listPractitioner.clear();
         listPractitioner = FXCollections.observableArrayList();
-        practitionerDAO.fillPractitionerTable(listPractitioner);
+        practitionerDAO.getPractitionerInformation(listPractitioner);
         tableViewPractitioner.setItems(listPractitioner);
         linkColumnsWithAttributes();
     }
@@ -132,7 +131,7 @@ public class ControllerDeletePractitioner implements Initializable {
     private void displaySelectionPractitionerDialog() {
             Alert selectPractitionerAlertDialog = new Alert(Alert.AlertType.WARNING);
             selectPractitionerAlertDialog.setTitle("Aviso");
-            selectPractitionerAlertDialog.setHeaderText("No se selecccionó ningún practicante");
+            selectPractitionerAlertDialog.setHeaderText("No se selecccionÃ³ ningÃºn practicante");
             selectPractitionerAlertDialog.setContentText("Debe seleccionar un practicante para eliminar"); 
             selectPractitionerAlertDialog.showAndWait();
     }
