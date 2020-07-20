@@ -27,6 +27,9 @@ public class HomeController implements IWindowGUI {
             case PROFESSOR:
                 buildProfessorHomeScene(username);
                 break;
+            case ADMINISTRATOR:
+                buildAdministratorHomeScene(username);
+                break;
             default:
                 displaySomethingWentWrong();
         }
@@ -83,6 +86,22 @@ public class HomeController implements IWindowGUI {
             viewFile = loader.load();
             ControllerProfessorHome controllerProfessorHome = loader.getController();
             controllerProfessorHome.setTopMenuText(username);
+            window.setScene(new Scene(viewFile, 600, 400));
+            window.setResizable(false);
+        } catch (IOException ioException) {
+            Logger.getLogger(HomeController.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+        }
+    }
+    
+    private void buildAdministratorHomeScene(String username) {
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_AdministratorHome.fxml"));
+        try {
+            viewFile = loader.load();
+            ControllerAdministratorHome controllerAdministratorHome = loader.getController();
+            controllerAdministratorHome.setTopMenuText(username);
             window.setScene(new Scene(viewFile, 600, 400));
             window.setResizable(false);
         } catch (IOException ioException) {

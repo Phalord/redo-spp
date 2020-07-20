@@ -61,9 +61,4 @@ public abstract class User {
     public final boolean isActive() {
         return active;
     }
-
-    @Override
-    public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + ", name=" + name + ", surnames=" + surnames + ", userType=" + userType + ", active=" + active + '}';
-    }
 }

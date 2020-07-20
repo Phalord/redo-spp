@@ -75,4 +75,9 @@ public class Group {
     public final byte getWeeklyHours() {
         return weeklyHours;
     }
+
+    @Override
+    public String toString() {
+        return String.format("NRC: %s", getNrc());
+    }
 }
