@@ -62,20 +62,21 @@ public class ControllerPractitionerHome {
     }
 
     private void setGenerateDocumentationScene() {
-        Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/views/View_GenerateDocumentation.fxml"));
         try {
             viewFile = loader.load();
-            ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
-            controllerGenerateDocumentation.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
+            return;
         }
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
+        controllerGenerateDocumentation.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     private void closeWindow() {

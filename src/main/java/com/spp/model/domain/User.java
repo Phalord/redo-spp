@@ -10,20 +10,15 @@ public abstract class User {
 
     protected abstract String generateEmail();
 
-    protected boolean disable() {
-        if (isActive()) {
-            setActive(false);
-        } else {
-            return false;
-        }
-        return true;
+    protected void disable() {
+        setActive(false);
     }
 
-    public void setUsername(String username) {
+    public final void setUsername(String username) {
         this.username = username;
     }
 
-    public String getUsername() {
+    public final String getUsername() {
         return username;
     }
 
@@ -31,7 +26,7 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getPassword() {
+    public final String getPassword() {
         return password;
     }
 
@@ -47,11 +42,11 @@ public abstract class User {
         this.surnames = surnames;
     }
 
-    public void setUserType(String userType) {
+    public final void setUserType(String userType) {
         this.userType = userType;
     }
 
-    public String getUserType() {
+    public final String getUserType() {
         return userType;
     }
 
@@ -59,11 +54,11 @@ public abstract class User {
         return surnames;
     }
 
-    protected void setActive(boolean active) {
+    public final void setActive(boolean active) {
         this.active = active;
     }
 
-    protected boolean isActive() {
+    public final boolean isActive() {
         return active;
     }
 }

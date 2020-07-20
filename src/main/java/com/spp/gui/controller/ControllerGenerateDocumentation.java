@@ -1,5 +1,8 @@
 package com.spp.gui.controller;
 
+import com.spp.model.dataaccess.dao.ActivityDAO;
+import com.spp.model.dataaccess.idao.IActivityDAO;
+import com.spp.model.domain.Activity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +13,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.spp.gui.Dialog.displayConnectionError;
+import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
 public class ControllerGenerateDocumentation {
@@ -25,7 +32,16 @@ public class ControllerGenerateDocumentation {
 
     @FXML
     private void generatePartialReport() {
-        notYetSupportedDialog();
+        IActivityDAO iActivityDAO = new ActivityDAO();
+        List<Activity> openActivities = iActivityDAO.getOpenPractitionerActivities(
+                topMenu.getText(), new Timestamp(System.currentTimeMillis()));
+        if (openActivities == null) {
+            displayConnectionError();
+        } else if (openActivities.isEmpty()) {
+            displayNoActivitiesToReport();
+        } else {
+            displayGeneratePartialReport(openActivities);
+        }
     }
 
     @FXML
@@ -49,7 +65,7 @@ public class ControllerGenerateDocumentation {
         displayLogin();
     }
 
-    //Una vez implementado estos 3 casos de uso, se borra este método. POR FA NO LO DEJEN!!!!!
+    //TODO: Una vez implementado estos 3 casos de uso, se borra este método. POR FA NO LO DEJEN!!!!!
     private void notYetSupportedDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -58,20 +74,41 @@ public class ControllerGenerateDocumentation {
         alert.showAndWait();
     }
 
-    private void backScene() {
-        Stage window = (Stage) borderPane.getScene().getWindow();
+    private void displayGeneratePartialReport(List<Activity> openActivities) {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_GeneratePartialReport.fxml"));
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_PractitionerHome.fxml"));
             viewFile = loader.load();
-            ControllerPractitionerHome controllerPractitionerHome = loader.getController();
-            controllerPractitionerHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGenerateDocumentation.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+            return;
         }
+        ControllerGeneratePartialReport controllerGeneratePartialReport = loader.getController();
+        controllerGeneratePartialReport.setTopMenuText(topMenu.getText());
+        controllerGeneratePartialReport.setOpenActivities(openActivities);
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        window.setScene(new Scene(viewFile, 650, 400));
+    }
+
+    private void backScene() {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_PractitionerHome.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+            return;
+        }
+        ControllerPractitionerHome controllerPractitionerHome = loader.getController();
+        controllerPractitionerHome.setTopMenuText(topMenu.getText());
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     private void closeWindow() {

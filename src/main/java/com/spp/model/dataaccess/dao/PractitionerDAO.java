@@ -17,11 +17,7 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 
 public class PractitionerDAO implements IPractitionerDAO {
-    private final MySQLConnection mySQLConnection;
-
-    public PractitionerDAO() {
-        mySQLConnection = new MySQLConnection();
-    }
+    private final MySQLConnection mySQLConnection = new MySQLConnection();
 
     @Override
     public List<Practitioner> getAllUsers() {
@@ -55,12 +51,7 @@ public class PractitionerDAO implements IPractitionerDAO {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
                     practitioner = new Practitioner();
-                    practitioner.setUsername(resultSet.getString("Username"));
-                    practitioner.setName(resultSet.getString("name"));
-                    practitioner.setSurnames(resultSet.getString("surname"));
-                    practitioner.setActive(resultSet.getBoolean("status"));
-                    practitioner.setUserType(resultSet.getString("userType"));
-                    practitioner.setShift(resultSet.getString( "shift"));
+                    fillPractitioner(practitioner, resultSet);
                 }
             }
         } catch (SQLException sqlException) {
@@ -122,11 +113,12 @@ public class PractitionerDAO implements IPractitionerDAO {
 
     private boolean insertIntoPractitionerTable(Practitioner practitioner) {
         boolean result = false;
-        String query = "INSERT INTO Practitioner(Username,shift) VALUES(?,?)";
+        String query = "INSERT INTO Practitioner(Username,shift,GroupID) VALUES(?,?,?)";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, practitioner.getUsername());
             preparedStatement.setString(2, practitioner.getShift());
+            preparedStatement.setInt(3, practitioner.getGroupID());
             int numberRowsAffected = preparedStatement.executeUpdate();
             result = (numberRowsAffected > 0);
         } catch (SQLException sqlException) {
@@ -136,22 +128,23 @@ public class PractitionerDAO implements IPractitionerDAO {
         return result;
     }
     
-    public static void fillPractitionerTable(Connection mySQLConnection, ObservableList<Practitioner> listPractitioner) {
+    public final void fillPractitionerTable(ObservableList<Practitioner> listPractitioner) {
         String query = "SELECT * FROM Practitioner INNER JOIN User ON Practitioner.Username = User.Username";
-        try {
-            Statement instruction = mySQLConnection.createStatement();
-            ResultSet resultQuery = instruction.executeQuery(query);
+        try (Connection connection = mySQLConnection.getConnection();
+             Statement instruction = connection.createStatement();
+             ResultSet resultQuery = instruction.executeQuery(query)) {
             while(resultQuery.next()){
                 Practitioner practitioner = new Practitioner();
                 fillPractitioner(practitioner, resultQuery);
                 listPractitioner.add(practitioner);
             }
         } catch (SQLException sqlException) {
-            Logger.getLogger(PractitionerDAO.class.getName()).log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
     }
 
-    private static void fillPractitioner(Practitioner practitioner, ResultSet resultSet) throws SQLException{
+    private void fillPractitioner(Practitioner practitioner, ResultSet resultSet) throws SQLException{
         practitioner.setUsername(resultSet.getString("Username"));
         practitioner.setPassword(resultSet.getString("password"));
         practitioner.setName(resultSet.getString("name"));
@@ -159,5 +152,6 @@ public class PractitionerDAO implements IPractitionerDAO {
         practitioner.setUserType(resultSet.getString("userType"));
         practitioner.setActive(resultSet.getBoolean("status"));
         practitioner.setShift(resultSet.getString("shift"));
+        practitioner.setGroupID(resultSet.getInt("GroupID"));
     }
 }

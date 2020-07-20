@@ -8,7 +8,7 @@ import javafx.scene.control.ButtonType;
 public class Dialog {
 
     public static void displaySomethingWentWrong() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Algo ha salido mal");
         alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle.");
@@ -16,15 +16,24 @@ public class Dialog {
     }
 
     public static void displayNotYetSupportedDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Funcionamiento sin implementar");
         alert.setContentText("FunciÃ³n a implementar en siguientes versiones.");
         alert.showAndWait();
     }
 
+    public static boolean displayConfirmationDialog(String message) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
+    }
+
     public static void displayConnectionError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("Error de ConexiÃ³n");
         alert.setContentText("Fallo al conectar con el servidor. Verifique su conexiÃ³n a internet.");
@@ -32,15 +41,15 @@ public class Dialog {
     }
 
     public static void displaySuccessDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("OperaciÃ³n Exitosa");
         alert.setContentText(message);
         alert.showAndWait();
     }
     
-     public static void displayRecordAlreadyExist() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public static void displayRecordAlreadyExist() {
+        Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText("No se pudo realizar el registro");
         alert.setContentText("El registro ya se encuentra en la base de datos. Intente otro");
@@ -51,16 +60,16 @@ public class Dialog {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("¿Esta seguro que desea realizar el registro con esos datos?");
+        alert.setContentText("Â¿EstÃ¡ seguro que desea realizar el registro con esos datos?");
         Optional<ButtonType> result = alert.showAndWait();
-        return (result.get() == ButtonType.OK);
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
     }
     
     public static boolean displayDeleteConfirmation() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("¿Esta seguro que desea cambiar a 'no activo' el registro seleccionado?");
+        alert.setContentText("ï¿½Esta seguro que desea cambiar a 'no activo' el registro seleccionado?");
         Optional<ButtonType> result = alert.showAndWait();
         return (result.get() == ButtonType.OK);
     }
@@ -69,23 +78,23 @@ public class Dialog {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("¿Esta seguro de que desea cancelar?, No se guardará ningún cambio");
+        alert.setContentText("Â¿Esta seguro de que desea cancelar?, No se guardarÃ¡ ningÃºn cambio");
         Optional<ButtonType> result = alert.showAndWait();
-        return (result.get() == ButtonType.OK);
+        return result.filter(buttonType -> (buttonType == ButtonType.OK)).isPresent();
     }
     
     public static void displayRecordSuccessDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Registro exitoso");
-        alert.setContentText("¡Se ha realizado el registro exitosamente!");
+        alert.setContentText("Â¿Se ha realizado el registro exitosamente!");
         alert.showAndWait();      
     }
     
     public static void displayEmptyFields() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Warning Dialog");
-        alert.setHeaderText("Campos vacíos");
+        alert.setHeaderText("Campos vacÃ­os");
         alert.setContentText("Debe llenar todos los campos");
         alert.showAndWait(); 
     }
@@ -93,8 +102,16 @@ public class Dialog {
     public static void displaySuccessDisableDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Eliminación exitosa");
+        alert.setHeaderText("Eliminaciï¿½n exitosa");
         alert.setContentText("El registro seleccionado ahora esta inactivo");
         alert.showAndWait();  
     } 
+
+    public static void displayNoActivitiesToReport() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Sin Actividades Abiertas");
+        alert.setContentText("No cuenta con actividades asignadas por entregar");
+        alert.showAndWait();
+    }
 }
