@@ -31,6 +31,7 @@ com\spp\model\dataaccess\idao\ICoordinatorDAO.class
 com\spp\model\domain\Professor.class
 com\spp\model\domain\RelatedCompany.class
 com\spp\model\dataaccess\idao\IRelatedCompanyDAO.class
+com\spp\gui\controller\ControllerGeneratePartialReport.class
 com\spp\gui\controller\ControllerRequestProject.class
 com\spp\utils\MySQLConnection.class
 com\spp\gui\controller\ControllerPractitionerSection.class
