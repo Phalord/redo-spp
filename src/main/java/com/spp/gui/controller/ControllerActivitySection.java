@@ -24,7 +24,21 @@ public class ControllerActivitySection {
 
     @FXML
     private void generateActivity() {
-
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_AddActivity.fxml"));
+        try {
+            viewFile = loader.load();
+            ControllerAddActivity controllerAddActivity = loader.getController();
+            String professorUsername = topMenu.getText();
+            controllerAddActivity.setProfessorUsername(professorUsername);
+            //controllerAddActivity.initializePractitionerComboBox(availablePractitioners);
+            window.setScene(new Scene(viewFile, 600, 400));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerActivitySection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        } 
     }
 
     @FXML
