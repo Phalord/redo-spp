@@ -64,11 +64,15 @@ public class ControllerAddActivity{
     private void generateActivity() {
         if(!areTextFieldsEmpty()){
             String title = textFieldTitle.getText();
-            int estimatedHoursParse = Integer.parseInt(textFieldEstimatedHours.getText());
+            int estimatedHoursParse = 
+                    Integer.parseInt(textFieldEstimatedHours.getText());
             short estimatedHours = (short) estimatedHoursParse;
             String description = textAreaDescription.getText();
             Practitioner practitionerSelected = comboBoxPractitioner.getValue();
-            Date auxiliarDueDate = new Date(java.util.Date.from(datePickerDueDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
+            Date auxiliarDueDate = 
+                    new Date(java.util.Date.from(datePickerDueDate.getValue()
+                            .atStartOfDay(ZoneId.systemDefault()).toInstant())
+                            .getTime());
             
             Activity activity = new Activity();
             activity.setTitle(title);
