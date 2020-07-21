@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.spp.gui.controller.ControllerAddProject">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spp.gui.controller.ControllerAddProject">
    <children>
       <GridPane layoutX="14.0" layoutY="68.0" prefHeight="286.0" prefWidth="407.0">
          <columnConstraints>
@@ -74,10 +73,9 @@
       <Button layoutX="211.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnProjectSection" text="Cancelar" />
       <TableView fx:id="tableViewProject" layoutX="421.0" layoutY="50.0" onSort="#showAllProjects" prefHeight="338.0" prefWidth="368.0">
         <columns>
-          <TableColumn fx:id="columnID" prefWidth="29.60003662109375" text="ID" />
-          <TableColumn fx:id="columnTitle" prefWidth="118.4000244140625" text="Título" />
-            <TableColumn fx:id="columnCompany" prefWidth="121.59991455078125" text="Organización" />
-            <TableColumn fx:id="columnResponsible" prefWidth="99.2000732421875" text="Responsable" />
+          <TableColumn fx:id="columnID" prefWidth="44.79998779296875" text="ID" />
+          <TableColumn fx:id="columnTitle" prefWidth="200.0" text="Título" />
+            <TableColumn fx:id="columnCompany" prefWidth="123.199951171875" text="Organización" />
         </columns>
       </TableView>
    </children>
