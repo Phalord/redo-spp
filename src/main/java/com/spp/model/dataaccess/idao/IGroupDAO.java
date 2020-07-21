@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IGroupDAO extends CRUD<Group> {
     List<Group> getAvailableGroups();
-    
+    Group getProfessorGroup(String username);
 }
