@@ -1,6 +1,11 @@
 package com.spp.gui.controller;
 
+import com.spp.model.dataaccess.dao.ActivityDAO;
+import com.spp.model.dataaccess.dao.PartialReportDAO;
+import com.spp.model.dataaccess.idao.CRUD;
+import com.spp.model.dataaccess.idao.IActivityDAO;
 import com.spp.model.domain.Activity;
+import com.spp.model.domain.PartialReport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +14,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,21 +25,26 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displayConfirmationDialog;
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayNoActivitiesAdded;
 import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.gui.Dialog.displaySuccessDialog;
 
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
-    @FXML private Button addActivity;
+    @FXML private Spinner<Short> hoursCompletionSpinner;
+    @FXML private Spinner<Byte> reportNumberSpinner;
+    @FXML private ComboBox<String> periodComboBox;
     @FXML private TableView<Activity> activitiesToReportTable;
     @FXML private TableColumn<Activity, String> titleColumn;
     @FXML private TableColumn<Activity, String> descriptionColumn;
@@ -47,13 +59,13 @@ public class ControllerGeneratePartialReport {
         setOpenActivities(openActivities);
     }
 
-    private void setOpenActivities(List<Activity> openActivities) {
+    public final void setOpenActivities(List<Activity> openActivities) {
         this.openActivities = openActivities;
     }
 
-    private void initializeActivitiesToReportTable() {
+    public final void initializeActivitiesToReportTable() {
         ObservableList<Activity> openActivitiesOL =
-                FXCollections.observableArrayList(openActivities);
+                FXCollections.observableArrayList(getOpenActivities());
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         activitiesToReportTable.setItems(openActivitiesOL);
@@ -73,7 +85,7 @@ public class ControllerGeneratePartialReport {
     }
 
     @FXML
-    private void back() {
+    private void goBack() {
         setBackScene();
     }
 
@@ -83,7 +95,20 @@ public class ControllerGeneratePartialReport {
             displayNoActivitiesAdded();
         } else {
             if (displayConfirmationDialog("¿Desea generar el reporte parcial de actividades?")) {
-                displayNotYetSupportedDialog();
+                PartialReport partialReport = new PartialReport();
+                partialReport.setReportType("Parcial");
+                partialReport.setPartialPeriod(periodComboBox.getValue());
+                partialReport.setProjectHoursCovered(hoursCompletionSpinner.getValue());
+                partialReport.setReportNumber(reportNumberSpinner.getValue());
+                prepareActivities();
+                partialReport.setActivities(activitiesToReportTable.getItems());
+                partialReport.generateFolio(new Timestamp(System.currentTimeMillis()), topMenu.getText());
+                if (savePartialReport(partialReport)) {
+                    displaySuccessDialog("El Reporte se ha guardado exitosamente.");
+                    goBack();
+                } else {
+                    displayConnectionError();
+                }
             }
         }
     }
@@ -143,5 +168,25 @@ public class ControllerGeneratePartialReport {
         controllerGenerateDocumentation.setTopMenuText(topMenu.getText());
         Stage window = (Stage) borderPane.getScene().getWindow();
         window.setScene(new Scene(viewFile, 600, 400));
+    }
+
+
+
+    private boolean savePartialReport(PartialReport partialReport) {
+        CRUD<PartialReport> partialReportCRUD = new PartialReportDAO();
+        boolean result = false;
+        if (partialReportCRUD.addElement(partialReport)) {
+            IActivityDAO activityDAO = new ActivityDAO();
+            for (Activity activity: partialReport.getActivities()) {
+                result = activityDAO.reportActivity(activity, partialReport);
+            }
+        }
+        return result;
+    }
+
+    private void prepareActivities() {
+        for (Activity activity: activitiesToReportTable.getItems()) {
+            activity.setDeliveredAt(new Timestamp(System.currentTimeMillis()));
+        }
     }
 }

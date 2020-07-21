@@ -44,7 +44,7 @@ public class ProjectDAO implements IProjectDAO {
     @Override
     public final List<Project> getProjectRequestedProjects(int projectRequestID) {
         List<Project> projects = new ArrayList<>();
-        String query = "SELECT P.ProjectID, P.title, RC.name FROM ProjectRequest PR INNER JOIN ProjectRequest_Project PRP on PR.ProjectRequestID = PRP.ProjectRequestID INNER JOIN Project P on PRP.ProjectID = P.ProjectID INNER JOIN RelatedCompany RC on P.RelatedCompanyID = RC.RelatedCompanyID WHERE PR.ProjectRequestID = ?";
+        String query = "SELECT P.ProjectID, P.title, RC.name FROM ProjectRequest PR INNER JOIN ProjectRequest_Project PRP on PR.ProjectRequestID = PRP.ProjectRequestID INNER JOIN Project P on PRP.ProjectID = P.ProjectID INNER JOIN RelatedCompany RC on P.RelatedCompanyID = RC.RelatedCompanyID WHERE PR.ProjectRequestID = ? AND P.available = 'Available'";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query))  {
             preparedStatement.setInt(1, projectRequestID);
