@@ -14,68 +14,83 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spp.gui.controller.ControllerAddActivity">
-   <children>
-      <GridPane layoutX="12.0" layoutY="70.0" prefHeight="278.0" prefWidth="312.0">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.spp.gui.controller.ControllerAddActivity">
+    <GridPane layoutX="12.0" layoutY="70.0" prefHeight="278.0" prefWidth="312.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.7999755859375" minWidth="10.0" prefWidth="152.2" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.5999755859375" minWidth="10.0" prefWidth="160.2" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.7999755859375" minWidth="10.0"
+                               prefWidth="152.2"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.5999755859375" minWidth="10.0"
+                               prefWidth="160.2"/>
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="73.59998168945313" minHeight="10.0" prefHeight="46.99998779296875" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="143.20001831054688" minHeight="10.0" prefHeight="119.7999938964844" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="180.8000244140625" minHeight="10.0" prefHeight="53.400006103515636" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0" prefHeight="50.399978637695284" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0" prefHeight="41.40001220703124" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="73.59998168945313" minHeight="10.0"
+                            prefHeight="46.99998779296875" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="143.20001831054688" minHeight="10.0"
+                            prefHeight="119.7999938964844" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0"
+                            prefHeight="53.400006103515636" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0"
+                            prefHeight="50.399978637695284" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0"
+                            prefHeight="41.40001220703124" vgrow="SOMETIMES"/>
         </rowConstraints>
-         <children>
-            <Label text="Título:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label text="Descripción:" GridPane.rowIndex="1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <TextField fx:id="textFieldTitle" prefHeight="26.0" prefWidth="151.0" GridPane.columnIndex="1" />
-            <TextArea fx:id="textAreaDescription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Fecha de entrega:" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <DatePicker fx:id="datePickerDueDate" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Horas estimadas:" GridPane.rowIndex="3">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label text="Asignar a:" GridPane.rowIndex="4">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <TextField fx:id="textFieldEstimatedHours" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="comboBoxPractitioner" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-         </children>
-      </GridPane>
-      <Button layoutX="77.0" layoutY="361.0" mnemonicParsing="false" onAction="#generateActivity" text="Publicar" />
-      <Button layoutX="168.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnActivitySection" text="Cancelar" />
-      <TableView fx:id="tableViewActivity" layoutX="335.0" layoutY="44.0" onSort="#showAllActivities" prefHeight="330.0" prefWidth="454.0">
-        <columns>
-          <TableColumn fx:id="columnID" prefWidth="34.39996337890625" text="ID" />
-          <TableColumn fx:id="columnTitle" prefWidth="101.5999755859375" text="Título" />
-            <TableColumn fx:id="columnDueDate" prefWidth="116.0" text="Fecha de entrega" />
-            <TableColumn fx:id="columnEstimatedHours" prefWidth="99.20001220703125" text="Horas estimadas" />
-            <TableColumn fx:id="columnPractitioner" prefWidth="108.800048828125" text="Practicante" />
-        </columns>
-      </TableView>
-      <Label layoutX="66.0" layoutY="34.0" text="Generar actividad">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-   </children>
+        <Label text="Título:">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <Label text="Descripción:" GridPane.rowIndex="1">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="textFieldTitle" prefHeight="26.0" prefWidth="151.0"
+                   GridPane.columnIndex="1"/>
+        <TextArea fx:id="textAreaDescription" prefHeight="200.0" prefWidth="200.0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Fecha de entrega:" GridPane.rowIndex="2">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <DatePicker fx:id="datePickerDueDate" editable="false" GridPane.columnIndex="1"
+                    GridPane.rowIndex="2"/>
+        <Label text="Horas estimadas:" GridPane.rowIndex="3">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <Label text="Asignar a:" GridPane.rowIndex="4">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="textFieldEstimatedHours" GridPane.columnIndex="1"
+                   GridPane.rowIndex="3"/>
+        <ComboBox fx:id="comboBoxPractitioner" prefWidth="150.0" GridPane.columnIndex="1"
+                  GridPane.rowIndex="4"/>
+    </GridPane>
+    <Button layoutX="77.0" layoutY="361.0" mnemonicParsing="false" onAction="#generateActivity"
+            text="Publicar"/>
+    <Button layoutX="168.0" layoutY="361.0" mnemonicParsing="false"
+            onAction="#returnActivitySection" text="Cancelar"/>
+    <TableView fx:id="tableViewActivity" layoutX="335.0" layoutY="44.0" onSort="#showAllActivities"
+               prefHeight="330.0" prefWidth="454.0">
+      <columns>
+          <TableColumn fx:id="columnID" prefWidth="34.39996337890625" text="ID"/>
+          <TableColumn fx:id="columnTitle" prefWidth="101.5999755859375" text="Título"/>
+          <TableColumn fx:id="columnDueDate" prefWidth="116.0" text="Fecha de entrega"/>
+          <TableColumn fx:id="columnEstimatedHours" prefWidth="99.20001220703125"
+                       text="Horas estimadas"/>
+          <TableColumn fx:id="columnPractitioner" prefWidth="108.800048828125"
+                       text="Practicante"/>
+      </columns>
+    </TableView>
+    <Label layoutX="66.0" layoutY="34.0" text="Generar actividad">
+        <font>
+          <Font size="24.0"/>
+        </font>
+    </Label>
 </AnchorPane>
