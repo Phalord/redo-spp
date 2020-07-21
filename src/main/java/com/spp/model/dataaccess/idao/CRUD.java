@@ -8,5 +8,4 @@ public interface CRUD<T> {
     T getByID(int id);
     boolean addElement(T t);
     boolean deleteElement(int id);
-    int getLastRelatedID();
 }
