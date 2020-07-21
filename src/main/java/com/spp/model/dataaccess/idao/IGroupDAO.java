@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IGroupDAO extends CRUD<Group> {
     List<Group> getAvailableGroups();
-    
+    boolean assignLecturer(Group group);
+    List<Group> getProfessorAvailableGroups();
 }

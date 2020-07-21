@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>--module-path "C:\Users\2RJ25LA_RS5\Documents\javafx-sdk-14\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
+                <exec.args>--module-path "D:\Jeff_\Documents\lib\javafx-sdk-14.0.1\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} --module-path "C:\Users\2RJ25LA_RS5\Documents\javafx-sdk-14\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} --module-path "D:\Jeff_\Documents\lib\javafx-sdk-14.0.1\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>--module-path "C:\Users\2RJ25LA_RS5\Documents\javafx-sdk-14\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
+                <exec.args>--module-path "D:\Jeff_\Documents\lib\javafx-sdk-14.0.1\lib" --add-modules javafx.controls,javafx.fxml -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

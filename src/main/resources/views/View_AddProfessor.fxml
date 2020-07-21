@@ -34,7 +34,7 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.4318181818181818" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.43983957219251335" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="334.0">
                <children>
@@ -98,20 +98,19 @@
                         </Lighting>
                      </effect>
                   </GridPane>
-                  <Button layoutX="243.0" layoutY="334.0" mnemonicParsing="false" text="Registrar" />
-                  <Button layoutX="173.0" layoutY="334.0" mnemonicParsing="false" text="Cancelar" />
+                  <Button layoutX="243.0" layoutY="334.0" mnemonicParsing="false" onAction="#registerProfessorActionButton" text="Registrar" />
+                  <Button layoutX="173.0" layoutY="334.0" mnemonicParsing="false" onAction="#cancel" text="Cancelar" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <TableView fx:id="professorTableView" layoutX="-38.0" layoutY="33.0" prefHeight="373.0" prefWidth="425.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="userColumn" prefWidth="100.0" resizable="false" text="User" />
-                      <TableColumn fx:id="passwordColumn" prefWidth="100.0" resizable="false" text="Password" />
-                        <TableColumn fx:id="nameColumn" prefWidth="120.0" resizable="false" text="Name" />
-                        <TableColumn fx:id="surnameColumn" prefWidth="120.0" resizable="false" text="Surname" />
-                        <TableColumn fx:id="userTypeColumn" prefWidth="100.0" resizable="false" text="UserType" />
-                        <TableColumn fx:id="groupIDColumn" prefWidth="100.0" resizable="false" text="GroupID" />
-                        <TableColumn fx:id="statusColumn" prefWidth="100.0" resizable="false" text="Status" />
+                      <TableColumn fx:id="userColumn" prefWidth="120.0" resizable="false" text="Usuario" />
+                      <TableColumn fx:id="passwordColumn" prefWidth="140.0" resizable="false" text="Contraseña" />
+                        <TableColumn fx:id="nameColumn" prefWidth="120.0" resizable="false" text="Nombre(s)" />
+                        <TableColumn fx:id="surnameColumn" prefWidth="120.0" resizable="false" text="Apellidos" />
+                        <TableColumn fx:id="groupNRCColumn" prefWidth="120.0" resizable="false" text="NRCGrupo" />
+                        <TableColumn fx:id="statusColumn" prefWidth="120.0" resizable="false" text="Estado" />
                     </columns>
                   </TableView>
                </children></AnchorPane>

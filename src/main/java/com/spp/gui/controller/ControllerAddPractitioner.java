@@ -80,39 +80,47 @@ public class ControllerAddPractitioner {
     
     @FXML
     private void registerPractitionerActionButton() {   
-        if (!validateEmpty()) {
+        if (!areFieldsEmpty()) {
             String username = this.usernameTextField.getText();
             String name = this.nameTextField.getText();
             String surnames = this.surnamesTextField.getText();
-            String radioButton = this.radioButtonEvening.isSelected()?"Matutino":"Vespertino";
+            String radioButton = this.radioButtonEvening.isSelected()?"Vespertino":"Matutino";
             int groupID = groupIDComboBox.getValue().getGroupID();
-            Practitioner practitioner = new Practitioner();
             if (validatePractitionerEnrollment(username)) {
-                practitioner.setUsername(username);
-                practitioner.setName(name);
-                practitioner.setSurnames(surnames);
-                practitioner.setShift(radioButton);
-                practitioner.setGroupID(groupID);
-                practitioner.setPassword(generatePassword());
-                practitioner.setUserType("Practitioner");
-                practitioner.setActive(true);  
-                if (displayRecordConfirmation()) {
-                    IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
-                    if (iUserDAO.addUser(practitioner)) {
-                        displayUsernameDialog(username);
-                        displayRecordSuccessDialog();
-                        refreshTableView();
-                        cleanTextField();
-                    } else {
-                        displayRecordAlreadyExist();
-                    }   
-                }                
+                if (groupIDComboBox.getValue().getShift().equals(radioButton)) {
+                    savePractitioner(username,name,surnames,radioButton,groupID);
+                } else {
+                    displayShiftNotMatch();
+                }
             } else {
                 displayNotValidEnrollment();
             }
         } else {
             displayEmptyFields();
         }
+    }
+    
+    private void savePractitioner(String username, String name, String surnames, String radioButton, int groupID) {
+        Practitioner practitioner = new Practitioner();
+        practitioner.setUsername(username);
+        practitioner.setName(name);
+        practitioner.setSurnames(surnames);
+        practitioner.setShift(radioButton);
+        practitioner.setGroupID(groupID);
+        practitioner.setPassword(generatePassword());
+        practitioner.setUserType("Practitioner");
+        practitioner.setActive(true);  
+        if (displayRecordConfirmation()) {
+            IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
+            if (iUserDAO.addUser(practitioner)) {
+                displayUsernameDialog(username);
+                displayRecordSuccessDialog();
+                refreshTableView();
+                cleanTextField();
+            } else {
+                displayRecordAlreadyExist();
+            }   
+        }  
     }
     
     @FXML
@@ -209,7 +217,7 @@ public class ControllerAddPractitioner {
         linkColumnsWithAttributes();
     }
     
-    private boolean validateEmpty() {
+    private boolean areFieldsEmpty() {
         return (usernameTextField.getText().isEmpty() ||
                 nameTextField.getText().isEmpty() || 
                 surnamesTextField.getText().isEmpty() ||
@@ -221,7 +229,7 @@ public class ControllerAddPractitioner {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Nombre de usuario");
-        alert.setContentText("El username del Practicante registrado es: "+username);
+        alert.setContentText(String.format("El usuario del Profesor registrado es: %s", username));
         alert.showAndWait();   
     }
     
@@ -231,6 +239,14 @@ public class ControllerAddPractitioner {
         alert.setHeaderText("Matricula invÃ¡lida");
         alert.setContentText("Matricula invÃ¡lida. La primera letra debe ser una s minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
         alert.showAndWait(); 
+    }
+    
+    private void displayShiftNotMatch() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Grupo invÃ¡lido");
+        alert.setContentText("El practicante debe asignarse a un grupo del mismo turno");
+        alert.showAndWait();
     }
     
     public String generatePassword() {

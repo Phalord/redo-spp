@@ -13,14 +13,14 @@
    <center>
       <TableView fx:id="tableViewPractitioner" prefHeight="314.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="userColumn" prefWidth="100.0" resizable="false" text="User" />
-          <TableColumn fx:id="passwordColumn" prefWidth="100.0" resizable="false" text="Password" />
-            <TableColumn fx:id="nameColumn" prefWidth="120.0" resizable="false" text="Name" />
-            <TableColumn fx:id="surnameColumn" prefWidth="120.0" resizable="false" text="Surname" />
-            <TableColumn fx:id="userTypeColumn" prefWidth="100.0" resizable="false" text="UserType" />
-            <TableColumn fx:id="shiftColumn" prefWidth="100.0" resizable="false" text="Shift" />
-            <TableColumn fx:id="groupIDColumn" resizable="false" text="GroupID" />
-            <TableColumn fx:id="statusColumn" resizable="false" text="Status" />
+          <TableColumn fx:id="userColumn" prefWidth="100.0" resizable="false" text="Usuario" />
+          <TableColumn fx:id="passwordColumn" prefWidth="100.0" resizable="false" text="Contraseña" />
+            <TableColumn fx:id="nameColumn" prefWidth="100.0" resizable="false" text="Nombre(s)" />
+            <TableColumn fx:id="surnameColumn" prefWidth="100.0" resizable="false" text="Apellidos" />
+            <TableColumn fx:id="userTypeColumn" prefWidth="100.0" resizable="false" text="TipoDeUsuario" />
+            <TableColumn fx:id="shiftColumn" prefWidth="100.0" resizable="false" text="Turno" />
+            <TableColumn fx:id="groupIDColumn" resizable="false" text="IDGrupo" />
+            <TableColumn fx:id="statusColumn" resizable="false" text="Estado" />
         </columns>
       </TableView>
    </center>
@@ -41,4 +41,10 @@
         </menus>
       </MenuBar>
    </top>
+   <left>
+      <AnchorPane prefHeight="317.0" prefWidth="22.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <AnchorPane prefHeight="317.0" prefWidth="22.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

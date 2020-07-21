@@ -41,7 +41,7 @@ public class ControllerProfessorSection {
     @FXML
     private void registerProfessor() {
         IGroupDAO iGroupDAO = new GroupDAO();
-        List<Group> availableGroups = iGroupDAO.getAvailableGroups();
+        List<Group> availableGroups = iGroupDAO.getProfessorAvailableGroups();
         if (availableGroups == null) {
             displayConnectionError();
         } else if (availableGroups.isEmpty()) {
@@ -70,8 +70,21 @@ public class ControllerProfessorSection {
     }
     
     @FXML
-    private void deteleProfessor() {
-        
+    private void deleteProfessor() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_DeleteProfessor.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+            ControllerDeleteProfessor controllerDeleteProfessor = loader.getController();
+            controllerDeleteProfessor.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerProfessorSection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
     }
     
     @FXML

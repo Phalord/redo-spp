@@ -2,6 +2,7 @@ package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IProfessorDAO;
 import com.spp.model.domain.Group;
+import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
@@ -47,7 +48,7 @@ public class ProfessorDAO implements IProfessorDAO {
 
     public List<Professor> getAllProfessors() {
         List<Professor> professors = new ArrayList<>();
-        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username";
+        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID, CG.nrc FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -61,6 +62,7 @@ public class ProfessorDAO implements IProfessorDAO {
                 Group group = new Group();
                 group.setGroupID(resultSet.getInt("GroupID"));
                 professor.setGroup(group);
+                group.setNrc(resultSet.getString("nrc"));
                 professors.add(professor);
             }
         } catch (SQLException sqlException) {
@@ -106,7 +108,22 @@ public class ProfessorDAO implements IProfessorDAO {
 
     @Override
     public boolean deleteUser(Professor professor) {
-        return false;
+        return (updateStatusUserTable(professor));
+    }
+    
+    private boolean updateStatusUserTable(Professor professor) {
+        boolean result = false;
+        String query = "UPDATE User SET status = false WHERE username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, professor.getUsername());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, 
+                    sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 
     private boolean insertIntoUserTable(Professor professor) {
@@ -146,17 +163,21 @@ public class ProfessorDAO implements IProfessorDAO {
     }
     
     public final void getProfessorInformation(ObservableList<Professor> listProfessor) {
-        String query = "SELECT * FROM Professor INNER JOIN ClassGroup ON Professor.Username = User.Username";
+        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID, CG.nrc FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username where U.status = true";
         try (Connection connection = mySQLConnection.getConnection();
              Statement instruction = connection.createStatement();
              ResultSet resultSet = instruction.executeQuery(query)) {
             while(resultSet.next()){
                 Professor professor = new Professor();
                 professor.setUsername(resultSet.getString("Username"));
+                professor.setPassword(resultSet.getString("password"));
                 professor.setName(resultSet.getString("name"));
                 professor.setSurnames(resultSet.getString("surname"));
                 professor.setActive(resultSet.getBoolean("status"));
-                professor.setUserType(resultSet.getString("userType"));
+                Group group = new Group();
+                group.setGroupID(resultSet.getInt("GroupID"));
+                group.setNrc(resultSet.getString("nrc"));
+                professor.setGroup(group);
                 listProfessor.add(professor);
             }
         } catch (SQLException sqlException) {

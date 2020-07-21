@@ -124,7 +124,7 @@ public class ControllerPractitionerSection {
             controllerDeletePractitioner.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerDeletePractitioner.class.getName())
+            Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }

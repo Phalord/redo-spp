@@ -19,8 +19,8 @@
         <BorderPane>
             <center>
                 <VBox alignment="CENTER" spacing="15">
-                    <Button id="registerProfessor" text="Registrar Profesor" prefWidth="$BUTTON_SIZE" />
-                    <Button id="deleteProfessor" text="Eliminar Professor" prefWidth="$BUTTON_SIZE" />
+                    <Button id="registerProfessor" text="Registrar Profesor" prefWidth="$BUTTON_SIZE" onAction="#registerProfessor"/>
+                    <Button id="deleteProfessor" text="Eliminar Professor" prefWidth="$BUTTON_SIZE" onAction="#deleteProfessor"/>
                     <Button id="historyRecord" text="Historial" prefWidth="$BUTTON_SIZE" onAction="#goHistorySection"/>
                     <Button id="back" text="Atrás" prefWidth="$BACK_BUTTON_SIZE" onAction="#back"/>
                     <padding>

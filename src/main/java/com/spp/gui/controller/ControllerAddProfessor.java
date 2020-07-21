@@ -1,10 +1,18 @@
 package com.spp.gui.controller;
 
 import static com.spp.gui.Dialog.displayCancelConfirmation;
+import static com.spp.gui.Dialog.displayEmptyFields;
+import static com.spp.gui.Dialog.displayRecordAlreadyExist;
+import static com.spp.gui.Dialog.displayRecordConfirmation;
+import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.dao.ProfessorDAO;
+import com.spp.model.dataaccess.idao.IGroupDAO;
+import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Professor;
+import static com.spp.utils.TextValidator.validateProfessorEmployeeNumber;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,9 +50,7 @@ public class ControllerAddProfessor {
     @FXML private TableColumn<Professor, String> passwordColumn;
     @FXML private TableColumn<Professor, String> nameColumn;
     @FXML private TableColumn<Professor, String> surnameColumn;
-    @FXML private TableColumn<Professor, String> userTypeColumn;
-    @FXML private TableColumn<Professor, String> shiftColumn;
-    @FXML private TableColumn<Professor, String> groupIDColumn;
+    @FXML private TableColumn<Professor, String> groupNRCColumn;
     @FXML private TableColumn<Professor, String> statusColumn;
     private ObservableList<Professor> observableListProfessor;
     private final ProfessorDAO professorDAO;
@@ -69,12 +75,50 @@ public class ControllerAddProfessor {
     
     @FXML
     private void registerProfessorActionButton() {
-        
+        if (!areFieldsEmpty()) {
+            String username = this.usernameTextField.getText();
+            String name = this.nameTextField.getText();
+            String surnames = this.surnamesTextField.getText();
+            String password = this.professorPasswordField.getText();
+            Group group = groupIDComboBox.getValue();
+            Professor professor = new Professor();
+            if (validateProfessorEmployeeNumber(username)) {
+                professor.setUsername(username);
+                professor.setName(name);
+                professor.setSurnames(surnames);
+                professor.setPassword(password);
+                group.setLecturer(professor);
+                professor.setUserType("Professor");
+                professor.setActive(true);
+                if (displayRecordConfirmation()) {
+                    IUserDAO<Professor> iUserDAO = new ProfessorDAO();
+                    if (iUserDAO.addUser(professor)) {
+                        IGroupDAO iGroupDAO = new GroupDAO();
+                        if (iGroupDAO.assignLecturer(group)) {
+                            displayUsernameDialog(username, password);
+                            displayRecordSuccessDialog();
+                            refreshTableView();
+                            backScene();
+                        } else {
+                            displaySomethingWentWrong();
+                        }
+                    } else {
+                        displayRecordAlreadyExist();
+                    }
+                }
+            } else {
+                displayNotValidPersonalNumber();
+            }
+        } else {
+            displayEmptyFields();
+        }
     }
 
     @FXML
     private void cancel() {
-        backScene();
+        if (displayCancelConfirmation()) {
+            backScene();        
+        }
     }
 
     @FXML
@@ -99,22 +143,20 @@ public class ControllerAddProfessor {
     }
     
     private void backScene() {
-        if(displayCancelConfirmation()) {
-            Stage window = (Stage) borderPaneAddProfessor.getScene().getWindow();
-            Parent viewFile;
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/views/View_AdministratorHome.fxml"));
-            try {
-                viewFile = loader.load();
-            } catch (IOException ioException) {
-                Logger.getLogger(ControllerAddProfessor.class.getName())
-                        .log(Level.SEVERE, ioException.getMessage(), ioException);
-                return;
-            }
-            ControllerAdministratorHome controllerAdministratorHome = loader.getController();
-            controllerAdministratorHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
+        Stage window = (Stage) borderPaneAddProfessor.getScene().getWindow();
+        Parent viewFile;
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_AdministratorHome.fxml"));
+        try {
+            viewFile = loader.load();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerAddProfessor.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            return;
         }
+        ControllerAdministratorHome controllerAdministratorHome = loader.getController();
+        controllerAdministratorHome.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
     
     private void linkColumnsWithAttributes() {
@@ -122,10 +164,8 @@ public class ControllerAddProfessor {
         passwordColumn.setCellValueFactory(new PropertyValueFactory<> ("password"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surnames"));
-        userTypeColumn.setCellValueFactory(new PropertyValueFactory<>("userType"));
-        shiftColumn.setCellValueFactory(new PropertyValueFactory<>("shift"));
+        groupNRCColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
-        groupIDColumn.setCellValueFactory(new PropertyValueFactory<>("groupID"));
     }
     
     public void validateTextFields() {
@@ -149,14 +189,6 @@ public class ControllerAddProfessor {
         });
     }
     
-    private void cleanTextField() {
-        usernameTextField.setText("");
-        nameTextField.setText("");
-        surnamesTextField.setText("");
-        professorPasswordField.setText("");
-        groupIDComboBox.setValue(null);
-    }
-    
     private void refreshTableView() {
         observableListProfessor.clear();
         observableListProfessor = FXCollections.observableArrayList();
@@ -165,7 +197,7 @@ public class ControllerAddProfessor {
         linkColumnsWithAttributes();
     }
     
-    private boolean validateEmpty() {
+    private boolean areFieldsEmpty() {
         return (usernameTextField.getText().isEmpty() ||
                 nameTextField.getText().isEmpty() || 
                 surnamesTextField.getText().isEmpty() ||
@@ -173,17 +205,14 @@ public class ControllerAddProfessor {
                 groupIDComboBox.getValue() == null;
     }
 
-    private void displayUsernameDialog(String username) {
+    private void displayUsernameDialog(String username, String password) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Nombre de usuario");
-        alert.setContentText("El username del Practicante registrado es: "+username);
+        alert.setContentText(String.format("El usuario del Profesor registrado es: %s", username));
+        alert.setContentText(String.format("La contraseña del Profesor registrado es: %s", password));
         alert.showAndWait();   
     }
-    
-    /*displayPasswordDialog() {
-    
-    }*/
     
     private void displayNotValidPersonalNumber() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -192,6 +221,4 @@ public class ControllerAddProfessor {
         alert.setContentText("No. invÃ¡lido. La primera letra debe ser una p minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
         alert.showAndWait(); 
     }
-    
-    
 }
