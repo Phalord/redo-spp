@@ -139,7 +139,7 @@ public class ControllerAddActivity{
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(!newValue.matches("\\d*")){
-                    textFieldTitle.setText(newValue.replaceAll("[^0-9]", ""));
+                    textFieldEstimatedHours.setText(newValue.replaceAll("[^0-9]", ""));
                 }
             }
         });
