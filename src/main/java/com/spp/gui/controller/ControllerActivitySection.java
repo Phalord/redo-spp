@@ -66,7 +66,7 @@ public class ControllerActivitySection {
         String professorUsername = topMenu.getText();
         controllerAddActivity.setProfessorUsername(professorUsername);
         controllerAddActivity.initializePractitionerComboBox(groupStudents);
-        window.setScene(new Scene(viewFile, 600, 400));
+        window.setScene(new Scene(viewFile, 800, 400));
     }
 
     private void displayNotGroupStudents() {
