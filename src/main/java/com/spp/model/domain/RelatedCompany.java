@@ -11,80 +11,80 @@ public class RelatedCompany {
     private String sector;
     private String state;
 
-    public void setRelatedCompanyID(int relatedCompanyID) {
+    public final void setRelatedCompanyID(int relatedCompanyID) {
         this.relatedCompanyID = relatedCompanyID;
     }
 
-    public int getRelatedCompanyID() {
+    public final int getRelatedCompanyID() {
         return relatedCompanyID;
     }
 
-    public void setEmployee(ProjectResponsible employee) {
+    public final void setEmployee(ProjectResponsible employee) {
         this.employee = employee;
     }
 
-    public ProjectResponsible getEmployee() {
+    public final ProjectResponsible getEmployee() {
         return employee;
     }
 
-    public void setName(String name) {
+    public final void setName(String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setAddress(String address) {
+    public final void setAddress(String address) {
         this.address = address;
     }
 
-    public String getAddress() {
+    public final String getAddress() {
         return address;
     }
 
-    public void setCity(String city) {
+    public final void setCity(String city) {
         this.city = city;
     }
 
-    public String getCity() {
+    public final String getCity() {
         return city;
     }
 
-    public void setEmail(String email) {
+    public final void setEmail(String email) {
         this.email = email;
     }
 
-    public String getEmail() {
+    public final String getEmail() {
         return email;
     }
 
-    public void setPhone(String phone) {
+    public final void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getPhone() {
+    public final String getPhone() {
         return phone;
     }
 
-    public void setSector(String sector) {
+    public final void setSector(String sector) {
         this.sector = sector;
     }
 
-    public String getSector() {
+    public final String getSector() {
         return sector;
     }
 
-    public void setState(String state) {
+    public final void setState(String state) {
         this.state = state;
     }
 
-    public String getState() {
+    public final String getState() {
         return state;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return name;
     }
 }

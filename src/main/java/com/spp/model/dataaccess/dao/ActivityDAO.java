@@ -140,6 +140,37 @@ public class ActivityDAO implements IActivityDAO {
     }
 
     @Override
+    public final List<Activity> getPractitionerDeliveredActivities(String studentEnrollment) {
+        List<Activity> activities = new ArrayList<>();
+        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE deliveredAt != '0000-00-00' and DeliveredBy = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Activity activity = new Activity();
+                    activity.setActivityID(resultSet.getInt("ActivityID"));
+                    activity.setTitle(resultSet.getString("title"));
+                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
+                    activity.setDescription(resultSet.getString("description"));
+                    Practitioner deliveredBy = new Practitioner();
+                    deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
+                    activity.setDeliveredBy(deliveredBy);
+                    Professor createdBy = new Professor();
+                    createdBy.setUsername(resultSet.getString("CreatedBy"));
+                    activity.setCreatedBy(createdBy);
+                    activities.add(activity);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ActivityDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            activities = null;
+        }
+        return activities;
+    }
+
+    @Override
     public final Activity getByID(int id) {
         Activity activity = null;
         String query = "SELECT * FROM Activity";
@@ -212,4 +243,5 @@ public class ActivityDAO implements IActivityDAO {
         }
         return result;
     }
+
 }
