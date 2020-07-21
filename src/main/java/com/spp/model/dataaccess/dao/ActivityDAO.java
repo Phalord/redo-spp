@@ -82,7 +82,7 @@ public class ActivityDAO implements IActivityDAO {
     public final List<Activity> getOpenPractitionerActivities(String studentEnrollment,
                                                         Timestamp actualTime) {
         List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND deliveredAt = '0000-00-00'";
+        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND ReportID IS NULL";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, studentEnrollment);

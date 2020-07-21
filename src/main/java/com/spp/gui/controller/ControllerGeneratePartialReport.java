@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
+import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayNoActivitiesAdded;
 import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
@@ -42,8 +43,8 @@ import static com.spp.gui.Dialog.displaySuccessDialog;
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
-    @FXML private Spinner<Short> hoursCompletionSpinner;
-    @FXML private Spinner<Byte> reportNumberSpinner;
+    @FXML private Spinner<Integer> hoursCompletionSpinner;
+    @FXML private Spinner<Integer> reportNumberSpinner;
     @FXML private ComboBox<String> periodComboBox;
     @FXML private TableView<Activity> activitiesToReportTable;
     @FXML private TableColumn<Activity, String> titleColumn;
@@ -77,7 +78,6 @@ public class ControllerGeneratePartialReport {
         if (activity != null) {
             activitiesToReportTable.getItems().add(activity);
         }
-
     }
 
     private List<Activity> getOpenActivities() {
@@ -91,25 +91,31 @@ public class ControllerGeneratePartialReport {
 
     @FXML
     private void generatePartialReport() {
-        if (activitiesToReportTable.getItems().isEmpty()) {
-            displayNoActivitiesAdded();
-        } else {
-            if (displayConfirmationDialog("¿Desea generar el reporte parcial de actividades?")) {
-                PartialReport partialReport = new PartialReport();
-                partialReport.setReportType("Parcial");
-                partialReport.setPartialPeriod(periodComboBox.getValue());
-                partialReport.setProjectHoursCovered(hoursCompletionSpinner.getValue());
-                partialReport.setReportNumber(reportNumberSpinner.getValue());
-                prepareActivities();
-                partialReport.setActivities(activitiesToReportTable.getItems());
-                partialReport.generateFolio(new Timestamp(System.currentTimeMillis()), topMenu.getText());
-                if (savePartialReport(partialReport)) {
-                    displaySuccessDialog("El Reporte se ha guardado exitosamente.");
-                    goBack();
-                } else {
-                    displayConnectionError();
+        if (periodComboBox.getValue() != null) {
+            if (activitiesToReportTable.getItems().isEmpty()) {
+                displayNoActivitiesAdded();
+            } else {
+                if (displayConfirmationDialog("¿Desea generar el reporte parcial de actividades?")) {
+                    PartialReport partialReport = new PartialReport();
+                    partialReport.setReportType("Parcial");
+                    partialReport.setPartialPeriod(periodComboBox.getValue());
+                    final int hoursCompletion = hoursCompletionSpinner.getValue();
+                    partialReport.setProjectHoursCovered((short) hoursCompletion);
+                    final int reportNumber = reportNumberSpinner.getValue();
+                    partialReport.setReportNumber((byte) reportNumber);
+                    prepareActivities();
+                    partialReport.setActivities(activitiesToReportTable.getItems());
+                    partialReport.generateFolio(new Timestamp(System.currentTimeMillis()), topMenu.getText());
+                    if (savePartialReport(partialReport)) {
+                        displaySuccessDialog("El Reporte se ha guardado exitosamente.");
+                        goBack();
+                    } else {
+                        displayConnectionError();
+                    }
                 }
             }
+        } else {
+            displayEmptyFields();
         }
     }
 

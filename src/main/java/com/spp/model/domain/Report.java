@@ -1,6 +1,7 @@
 package com.spp.model.domain;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public abstract class Report {
@@ -60,6 +61,7 @@ public abstract class Report {
     }
 
     protected void generateFolio(Timestamp timestamp, String studentEnrollment) {
-        setReportID(String.format("%s--%s", timestamp.toString(), studentEnrollment));
+        String timestampString = new SimpleDateFormat("yyyy-MM-dd hh:mm:s").format(timestamp);
+        setReportID(String.format("%s-%s", timestampString, studentEnrollment));
     }
 }

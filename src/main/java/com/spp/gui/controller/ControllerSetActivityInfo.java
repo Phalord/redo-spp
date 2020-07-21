@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
+import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayTooManyCharacters;
 
 public class ControllerSetActivityInfo extends Stage {
@@ -26,10 +27,15 @@ public class ControllerSetActivityInfo extends Stage {
         initializeActivityComboBox(openActivities);
         initializeActualCompletionHoursTextField();
         addActivity.setOnAction((ActionEvent event) -> {
-            activity = activityComboBox.getValue();
-            activity.setActualCompletionHours((short) Integer
-                    .parseInt(actualCompletionHours.getText()));
-            super.close();
+            if ((activityComboBox.getValue() != null) &&
+                    !actualCompletionHours.getText().isEmpty()) {
+                activity = activityComboBox.getValue();
+                activity.setActualCompletionHours((short) Integer
+                        .parseInt(actualCompletionHours.getText()));
+                super.close();
+            } else {
+                displayEmptyFields();
+            }
         });
         super.showAndWait();
         return activity;
