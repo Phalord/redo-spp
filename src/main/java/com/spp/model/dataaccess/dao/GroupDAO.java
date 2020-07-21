@@ -115,6 +115,34 @@ public final List<Group> getAvailableGroups() {
         return group;
     }
 
+    public final Group getProfessorGroup(String username) {
+        Group group = null;
+        String query = "SELECT CP.GroupID, CP.educationalExperience, CP.nrc, CP.quota, CP.shift, CP.weeklyHours, U.Username, U.name FROM ClassGroup CP INNER JOIN Professor P on CP.Lecturer = P.Username INNER JOIN User U on P.Username = U.Username WHERE CP.lecturer = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    group = new Group();
+                    group.setGroupID(resultSet.getInt("GroupID"));
+                    group.setEducationalExperience(resultSet.getString("educationalExperience"));
+                    group.setNrc(resultSet.getString("nrc"));
+                    group.setShift(resultSet.getString("shift"));
+                    group.setQuota(resultSet.getByte("quota"));
+                    group.setWeeklyHours(resultSet.getByte("weeklyHours"));
+                    Professor professor = new Professor();
+                    professor.setUsername(resultSet.getString("Username"));
+                    professor.setName(resultSet.getString("name"));
+                    group.setLecturer(professor);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return group;
+    }
+
     @Override
     public final boolean addElement(Group group) {
         boolean result = false;

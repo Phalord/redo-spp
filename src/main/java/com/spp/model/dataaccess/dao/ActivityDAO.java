@@ -23,14 +23,15 @@ public class ActivityDAO implements IActivityDAO {
     @Override
     public final List<Activity> getListed() {
         List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity";
+        String query = "SELECT ActivityID, title, estimatedCompletionHours, DeliveredBy, dueDate, CreatedBy FROM Activity";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Activity activity = new Activity();
                 activity.setActivityID(resultSet.getInt("ActivityID"));
-                activity.setTitle("title");
+                activity.setTitle(resultSet.getString("title"));
+                activity.setEstimatedCompletionHours(resultSet.getShort("estimatedCompletionHours"));
                 activity.setDueDate(resultSet.getTimestamp("dueDate"));
                 Practitioner deliveredBy = new Practitioner();
                 deliveredBy.setUsername(resultSet.getString("DeliveredBy"));
@@ -82,7 +83,7 @@ public class ActivityDAO implements IActivityDAO {
     public final List<Activity> getOpenPractitionerActivities(String studentEnrollment,
                                                         Timestamp actualTime) {
         List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND deliveredAt = '0000-00-00'";
+        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND ReportID IS NULL";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, studentEnrollment);
@@ -113,7 +114,7 @@ public class ActivityDAO implements IActivityDAO {
 
     public List<Activity> getProfessorActivities(String username) {
         List<Activity> activities = new ArrayList<>();
-        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate FROM Activity Where CreatedBy = ?";
+        String query = "SELECT ActivityID, title, estimatedCompletionHours, description, DeliveredBy, dueDate FROM Activity Where CreatedBy = ?";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, username);
@@ -122,7 +123,7 @@ public class ActivityDAO implements IActivityDAO {
                     Activity activity = new Activity();
                     activity.setActivityID(resultSet.getInt("ActivityID"));
                     activity.setTitle(resultSet.getString("title"));
-                    activity.setTitle("description");
+                    activity.setEstimatedCompletionHours(resultSet.getShort("estimatedCompletionHours"));
                     activity.setDueDate(resultSet.getTimestamp("dueDate"));
                     Practitioner practitioner = new Practitioner();
                     practitioner.setUsername(resultSet.getString("DeliveredBy"));
