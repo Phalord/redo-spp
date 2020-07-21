@@ -1,6 +1,8 @@
 package com.spp.model.domain;
 
 public class Professor extends User {
+    private Group group;
+
     @Override
     public String generateEmail() {
         return String.format("%s@uv.mx", getUsername());
@@ -34,5 +36,13 @@ public class Professor extends User {
     @Override
     public final String getSurnames() {
         return super.getSurnames();
+    }
+
+    public final void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public final Group getGroup() {
+        return group;
     }
 }
