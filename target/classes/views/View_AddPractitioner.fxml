@@ -4,6 +4,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,6 +15,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -26,6 +30,11 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="277.0">
                <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Registrar practicante">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <GridPane layoutX="14.0" layoutY="49.0" prefHeight="220.0" prefWidth="305.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="110.0" />
@@ -42,7 +51,17 @@
                         <Label text="Matricula:">
                            <font>
                               <Font size="18.0" />
-                           </font></Label>
+                           </font>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></Label>
                         <Label text="Nombre:" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
@@ -51,6 +70,11 @@
                            <font>
                               <Font size="18.0" />
                            </font></Label>
+                        <Label text="ID del Grupo:" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                         <Label text="Turno:" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
@@ -71,27 +95,20 @@
                               <Insets top="14.0" />
                            </GridPane.margin>
                         </HBox>
-                        <Label text="ID del Grupo:" GridPane.rowIndex="3">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
                      </children>
                      <effect>
-                        <Lighting bumpInput="$null">
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
                            <light>
                               <Light.Distant />
                            </light>
                         </Lighting>
                      </effect>
                   </GridPane>
-                  <Label layoutX="14.0" layoutY="14.0" text="Registrar practicante">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
                   <Button layoutX="255.0" layoutY="323.0" mnemonicParsing="false" onAction="#registerPractitionerActionButton" text="Registrar" />
-                  <Button layoutX="182.0" layoutY="323.0" mnemonicParsing="false" onAction="#cancelActionButton" text="Cancelar" />
+                  <Button layoutX="182.0" layoutY="323.0" mnemonicParsing="false" onAction="#cancel" text="Cancelar" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="263.0">
                <children>
@@ -113,6 +130,12 @@
       </SplitPane>
    </center>
    <top>
-      <AnchorPane prefHeight="36.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+            <Menu fx:id="topMenu" mnemonicParsing="false">
+                <MenuItem mnemonicParsing="false" onAction="#logOut" text="Cerrar Sesión" />
+            </Menu>
+        </menus>
+      </MenuBar>
    </top>
 </BorderPane>

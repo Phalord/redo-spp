@@ -5,16 +5,14 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
-import com.spp.model.dataaccess.dao.GroupDAO;
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -23,7 +21,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -119,19 +116,47 @@ public class ControllerAddPractitioner {
     }
     
     @FXML
-    private void cancelActionButton() {
+    private void cancel() {
+        backScene();
+    }
+
+    @FXML
+    private void logOut() {
+        closeWindow();
+        displayLogin();
+    }
+
+    private void closeWindow() {
+        Stage stage1 = (Stage) borderPaneAddPractitioner.getScene().getWindow();
+        stage1.close();
+    }
+
+    private void displayLogin() {
+        try {
+            new ControllerLogin().display();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerPractitionerHome.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
+    }
+    
+    private void backScene() {
         if(displayCancelConfirmation()) {
             Stage window = (Stage) borderPaneAddPractitioner.getScene().getWindow();
             Parent viewFile;
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_CoordinatorHome.fxml"));
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_CoordinatorHome.fxml"));
                 viewFile = loader.load();
-                ControllerCoordinatorHome coordinatorHomeController = loader.getController();
-                window.setScene(new Scene(viewFile));
             } catch (IOException ioException) {
                 Logger.getLogger(ControllerAddPractitioner.class.getName())
-                        .log(Level.SEVERE,ioException.getMessage(), ioException);
+                        .log(Level.SEVERE, ioException.getMessage(), ioException);
+                return;
             }
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile, 600, 400));
         }
     }
     

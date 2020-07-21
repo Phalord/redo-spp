@@ -4,15 +4,16 @@ import com.spp.model.dataaccess.idao.IProfessorDAO;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 
 public class ProfessorDAO implements IProfessorDAO {
     private final MySQLConnection mySQLConnection;
@@ -116,5 +117,25 @@ public class ProfessorDAO implements IProfessorDAO {
             return false;
         }
         return result;
+    }
+    
+    public final void getProfessorInformation(ObservableList<Professor> listProfessor) {
+        String query = "SELECT * FROM Professor INNER JOIN ClassGroup ON Professor.Username = User.Username";
+        try (Connection connection = mySQLConnection.getConnection();
+             Statement instruction = connection.createStatement();
+             ResultSet resultSet = instruction.executeQuery(query)) {
+            while(resultSet.next()){
+                Professor professor = new Professor();
+                professor.setUsername(resultSet.getString("Username"));
+                professor.setName(resultSet.getString("name"));
+                professor.setSurnames(resultSet.getString("surname"));
+                professor.setActive(resultSet.getBoolean("status"));
+                professor.setUserType(resultSet.getString("userType"));
+                listProfessor.add(professor);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProfessorDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
     }
 }

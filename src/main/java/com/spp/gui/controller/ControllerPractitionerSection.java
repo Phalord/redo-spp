@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -62,9 +61,10 @@ public class ControllerPractitionerSection {
             viewFile = loader.load();
             ControllerAddPractitioner controllerAddPractitioner = loader.getController();
             controllerAddPractitioner.initialize(availableGroups);
+            controllerAddPractitioner.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerAddPractitioner.class.getName())
+            Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             displaySomethingWentWrong();
         }
@@ -121,6 +121,7 @@ public class ControllerPractitionerSection {
         try {
             viewFile = loader.load();
             ControllerDeletePractitioner controllerDeletePractitioner = loader.getController();
+            controllerDeletePractitioner.setTopMenuText(topMenu.getText());
             window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerDeletePractitioner.class.getName())
