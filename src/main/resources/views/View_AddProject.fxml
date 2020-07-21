@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.spp.gui.controller.ControllerAddProject">
+   <children>
+      <GridPane layoutX="14.0" layoutY="68.0" prefHeight="286.0" prefWidth="407.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.7999755859375" minWidth="10.0" prefWidth="152.2" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.5999755859375" minWidth="10.0" prefWidth="133.40001220703124" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.5999755859375" minWidth="10.0" prefWidth="58.99998779296874" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="73.59998168945313" minHeight="10.0" prefHeight="43.80000610351563" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="143.20001831054688" minHeight="10.0" prefHeight="97.4" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0" prefHeight="94.20000000000002" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="180.8000244140625" minHeight="10.0" prefHeight="50.399978637695284" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Título:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label text="Descripción:" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldTitle" prefHeight="26.0" prefWidth="151.0" GridPane.columnIndex="1" />
+            <TextArea fx:id="textAreaDescription" prefHeight="137.0" prefWidth="161.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets top="6.0" />
+               </GridPane.margin>
+            </TextArea>
+            <Label text="Recursos:" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label text="Organización:" GridPane.rowIndex="3">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboBoxCompany" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#addCompany" prefHeight="26.0" prefWidth="62.0" text="Agregar" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextArea fx:id="textAreaResources" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets top="9.0" />
+               </GridPane.margin>
+            </TextArea>
+         </children>
+      </GridPane>
+      <Label layoutX="86.0" layoutY="32.0" text="Registrar proyecto">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button layoutX="98.0" layoutY="361.0" mnemonicParsing="false" onAction="#registerProject" text="Registrar" />
+      <Button layoutX="211.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnProjectSection" text="Cancelar" />
+      <TableView fx:id="tableViewProject" layoutX="421.0" layoutY="50.0" onSort="#showAllProjects" prefHeight="338.0" prefWidth="368.0">
+        <columns>
+          <TableColumn fx:id="columnID" prefWidth="29.60003662109375" text="ID" />
+          <TableColumn fx:id="columnTitle" prefWidth="118.4000244140625" text="Título" />
+            <TableColumn fx:id="columnCompany" prefWidth="121.59991455078125" text="Organización" />
+            <TableColumn fx:id="columnResponsible" prefWidth="99.2000732421875" text="Responsable" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
