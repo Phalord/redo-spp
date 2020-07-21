@@ -77,12 +77,7 @@ public class ControllerPractitionerSection {
         if (pendingProjectRequests == null) {
             displayConnectionError();
         } else if (pendingProjectRequests.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("No hay proyectos disponibles");
-            alert.setContentText(String.format("Actualmente no existen proyectos disponibles para %s",
-                    "solicitar."));
-            alert.showAndWait();
+            displayNoPendingRequests();
         } else {
             setAssignProjectScene(pendingProjectRequests);
         }
@@ -174,6 +169,11 @@ public class ControllerPractitionerSection {
     }
 
     private void displayNoPendingRequests() {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("No hay proyectos disponibles");
+        alert.setContentText(String.format("Actualmente no existen proyectos disponibles para %s",
+                "solicitar."));
+        alert.showAndWait();
     }
 }
