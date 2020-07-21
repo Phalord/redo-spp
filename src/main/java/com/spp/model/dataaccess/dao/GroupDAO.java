@@ -43,10 +43,32 @@ public class GroupDAO implements IGroupDAO {
         return groups;
     }
 
+@Override
+public final List<Group> getAvailableGroups() {
+    List<Group> groups = new ArrayList<>();
+    String query = "SELECT GroupID, nrc, shift FROM ClassGroup WHERE availableQuota > 0";
+    try (Connection connection = mySQLConnection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query);
+         ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+            Group group = new Group();
+            group.setGroupID(resultSet.getInt("GroupID"));
+            group.setNrc(resultSet.getString("nrc"));
+            group.setShift(resultSet.getString("shift"));
+            groups.add(group);
+        }
+    } catch (SQLException sqlException) {
+        Logger.getLogger(GroupDAO.class.getName())
+                .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        groups = null;
+    }
+    return groups;
+}
+    
     @Override
-    public final List<Group> getAvailableGroups() {
+    public final List<Group> getProfessorAvailableGroups() {
         List<Group> groups = new ArrayList<>();
-        String query = "SELECT GroupID, nrc FROM ClassGroup WHERE availableQuota > 0";
+        String query = "SELECT CP.GroupID, CP.nrc FROM ClassGroup CP INNER JOIN Professor P on CP.Lecturer = P.Username INNER JOIN User U on P.Username = U.Username  WHERE availableQuota > 0 AND CP.Lecturer IS NULL OR U.status = false";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -141,6 +163,23 @@ public class GroupDAO implements IGroupDAO {
         }
         return result;
     }
+    
+    @Override
+    public final boolean assignLecturer(Group group) {
+    boolean result = false;
+    String query = "UPDATE ClassGroup SET lecturer = ? WHERE GroupID = ?";
+    try (Connection connection = mySQLConnection.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, group.getLecturer().getUsername());
+        preparedStatement.setInt(2, group.getGroupID());
+        int numberRowsAffected = preparedStatement.executeUpdate();
+        result = (numberRowsAffected > 0);
+    } catch (SQLException sqlException) {
+        Logger.getLogger(GroupDAO.class.getName())
+                .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+    }
+    return result;
+}
 
     @Override
     public boolean deleteElement(int id) {

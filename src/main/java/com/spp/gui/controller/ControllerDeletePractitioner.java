@@ -3,6 +3,7 @@ package com.spp.gui.controller;
 import static com.spp.gui.Dialog.displayCancelConfirmation;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayDeleteConfirmation;
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDisableDialog;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
@@ -81,19 +82,47 @@ public class ControllerDeletePractitioner implements Initializable {
     }
     
     @FXML
-    private void cancelActionButton() {
+    private void cancel() {
+        backScene();
+    }
+
+    @FXML
+    private void logOut() {
+        closeWindow();
+        displayLogin();
+    }
+
+    private void closeWindow() {
+        Stage stage1 = (Stage) borderPaneDeletePractitioner.getScene().getWindow();
+        stage1.close();
+    }
+
+    private void displayLogin() {
+        try {
+            new ControllerLogin().display();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerPractitionerHome.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
+    }
+    
+    private void backScene() {
         if(displayCancelConfirmation()) {
             Stage window = (Stage) borderPaneDeletePractitioner.getScene().getWindow();
             Parent viewFile;
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_CoordinatorHome.fxml"));
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_CoordinatorHome.fxml"));
                 viewFile = loader.load();
-                ControllerCoordinatorHome coordinatorHomeController = loader.getController();
-                window.setScene(new Scene(viewFile));
             } catch (IOException ioException) {
-                Logger.getLogger(ControllerAddPractitioner.class.getName())
-                        .log(Level.SEVERE,ioException.getMessage(), ioException);
+                Logger.getLogger(ControllerDeletePractitioner.class.getName())
+                        .log(Level.SEVERE, ioException.getMessage(), ioException);
+                return;
             }
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile, 600, 400));
         }
     }
     
@@ -129,10 +158,10 @@ public class ControllerDeletePractitioner implements Initializable {
     }
     
     private void displaySelectionPractitionerDialog() {
-            Alert selectPractitionerAlertDialog = new Alert(Alert.AlertType.WARNING);
-            selectPractitionerAlertDialog.setTitle("Aviso");
-            selectPractitionerAlertDialog.setHeaderText("No se selecccionó ningún practicante");
-            selectPractitionerAlertDialog.setContentText("Debe seleccionar un practicante para eliminar"); 
-            selectPractitionerAlertDialog.showAndWait();
+        Alert selectPractitionerAlertDialog = new Alert(Alert.AlertType.WARNING);
+        selectPractitionerAlertDialog.setTitle("Aviso");
+        selectPractitionerAlertDialog.setHeaderText("No se selecccionó ningún practicante");
+        selectPractitionerAlertDialog.setContentText("Debe seleccionar un practicante para eliminar"); 
+        selectPractitionerAlertDialog.showAndWait();
     }
 }

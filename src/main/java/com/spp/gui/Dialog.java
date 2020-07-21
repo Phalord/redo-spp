@@ -87,7 +87,7 @@ public class Dialog {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Registro exitoso");
-        alert.setContentText("¿Se ha realizado el registro exitosamente!");
+        alert.setContentText("¡Se ha realizado el registro exitosamente!");
         alert.showAndWait();      
     }
     

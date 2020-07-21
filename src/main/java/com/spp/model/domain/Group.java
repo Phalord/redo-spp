@@ -78,6 +78,6 @@ public class Group {
 
     @Override
     public String toString() {
-        return String.format("NRC: %s", getNrc());
+        return String.format("NRC: %s - %s", getNrc(), getShift());
     }
 }
