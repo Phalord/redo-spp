@@ -1,6 +1,7 @@
 package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IPractitionerDAO;
+import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
@@ -36,7 +37,29 @@ public class PractitionerDAO implements IPractitionerDAO {
         } catch (SQLException sqlException) {
             Logger.getLogger(PractitionerDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            return null;
+            practitioners = null;
+        }
+        return practitioners;
+    }
+
+    public List<Practitioner> getGroupStudents(Group group) {
+        List<Practitioner> practitioners = new ArrayList<>();
+        String query = "SELECT P.Username, U.name FROM Practitioner P INNER JOIN ClassGroup CG on P.GroupID = CG.GroupID INNER JOIN User U on P.Username = U.Username AND U.status = true AND P.GroupID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setInt(1, group.getGroupID());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Practitioner practitioner = new Practitioner();
+                    practitioner.setUsername(resultSet.getString("Username"));
+                    practitioner.setName(resultSet.getString("name"));
+                    practitioners.add(practitioner);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            practitioners = null;
         }
         return practitioners;
     }
@@ -127,8 +150,6 @@ public class PractitionerDAO implements IPractitionerDAO {
         }
         return result;
     }
-
-
     
     public final void getPractitionerInformation(ObservableList<Practitioner> listPractitioner) {
         String query = "SELECT * FROM Practitioner INNER JOIN User ON Practitioner.Username = User.Username";
