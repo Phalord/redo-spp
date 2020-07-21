@@ -44,7 +44,7 @@ public class ControllerAddActivity{
     @FXML private TableColumn<Activity, Integer> columnID;
     @FXML private TableColumn<Activity, String> columnTitle;
     @FXML private TableColumn<Activity, Timestamp> columnDueDate;
-    @FXML private TableColumn<Activity, Integer> columnEstimatedHours;
+    @FXML private TableColumn<Activity, Short> columnEstimatedHours;
     @FXML private TableColumn<Activity, Practitioner> columnPractitioner;
     @FXML private ComboBox<Practitioner> comboBoxPractitioner;
     private ObservableList<Practitioner> availablePractitionersOL;
@@ -122,11 +122,11 @@ public class ControllerAddActivity{
     }
     
     private void linkColumns(){
-        columnID.setCellValueFactory(new PropertyValueFactory<> ("ID"));
-        columnTitle.setCellValueFactory(new PropertyValueFactory<> ("Titulo"));
-        columnDueDate.setCellValueFactory(new PropertyValueFactory<> ("Fecha de entrega"));
-        columnEstimatedHours.setCellValueFactory(new PropertyValueFactory<> ("Horas estimadas"));
-        columnPractitioner.setCellValueFactory(new PropertyValueFactory<> ("Practicante"));
+        columnID.setCellValueFactory(new PropertyValueFactory<> ("activityID"));
+        columnTitle.setCellValueFactory(new PropertyValueFactory<> ("title"));
+        columnDueDate.setCellValueFactory(new PropertyValueFactory<> ("dueDate"));
+        columnEstimatedHours.setCellValueFactory(new PropertyValueFactory<> ("estimatedCompletionHours"));
+        columnPractitioner.setCellValueFactory(new PropertyValueFactory<> ("deliveredBy"));
     }
     
     public void enterCorrectInformation(){
