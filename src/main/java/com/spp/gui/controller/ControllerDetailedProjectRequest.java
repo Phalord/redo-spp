@@ -78,10 +78,10 @@ public class ControllerDetailedProjectRequest {
         TableColumn<Project, Void> detailsColumn = new TableColumn<>("Detalles");
         Callback<TableColumn<Project, Void>, TableCell<Project, Void>> cellFactory =
                 param -> new TableCell<>() {
-                    private final Button button = new Button("Detalles");
+                    private final Button detailsButton = new Button("Detalles");
 
                     {
-                        button.setOnAction((ActionEvent event) -> {
+                        detailsButton.setOnAction((ActionEvent event) -> {
                             Project project = getTableView().getItems().get(getIndex());
                             displayProjectInformation(project);
                         });
@@ -94,7 +94,7 @@ public class ControllerDetailedProjectRequest {
                             setGraphic(null);
                         } else {
                             setAlignment(Pos.CENTER);
-                            setGraphic(button);
+                            setGraphic(detailsButton);
                         }
                     }
                 };
@@ -107,10 +107,10 @@ public class ControllerDetailedProjectRequest {
         TableColumn<Project, Void> assignColumn = new TableColumn<>("Asignar");
         Callback<TableColumn<Project, Void>, TableCell<Project, Void>> cellFactory =
                 param -> new TableCell<>() {
-                    private final Button button = new Button("Asignar");
+                    private final Button assignButton = new Button("Asignar");
 
                     {
-                        button.setOnAction((ActionEvent event) -> {
+                        assignButton.setOnAction((ActionEvent event) -> {
                             Project project = getTableView().getItems().get(getIndex());
                             if (displayConfirmationDialog("¿Desea realizar la asignación?")) {
                                 assignProject(project, projectAssignment);
@@ -125,7 +125,7 @@ public class ControllerDetailedProjectRequest {
                             setGraphic(null);
                         } else {
                             setAlignment(Pos.CENTER);
-                            setGraphic(button);
+                            setGraphic(assignButton);
                         }
                     }
                 };

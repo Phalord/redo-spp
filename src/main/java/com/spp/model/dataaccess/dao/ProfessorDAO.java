@@ -1,6 +1,7 @@
 package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IProfessorDAO;
+import com.spp.model.domain.Group;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
@@ -39,7 +40,33 @@ public class ProfessorDAO implements IProfessorDAO {
         } catch (SQLException sqlException) {
             Logger.getLogger(ProfessorDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            return null;
+            professors = null;
+        }
+        return professors;
+    }
+
+    public List<Professor> getAllProfessors() {
+        List<Professor> professors = new ArrayList<>();
+        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Professor professor = new Professor();
+                professor.setUsername(resultSet.getString("Username"));
+                professor.setPassword(resultSet.getString("password"));
+                professor.setName(resultSet.getString("name"));
+                professor.setSurnames(resultSet.getString("surname"));
+                professor.setActive(resultSet.getBoolean("status"));
+                Group group = new Group();
+                group.setGroupID(resultSet.getInt("GroupID"));
+                professor.setGroup(group);
+                professors.add(professor);
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ProfessorDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            professors = null;
         }
         return professors;
     }
@@ -114,7 +141,6 @@ public class ProfessorDAO implements IProfessorDAO {
         } catch (SQLException sqlException) {
             Logger.getLogger(ProfessorDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
-            return false;
         }
         return result;
     }

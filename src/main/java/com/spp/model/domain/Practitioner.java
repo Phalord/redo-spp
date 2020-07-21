@@ -68,4 +68,9 @@ public class Practitioner extends User {
     public final int getGroupID() {
         return groupID;
     }
+
+    @Override
+    public final String toString() {
+        return getUsername();
+    }
 }

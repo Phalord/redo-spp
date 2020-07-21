@@ -21,7 +21,7 @@ public class ActivityDAO implements IActivityDAO {
     private final MySQLConnection mySQLConnection = new MySQLConnection();
 
     @Override
-    public List<Activity> getListed() {
+    public final List<Activity> getListed() {
         List<Activity> activities = new ArrayList<>();
         String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity";
         try (Connection connection = mySQLConnection.getConnection();
@@ -49,7 +49,7 @@ public class ActivityDAO implements IActivityDAO {
     }
 
     @Override
-    public List<Activity> getPractitionerActivities(String studentEnrollment) {
+    public final List<Activity> getPractitionerActivities(String studentEnrollment) {
         List<Activity> activities = new ArrayList<>();
         String query = "SELECT ActivityID, title, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -79,7 +79,7 @@ public class ActivityDAO implements IActivityDAO {
     }
 
     @Override
-    public List<Activity> getOpenPractitionerActivities(String studentEnrollment,
+    public final List<Activity> getOpenPractitionerActivities(String studentEnrollment,
                                                         Timestamp actualTime) {
         List<Activity> activities = new ArrayList<>();
         String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate, CreatedBy FROM Activity WHERE DeliveredBy = ? AND dueDate > ? AND deliveredAt = '0000-00-00'";
@@ -111,8 +111,35 @@ public class ActivityDAO implements IActivityDAO {
         return activities;
     }
 
+    public List<Activity> getProfessorActivities(String username) {
+        List<Activity> activities = new ArrayList<>();
+        String query = "SELECT ActivityID, title, description, DeliveredBy, dueDate FROM Activity Where CreatedBy = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Activity activity = new Activity();
+                    activity.setActivityID(resultSet.getInt("ActivityID"));
+                    activity.setTitle(resultSet.getString("title"));
+                    activity.setTitle("description");
+                    activity.setDueDate(resultSet.getTimestamp("dueDate"));
+                    Practitioner practitioner = new Practitioner();
+                    practitioner.setUsername(resultSet.getString("DeliveredBy"));
+                    activity.setDeliveredBy(practitioner);
+                    activities.add(activity);
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(ActivityDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            activities = null;
+        }
+        return activities;
+    }
+
     @Override
-    public Activity getByID(int id) {
+    public final Activity getByID(int id) {
         Activity activity = null;
         String query = "SELECT * FROM Activity";
         try (Connection connection = mySQLConnection.getConnection();
@@ -163,12 +190,12 @@ public class ActivityDAO implements IActivityDAO {
     }
 
     @Override
-    public boolean deleteElement(int id) {
+    public final boolean deleteElement(int id) {
         return false;
     }
 
     @Override
-    public boolean reportActivity(Activity activity, PartialReport partialReport) {
+    public final boolean reportActivity(Activity activity, PartialReport partialReport) {
         boolean result = false;
         String query = "UPDATE Activity SET ReportID = ?, deliveredAt = ? WHERE ActivityID = ?";
         try (Connection connection = mySQLConnection.getConnection();
