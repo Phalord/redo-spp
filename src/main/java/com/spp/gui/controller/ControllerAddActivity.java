@@ -1,6 +1,5 @@
 package com.spp.gui.controller;
 
-
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
@@ -26,7 +25,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.SortEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -47,17 +45,16 @@ public class ControllerAddActivity{
     @FXML private TableColumn<Activity, Short> columnEstimatedHours;
     @FXML private TableColumn<Activity, Practitioner> columnPractitioner;
     @FXML private ComboBox<Practitioner> comboBoxPractitioner;
-    private ObservableList<Practitioner> availablePractitionersOL;
-    private ObservableList<Activity> activityObservableList;
     private String professorUsername;
-    private final ActivityDAO activityDAOFinal;
+    private final IActivityDAO activityDAOFinal;
     
     public ControllerAddActivity(){
         this.activityDAOFinal = new ActivityDAO();
     }
             
     public final void initialize() {
-        availablePractitionersOL = FXCollections.observableArrayList();
+        linkColumns();
+        enterCorrectInformation();
     }    
 
     @FXML
@@ -109,14 +106,14 @@ public class ControllerAddActivity{
     }
 
     @FXML
-    private void showAllActivities(SortEvent<Practitioner> event) {
+    private void showAllActivities() {
         linkColumns();
         IActivityDAO iActivity = new ActivityDAO();
         List<Activity> listActivity = iActivity.getProfessorActivities(professorUsername);
         if(listActivity == null){
             displaySomethingWentWrong();
         } else {
-            activityObservableList = FXCollections.observableArrayList(listActivity);
+            ObservableList<Activity> activityObservableList = FXCollections.observableArrayList(listActivity);
             tableViewActivity.setItems(activityObservableList);
         }
     }
@@ -149,7 +146,7 @@ public class ControllerAddActivity{
     }
     
     public final void initializePractitionerComboBox(List<Practitioner> availablePractitioners) {
-        availablePractitionersOL = FXCollections.observableArrayList(availablePractitioners);
+        ObservableList<Practitioner> availablePractitionersOL = FXCollections.observableArrayList(availablePractitioners);
         comboBoxPractitioner.getItems().setAll(availablePractitionersOL);
     }
     
