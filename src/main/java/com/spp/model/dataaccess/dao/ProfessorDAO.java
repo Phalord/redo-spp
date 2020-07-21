@@ -2,7 +2,6 @@ package com.spp.model.dataaccess.dao;
 
 import com.spp.model.dataaccess.idao.IProfessorDAO;
 import com.spp.model.domain.Group;
-import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
@@ -162,6 +161,7 @@ public class ProfessorDAO implements IProfessorDAO {
         return result;
     }
     
+    @Override
     public final void getProfessorInformation(ObservableList<Professor> listProfessor) {
         String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID, CG.nrc FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username where U.status = true";
         try (Connection connection = mySQLConnection.getConnection();
