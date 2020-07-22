@@ -46,7 +46,16 @@ public class ControllerGenerateDocumentation {
 
     @FXML
     private void generateMonthlyReport() {
-        notYetSupportedDialog();
+        IActivityDAO iActivityDAO = new ActivityDAO();
+        List<Activity> deliveredActivities = iActivityDAO.getOpenPractitionerActivities(
+                topMenu.getText(), new Timestamp(System.currentTimeMillis()));
+        if (deliveredActivities == null) {
+            displayConnectionError();
+        } else if (deliveredActivities.isEmpty()) {
+            displayNoActivitiesToReport();
+        } else {
+            //displayGeneratePartialReport(deliveredActivities);
+        }
     }
 
     @FXML
