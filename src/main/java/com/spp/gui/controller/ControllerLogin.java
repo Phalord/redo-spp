@@ -23,7 +23,7 @@ public class ControllerLogin {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
-    public void display() throws IOException {
+    public final void display() throws IOException {
         Parent viewFile = FXMLLoader.load(getClass().getResource("/views/View_Login.fxml"));
         window.setScene(new Scene(viewFile, 300, 600));
         window.setResizable(false);

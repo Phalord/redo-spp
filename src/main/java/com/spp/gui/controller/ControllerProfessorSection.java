@@ -1,8 +1,14 @@
 package com.spp.gui.controller;
 
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.gui.controller.ControllerPractitionerSection.displayNoAvailableGroups;
+import com.spp.model.dataaccess.dao.GroupDAO;
+import com.spp.model.dataaccess.idao.IGroupDAO;
+import com.spp.model.domain.Group;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -34,12 +40,51 @@ public class ControllerProfessorSection {
     
     @FXML
     private void registerProfessor() {
-        
+        IGroupDAO iGroupDAO = new GroupDAO();
+        List<Group> availableGroups = iGroupDAO.getProfessorAvailableGroups();
+        if (availableGroups == null) {
+            displayConnectionError();
+        } else if (availableGroups.isEmpty()) {
+            displayNoAvailableGroups();
+        } else {
+            displayAddProfessorScene(availableGroups);
+        }
+    }
+    
+    private void displayAddProfessorScene(List<Group> availableGroups) {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_AddProfessor.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+            ControllerAddProfessor controllerAddProfessor = loader.getController();
+            controllerAddProfessor.initialize(availableGroups);
+            controllerAddProfessor.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerProfessorSection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
     }
     
     @FXML
-    private void deteleProfessor() {
-        
+    private void deleteProfessor() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_DeleteProfessor.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+            ControllerDeleteProfessor controllerDeleteProfessor = loader.getController();
+            controllerDeleteProfessor.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile));
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerProfessorSection.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
     }
     
     @FXML

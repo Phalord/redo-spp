@@ -5,16 +5,14 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
-import com.spp.model.dataaccess.dao.GroupDAO;
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -23,7 +21,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -83,33 +80,18 @@ public class ControllerAddPractitioner {
     
     @FXML
     private void registerPractitionerActionButton() {   
-        if (!validateEmpty()) {
+        if (!areFieldsEmpty()) {
             String username = this.usernameTextField.getText();
             String name = this.nameTextField.getText();
             String surnames = this.surnamesTextField.getText();
-            String radioButton = this.radioButtonEvening.isSelected()?"Matutino":"Vespertino";
+            String radioButton = this.radioButtonEvening.isSelected()?"Vespertino":"Matutino";
             int groupID = groupIDComboBox.getValue().getGroupID();
-            Practitioner practitioner = new Practitioner();
             if (validatePractitionerEnrollment(username)) {
-                practitioner.setUsername(username);
-                practitioner.setName(name);
-                practitioner.setSurnames(surnames);
-                practitioner.setShift(radioButton);
-                practitioner.setGroupID(groupID);
-                practitioner.setPassword(generatePassword());
-                practitioner.setUserType("Practitioner");
-                practitioner.setActive(true);  
-                if (displayRecordConfirmation()) {
-                    IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
-                    if (iUserDAO.addUser(practitioner)) {
-                        displayUsernameDialog(username);
-                        displayRecordSuccessDialog();
-                        refreshTableView();
-                        cleanTextField();
-                    } else {
-                        displayRecordAlreadyExist();
-                    }   
-                }                
+                if (groupIDComboBox.getValue().getShift().equals(radioButton)) {
+                    savePractitioner(username,name,surnames,radioButton,groupID);
+                } else {
+                    displayShiftNotMatch();
+                }
             } else {
                 displayNotValidEnrollment();
             }
@@ -118,20 +100,71 @@ public class ControllerAddPractitioner {
         }
     }
     
+    private void savePractitioner(String username, String name, String surnames, String radioButton, int groupID) {
+        Practitioner practitioner = new Practitioner();
+        practitioner.setUsername(username);
+        practitioner.setName(name);
+        practitioner.setSurnames(surnames);
+        practitioner.setShift(radioButton);
+        practitioner.setGroupID(groupID);
+        practitioner.setPassword(generatePassword());
+        practitioner.setUserType("Practitioner");
+        practitioner.setActive(true);  
+        if (displayRecordConfirmation()) {
+            IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
+            if (iUserDAO.addUser(practitioner)) {
+                displayUsernameDialog(username);
+                displayRecordSuccessDialog();
+                refreshTableView();
+                cleanTextField();
+            } else {
+                displayRecordAlreadyExist();
+            }   
+        }  
+    }
+    
     @FXML
-    private void cancelActionButton() {
+    private void cancel() {
+        backScene();
+    }
+
+    @FXML
+    private void logOut() {
+        closeWindow();
+        displayLogin();
+    }
+
+    private void closeWindow() {
+        Stage stage1 = (Stage) borderPaneAddPractitioner.getScene().getWindow();
+        stage1.close();
+    }
+
+    private void displayLogin() {
+        try {
+            new ControllerLogin().display();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerPractitionerHome.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+        }
+    }
+    
+    private void backScene() {
         if(displayCancelConfirmation()) {
             Stage window = (Stage) borderPaneAddPractitioner.getScene().getWindow();
             Parent viewFile;
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_CoordinatorHome.fxml"));
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_CoordinatorHome.fxml"));
                 viewFile = loader.load();
-                ControllerCoordinatorHome coordinatorHomeController = loader.getController();
-                window.setScene(new Scene(viewFile));
             } catch (IOException ioException) {
                 Logger.getLogger(ControllerAddPractitioner.class.getName())
-                        .log(Level.SEVERE,ioException.getMessage(), ioException);
+                        .log(Level.SEVERE, ioException.getMessage(), ioException);
+                return;
             }
+            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
+            window.setScene(new Scene(viewFile, 600, 400));
         }
     }
     
@@ -184,7 +217,7 @@ public class ControllerAddPractitioner {
         linkColumnsWithAttributes();
     }
     
-    private boolean validateEmpty() {
+    private boolean areFieldsEmpty() {
         return (usernameTextField.getText().isEmpty() ||
                 nameTextField.getText().isEmpty() || 
                 surnamesTextField.getText().isEmpty() ||
@@ -196,7 +229,7 @@ public class ControllerAddPractitioner {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Nombre de usuario");
-        alert.setContentText("El username del Practicante registrado es: "+username);
+        alert.setContentText(String.format("El usuario del Profesor registrado es: %s", username));
         alert.showAndWait();   
     }
     
@@ -206,6 +239,14 @@ public class ControllerAddPractitioner {
         alert.setHeaderText("Matricula invÃ¡lida");
         alert.setContentText("Matricula invÃ¡lida. La primera letra debe ser una s minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
         alert.showAndWait(); 
+    }
+    
+    private void displayShiftNotMatch() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Grupo invÃ¡lido");
+        alert.setContentText("El practicante debe asignarse a un grupo del mismo turno");
+        alert.showAndWait();
     }
     
     public String generatePassword() {

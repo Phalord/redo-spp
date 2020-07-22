@@ -21,7 +21,7 @@ public class RelatedCompanyDAO implements IRelatedCompanyDAO {
     }
 
     @Override
-    public List<RelatedCompany> getListed() {
+    public final List<RelatedCompany> getListed() {
         List<RelatedCompany> relatedCompanies = new ArrayList<>();
         String query = "SELECT RelatedCompanyID, name, email, phone FROM RelatedCompany";
         try (Connection connection = mySQLConnection.getConnection();
@@ -44,7 +44,7 @@ public class RelatedCompanyDAO implements IRelatedCompanyDAO {
     }
 
     @Override
-    public RelatedCompany getByID(int id) {
+    public final RelatedCompany getByID(int id) {
         RelatedCompany relatedCompany = null;
         String query = "SELECT * FROM RelatedCompany WHERE RelatedCompanyID = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -71,7 +71,7 @@ public class RelatedCompanyDAO implements IRelatedCompanyDAO {
     }
 
     @Override
-    public boolean addElement(RelatedCompany relatedCompany) {
+    public final boolean addElement(RelatedCompany relatedCompany) {
         boolean result = false;
         String query = "INSERT INTO RelatedCompany(name, address, state, sector, phone, email, city) VALUES (?,?,?,?,?,?,?)";
         try (Connection connection = mySQLConnection.getConnection();
@@ -93,7 +93,24 @@ public class RelatedCompanyDAO implements IRelatedCompanyDAO {
     }
 
     @Override
-    public boolean deleteElement(int id) {
+    public final boolean deleteElement(int id) {
         return false;
+    }
+
+    @Override
+    public final int getLastRelatedID() {
+        int result = 0;
+        String query = "SELECT RelatedCompanyID FROM RelatedCompany";
+        try (Connection connection = mySQLConnection.getConnection();
+             ResultSet resultSet = connection.prepareStatement(query).executeQuery()) {
+            while (resultSet.next()) {
+                result = resultSet.getInt("RelatedCompanyID");
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(RelatedCompanyDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+            result = 0;
+        }
+        return result;
     }
 }
