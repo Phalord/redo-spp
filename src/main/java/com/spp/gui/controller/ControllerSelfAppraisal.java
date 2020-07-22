@@ -1,60 +1,113 @@
 package com.spp.gui.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import static com.spp.gui.Dialog.displayEmptyFields;
+import static com.spp.gui.Dialog.displayRecordConfirmation;
+import static com.spp.gui.Dialog.displayRecordSuccessDialog;
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import com.spp.model.dataaccess.dao.SelfAppraisalDAO;
+import com.spp.model.dataaccess.idao.ISelfAppraisalDAO;
+import com.spp.model.domain.Practitioner;
+import com.spp.model.domain.SelfAppraisal;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
-public class ControllerSelfAppraisal implements Initializable {
+public class ControllerSelfAppraisal {
 
     @FXML private ToggleGroup rateGroupFirst;
     @FXML private ToggleGroup rateGroupSecond;
     @FXML private ToggleGroup rateGroupThird;
     @FXML private ToggleGroup rateGroupFourth;
     @FXML private ToggleGroup rateGroupFifth;
-    @FXML private RadioButton radioButtonFirst0;
-    @FXML private RadioButton radioButtonFirst1;
-    @FXML private RadioButton radioButtonFirst2;
-    @FXML private RadioButton radioButtonFirst3;
-    @FXML private RadioButton radioButtonFirst4;
-    @FXML private RadioButton radioButtonFirst5;
-    @FXML private RadioButton radioButtonSecond0;
-    @FXML private RadioButton radioButtonSecond1;
-    @FXML private RadioButton radioButtonSecond2;
-    @FXML private RadioButton radioButtonSecond3;
-    @FXML private RadioButton radioButtonSecond4;
-    @FXML private RadioButton radioButtonSecond5;
-    @FXML private RadioButton radioButtonThird0;
-    @FXML private RadioButton radioButtonThird1;
-    @FXML private RadioButton radioButtonThird2;
-    @FXML private RadioButton radioButtonThird3;
-    @FXML private RadioButton radioButtonThird4;
-    @FXML private RadioButton radioButtonThird5;
-    @FXML private RadioButton radioButtonFourth0;
-    @FXML private RadioButton radioButtonFourth1;
-    @FXML private RadioButton radioButtonFourth2;
-    @FXML private RadioButton radioButtonFourth3;
-    @FXML private RadioButton radioButtonFourth4;
-    @FXML private RadioButton radioButtonFourth5;
-    @FXML private RadioButton radioButtonFifth0;
-    @FXML private RadioButton radioButtonFifth1;
-    @FXML private RadioButton radioButtonFifth2;
-    @FXML private RadioButton radioButtonFifth3;
-    @FXML private RadioButton radioButtonFifth4;
-    @FXML private RadioButton radioButtonFifth5;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
-
+    @FXML private AnchorPane container;
+    private String studentEnrollment;
+    
     @FXML
     private void generateSelfAppraisal() {
+        if(!areRadioButtonsEmpty()){
+            RadioButton selectedToogleFirstValue = (RadioButton) rateGroupFirst.getSelectedToggle();
+            int firstValueParse = Integer.parseInt(selectedToogleFirstValue.getText());
+            byte firstSentenceGrade = (byte) firstValueParse;
+            RadioButton selectedToogleSecondValue = (RadioButton) rateGroupSecond.getSelectedToggle();
+            int secondValueParse = Integer.parseInt(selectedToogleSecondValue.getText());
+            byte secondSentenceGrade = (byte) secondValueParse;
+            RadioButton selectedToogleThirdValue = (RadioButton) rateGroupThird.getSelectedToggle();
+            int thirdValueParse = Integer.parseInt(selectedToogleThirdValue.getText());
+            byte thirdSentenceGrade = (byte) thirdValueParse;
+            RadioButton selectedToogleFourthValue = (RadioButton) rateGroupFourth.getSelectedToggle();
+            int fourthValueParse = Integer.parseInt(selectedToogleFourthValue.getText());
+            byte fourthSentenceGrade = (byte) fourthValueParse;
+            RadioButton selectedToogleFifthValue = (RadioButton) rateGroupFifth.getSelectedToggle();
+            int fifthValueParse = Integer.parseInt(selectedToogleFifthValue.getText());
+            byte fifthSentenceGrade = (byte) fifthValueParse;
+            
+            SelfAppraisal selfAppraisal = new SelfAppraisal();
+            selfAppraisal.setFirstSentence(firstSentenceGrade);
+            selfAppraisal.setSecondSentence(secondSentenceGrade);
+            selfAppraisal.setThirdSentence(thirdSentenceGrade);
+            selfAppraisal.setFourthSentence(fourthSentenceGrade);
+            selfAppraisal.setFifthSentence(fifthSentenceGrade);
+            Practitioner practitioner = new Practitioner();
+            practitioner.setUsername(studentEnrollment);
+            selfAppraisal.setAuthor(practitioner);
+            
+            if(displayRecordConfirmation()){
+                ISelfAppraisalDAO selfAppraisalDAO = new SelfAppraisalDAO();
+                if(selfAppraisalDAO.addElement(selfAppraisal)){
+                    displayRecordSuccessDialog();
+                    cleanRadioButtons();
+                } else {
+                    displaySomethingWentWrong();
+                }
+            }
+        } else {
+            displayEmptyFields();
+        }
     }
 
     @FXML
     private void returnGenerateDocumentation() {
+        Stage window = (Stage) container.getScene().getWindow();
+        Parent viewFile;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_GenerateDocumentation.fxml"));
+            viewFile = loader.load();
+            ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
+            controllerGenerateDocumentation.setTopMenuText(studentEnrollment);
+            window.setScene(new Scene(viewFile));
+        } catch (IOException exception) {
+            Logger.getLogger(ControllerSelfAppraisal.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+        }
+    }
+    
+    private boolean areRadioButtonsEmpty(){
+        return (rateGroupFirst.getSelectedToggle() == null || rateGroupSecond.getSelectedToggle() == null || 
+                rateGroupThird.getSelectedToggle() == null || rateGroupFourth.getSelectedToggle() == null ||
+                rateGroupFifth.getSelectedToggle() == null);
+    }
+    
+    private void cleanRadioButtons(){
+        RadioButton selectedToogleFirstValue = (RadioButton) rateGroupFirst.getSelectedToggle();
+        selectedToogleFirstValue.setSelected(false);
+        RadioButton selectedToogleSecondValue = (RadioButton) rateGroupSecond.getSelectedToggle();
+        selectedToogleSecondValue.setSelected(false);
+        RadioButton selectedToogleThirdValue = (RadioButton) rateGroupThird.getSelectedToggle();
+        selectedToogleThirdValue.setSelected(false);
+        RadioButton selectedToogleFourthValue = (RadioButton) rateGroupFourth.getSelectedToggle();
+        selectedToogleFourthValue.setSelected(false);
+        RadioButton selectedToogleFifthValue = (RadioButton) rateGroupFifth.getSelectedToggle();
+        selectedToogleFifthValue.setSelected(false);
+    }
+    
+    public final void setPractitionerEnrollment(String enrollment){
+        studentEnrollment = enrollment;
     }
 }
