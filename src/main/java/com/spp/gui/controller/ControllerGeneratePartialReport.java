@@ -33,6 +33,7 @@ import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayNoActivitiesAdded;
+import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
 

@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class MonthlyReport extends Report {
-    private List<String> activitiesTitle;
     private List<String> activitiesDescription;
 
     public MonthlyReport() {
@@ -69,14 +68,6 @@ public class MonthlyReport extends Report {
     @Override
     public final byte getGrade() {
         return super.getGrade();
-    }
-
-    public void setActivitiesTitle(List<String> activitiesTitle) {
-        this.activitiesTitle = activitiesTitle;
-    }
-
-    public List<String> getActivitiesTitle() {
-        return activitiesTitle;
     }
     
     public final void setActivitiesDescription(List<String> activitiesDescription) {
