@@ -74,9 +74,14 @@ public class ControllerGeneratePartialReport {
 
     @FXML
     private void addActivity() {
-        Activity activity = displaySetActivityInfo();
-        if (activity != null) {
-            activitiesToReportTable.getItems().add(activity);
+        if (openActivities.isEmpty()) {
+            displayNoActivitiesToReport();
+        } else {
+            Activity activity = displaySetActivityInfo();
+            if (activity != null) {
+                activitiesToReportTable.getItems().add(activity);
+                openActivities.remove(activity);
+            }
         }
     }
 
