@@ -2,7 +2,6 @@ package com.spp.gui.controller;
 
 import com.spp.model.dataaccess.dao.UserDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
-import com.spp.model.domain.Professor;
 import com.spp.model.domain.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,23 +10,58 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.util.function.UnaryOperator;
 
+import static com.spp.gui.Dialog.displayTooManyCharacters;
 import static com.spp.utils.TextValidator.*;
 
 public class ControllerLogin {
-    private final Stage window = new Stage();
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
-    public final void display() throws IOException {
-        Parent viewFile = FXMLLoader.load(getClass().getResource("/views/View_Login.fxml"));
-        window.setScene(new Scene(viewFile, 300, 600));
-        window.setResizable(false);
-        window.show();
+    public final void display() {
+        initializeUsernameFieldFormatter();
+        initializePasswordFieldFormatter();
+    }
+
+    private void initializeUsernameFieldFormatter() {
+        UnaryOperator<TextFormatter.Change> rejectChange = change -> {
+            if (change.isContentChange()) {
+                if (change.getControlNewText().length() > 9) {
+                    displayTooManyCharacters((short) 9);
+                    return null;
+                }
+                if (change.getControlNewText()
+                        .matches("^[!¡?\\[\\]*´|'-.^~`}{:¨;,\"$% &/()=¿+#]+")) {
+                    usernameField.setText("");
+                    return null;
+                }
+            }
+            return change;
+        };
+        usernameField.setTextFormatter(new TextFormatter<TextFormatter.Change>(rejectChange));
+    }
+
+    private void initializePasswordFieldFormatter() {
+        UnaryOperator<TextFormatter.Change> rejectChange = change -> {
+            if (change.isContentChange()) {
+                if (change.getControlNewText().length() > 10) {
+                    displayTooManyCharacters((short) 10);
+                    return null;
+                }
+                if (!change.getControlNewText().matches("^[a-zA-Z0-9ñÑ]*$")) {
+                    passwordField.setText("");
+                    return null;
+                }
+            }
+            return change;
+        };
+        passwordField.setTextFormatter(new TextFormatter<TextFormatter.Change>(rejectChange));
     }
 
     @FXML

@@ -36,6 +36,7 @@ import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerDetailedProjectRequest {
     @FXML private Menu topMenu;
@@ -218,13 +219,22 @@ public class ControllerDetailedProjectRequest {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerDetailedProjectRequest.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            notifyDevelopers(ioException);
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
 
     private void setBackScene() {

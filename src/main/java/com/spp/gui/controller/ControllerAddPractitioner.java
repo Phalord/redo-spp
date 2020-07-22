@@ -7,6 +7,7 @@ import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
@@ -148,13 +149,22 @@ public class ControllerAddPractitioner {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) borderPaneAddPractitioner.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerAddPractitioner.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            notifyDevelopers(ioException);
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
     
     private void backScene() {

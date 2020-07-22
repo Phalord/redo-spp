@@ -13,10 +13,10 @@ public class AdministratorUseCaseTests {
     @Test
     public void registerCoordinator() {
         Coordinator coordinator = new Coordinator();
-        coordinator.setUsername("c11223344");
-        coordinator.setPassword("contra123seña!");
-        coordinator.setName("Mauricio");
-        coordinator.setSurnames("Iñigo Villegas");
+        coordinator.setUsername("c23121081");
+        coordinator.setPassword("CON1819TRE");
+        coordinator.setName("Abner Jeffrey");
+        coordinator.setSurnames("Tapia Cruz");
         coordinator.setUserType("Coordinator");
         coordinator.setActive(true);
         IUserDAO<Coordinator> coordinatorIUserDAO = new CoordinatorDAO();
