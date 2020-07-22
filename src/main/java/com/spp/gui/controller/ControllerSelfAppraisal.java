@@ -1,13 +1,11 @@
 package com.spp.gui.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
-public class ControllerSelfAppraisal implements Initializable {
+public class ControllerSelfAppraisal {
 
     @FXML private ToggleGroup rateGroupFirst;
     @FXML private ToggleGroup rateGroupSecond;
@@ -45,16 +43,34 @@ public class ControllerSelfAppraisal implements Initializable {
     @FXML private RadioButton radioButtonFifth4;
     @FXML private RadioButton radioButtonFifth5;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
-
     @FXML
     private void generateSelfAppraisal() {
+        if(!areRadioButtonsEmpty()){
+            RadioButton selectedToogleFirstValue = (RadioButton) rateGroupFirst.getSelectedToggle();
+            int firstValueParse = Integer.parseInt(selectedToogleFirstValue.getText());
+            byte firstSentenceGrade = (byte) firstValueParse;
+            RadioButton selectedToogleSecondValue = (RadioButton) rateGroupSecond.getSelectedToggle();
+            int secondValueParse = Integer.parseInt(selectedToogleSecondValue.getText());
+            byte secondSentenceGrade = (byte) secondValueParse;
+            RadioButton selectedToogleThirdValue = (RadioButton) rateGroupThird.getSelectedToggle();
+            int thirdValueParse = Integer.parseInt(selectedToogleThirdValue.getText());
+            byte thirdSentenceGrade = (byte) thirdValueParse;
+            RadioButton selectedToogleFourthValue = (RadioButton) rateGroupFourth.getSelectedToggle();
+            int fourthValueParse = Integer.parseInt(selectedToogleFourthValue.getText());
+            byte fourthSentenceGrade = (byte) fourthValueParse;
+            RadioButton selectedToogleFifthValue = (RadioButton) rateGroupFifth.getSelectedToggle();
+            int fifthValueParse = Integer.parseInt(selectedToogleFifthValue.getText());
+            byte fifthSentenceGrade = (byte) fifthValueParse;
+        }
     }
 
     @FXML
     private void returnGenerateDocumentation() {
+    }
+    
+    private boolean areRadioButtonsEmpty(){
+        return (rateGroupFirst.getSelectedToggle() == null || rateGroupSecond.getSelectedToggle() == null || 
+                rateGroupThird.getSelectedToggle() == null || rateGroupFourth.getSelectedToggle() == null ||
+                rateGroupFifth.getSelectedToggle() == null);
     }
 }

@@ -33,6 +33,7 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import com.spp.model.domain.Professor;
 
 public class ControllerAddActivity{
 
@@ -48,11 +49,6 @@ public class ControllerAddActivity{
     @FXML private TableColumn<Activity, Practitioner> columnPractitioner;
     @FXML private ComboBox<Practitioner> comboBoxPractitioner;
     private String professorUsername;
-    private final IActivityDAO activityDAOFinal;
-    
-    public ControllerAddActivity(){
-        this.activityDAOFinal = new ActivityDAO();
-    }
             
     public final void initialize() {
         linkColumns();
@@ -79,6 +75,9 @@ public class ControllerAddActivity{
             activity.setDescription(description);
             activity.setDeliveredBy(practitionerSelected);
             activity.setDueDate(new Timestamp(auxiliarDueDate.getTime()));
+            Professor professor = new Professor();
+            professor.setUsername(professorUsername);
+            activity.setCreatedBy(professor);
             if(displayRecordConfirmation()){
                 IActivityDAO activityDAO = new ActivityDAO();
                 if(activityDAO.addElement(activity)){
@@ -101,6 +100,7 @@ public class ControllerAddActivity{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_ActivitySection.fxml"));
             viewFile = loader.load();
             ControllerActivitySection controllerActivitySection = loader.getController();
+            controllerActivitySection.setTopMenuText(professorUsername);
             window.setScene(new Scene(viewFile));
         } catch (IOException exception) {
             Logger.getLogger(ControllerAddActivity.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
