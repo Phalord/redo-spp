@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.spp.gui.controller.ControllerAddCompany">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spp.gui.controller.ControllerAddCompany">
    <children>
       <GridPane layoutX="36.0" layoutY="56.0" prefHeight="322.0" prefWidth="230.0">
          <columnConstraints>
@@ -88,7 +87,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="textFieldSurnameResponisble" prefHeight="26.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldSurnameResponsible" prefHeight="26.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Teléfono:" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />

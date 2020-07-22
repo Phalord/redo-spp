@@ -60,7 +60,17 @@ public class ControllerGenerateDocumentation {
 
     @FXML
     private void generateSelfAppraisal() {
-        notYetSupportedDialog();
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        Parent viewFile;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_SelfAppraisal.fxml"));
+            viewFile = loader.load();
+            ControllerSelfAppraisal controllerSelfAppraisal = loader.getController();
+            controllerSelfAppraisal.setPractitionerEnrollment(topMenu.getText());
+            window.setScene(new Scene(viewFile));
+        } catch (IOException exception) {
+            Logger.getLogger(ControllerGenerateDocumentation.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+        }
     }
 
     @FXML

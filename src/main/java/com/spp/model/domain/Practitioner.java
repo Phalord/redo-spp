@@ -12,7 +12,7 @@ public class Practitioner extends User {
 
     @Override
     public String generateEmail() {
-        return String.format("%s@estudiantes.mx", getUsername());
+        return String.format("z%s@estudiantes.uv.mx", getUsername());
     }
 
     @Override
