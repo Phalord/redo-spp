@@ -26,7 +26,7 @@ public class ControllerGenerateDocumentation {
     @FXML private Menu topMenu;
     @FXML private BorderPane borderPane;
 
-    public void setTopMenuText(String username) {
+    public final void setTopMenuText(String username) {
         topMenu.setText(username);
     }
 

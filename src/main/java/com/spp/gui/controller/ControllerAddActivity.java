@@ -1,13 +1,7 @@
 package com.spp.gui.controller;
 
-import static com.spp.gui.Dialog.displayEmptyFields;
-import static com.spp.gui.Dialog.displayRecordConfirmation;
-import static com.spp.gui.Dialog.displayRecordSuccessDialog;
-import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import com.spp.model.dataaccess.dao.ActivityDAO;
 import com.spp.model.dataaccess.idao.IActivityDAO;
-import com.spp.model.domain.Activity;
-import com.spp.model.domain.Practitioner;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -15,6 +9,9 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.spp.model.domain.Activity;
+import com.spp.model.domain.Practitioner;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,6 +28,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import static com.spp.gui.Dialog.displayEmptyFields;
+import static com.spp.gui.Dialog.displayRecordConfirmation;
+import static com.spp.gui.Dialog.displayRecordSuccessDialog;
+import static com.spp.gui.Dialog.displaySomethingWentWrong;
 
 public class ControllerAddActivity{
 
@@ -126,7 +128,7 @@ public class ControllerAddActivity{
         columnPractitioner.setCellValueFactory(new PropertyValueFactory<> ("deliveredBy"));
     }
     
-    public void enterCorrectInformation(){
+    public final void enterCorrectInformation(){
         textFieldTitle.textProperty().addListener(new ChangeListener<String>(){
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -164,7 +166,7 @@ public class ControllerAddActivity{
         comboBoxPractitioner.setValue(null);
     }
     
-    public void setProfessorUsername(String username){
+    public final void setProfessorUsername(String username){
         professorUsername = username;
     }
 }
