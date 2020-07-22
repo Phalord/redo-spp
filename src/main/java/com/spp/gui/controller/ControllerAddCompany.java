@@ -64,7 +64,7 @@ public class ControllerAddCompany {
                 company.setCity(companyCity);
                 company.setSector(companySector);
                 company.setPhone(companyPhone);
-                
+                company.setEmail(companyEmail);
                 ProjectResponsible responsible = new ProjectResponsible();
                 responsible.setName(responsibleName);
                 responsible.setSurname(responsibleSurname);
