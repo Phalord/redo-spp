@@ -197,15 +197,6 @@ public class ControllerAddProfessor {
                 }
             }
         });
-        professorPasswordField.textProperty().addListener(new ChangeListener<String>() {
-        @Override
-        public void changed(ObservableValue<? extends String> observable,
-            String oldValue, String newValue) {
-                if (!newValue.matches("^[a-zA-Z0-9ñÑ]+")) {
-                    professorPasswordField.setText(newValue.replaceAll("^[a-zA-Z0-9ñÑ]+",""));
-                }
-            }
-        });
     }
     
     public void validateLengthTextField(final int maxlength) {
