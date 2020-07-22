@@ -1,6 +1,7 @@
 package com.spp.gui.controller;
 
 import static com.spp.gui.Dialog.displayCancelConfirmation;
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
@@ -122,6 +123,8 @@ public class ControllerAddPractitioner {
                     displayRecordSuccessDialog();
                     refreshTableView();
                     cleanTextField();
+                } else {
+                    displayConnectionError();
                 }
             } else {
                 displayRecordAlreadyExist();

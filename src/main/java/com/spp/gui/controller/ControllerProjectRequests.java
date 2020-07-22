@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerProjectRequests {
     @FXML private Menu topMenu;
@@ -99,6 +100,7 @@ public class ControllerProjectRequests {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
@@ -114,6 +116,8 @@ public class ControllerProjectRequests {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerRequestProject.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
+            displaySomethingWentWrong();
             return;
         }
         ControllerDetailedProjectRequest controllerDetailedProjectRequest = loader.getController();
@@ -133,6 +137,8 @@ public class ControllerProjectRequests {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectRequests.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
+            displaySomethingWentWrong();
             return;
         }
         ControllerPractitionerSection controllerPractitionerSection = loader.getController();

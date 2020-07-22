@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerActivitySection {
     @FXML private Menu topMenu;
@@ -59,6 +60,7 @@ public class ControllerActivitySection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerActivitySection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }
@@ -104,6 +106,7 @@ public class ControllerActivitySection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
@@ -114,13 +117,15 @@ public class ControllerActivitySection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerProfessorHome controllerProfessorHome = loader.getController();
-            controllerProfessorHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerActivitySection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerProfessorHome controllerProfessorHome = loader.getController();
+        controllerProfessorHome.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 }

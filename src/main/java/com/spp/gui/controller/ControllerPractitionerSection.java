@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerPractitionerSection {
     @FXML private Menu topMenu;
@@ -93,6 +94,7 @@ public class ControllerPractitionerSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }
@@ -115,14 +117,16 @@ public class ControllerPractitionerSection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerDeletePractitioner controllerDeletePractitioner = loader.getController();
-            controllerDeletePractitioner.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerDeletePractitioner controllerDeletePractitioner = loader.getController();
+        controllerDeletePractitioner.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile));
     }
 
     @FXML
@@ -143,14 +147,16 @@ public class ControllerPractitionerSection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
-            controllerCoordinatorHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerCoordinatorHome controllerCoordinatorHome = loader.getController();
+        controllerCoordinatorHome.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     private void closeWindow() {
@@ -164,6 +170,7 @@ public class ControllerPractitionerSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }

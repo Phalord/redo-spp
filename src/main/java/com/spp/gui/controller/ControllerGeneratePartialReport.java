@@ -36,6 +36,7 @@ import static com.spp.gui.Dialog.displayNoActivitiesAdded;
 import static com.spp.gui.Dialog.displayNoActivitiesToReport;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
@@ -135,6 +136,8 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGeneratePartialReport.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
+            displaySomethingWentWrong();
             return null;
         }
         ControllerSetActivityInfo controllerSetActivityInfo = loader.getController();
@@ -156,6 +159,7 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
@@ -169,6 +173,7 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGeneratePartialReport.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }

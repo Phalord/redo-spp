@@ -69,11 +69,11 @@ public class MonthlyReport extends Report {
     public final byte getGrade() {
         return super.getGrade();
     }
-    
+
     public final void setActivitiesDescription(List<String> activitiesDescription) {
         this.activitiesDescription = activitiesDescription;
     }
-    
+
     public final List<String> getActivitiesDescription() {
         return activitiesDescription;
     }
