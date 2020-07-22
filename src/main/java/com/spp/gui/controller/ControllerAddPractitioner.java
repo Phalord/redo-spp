@@ -76,6 +76,7 @@ public class ControllerAddPractitioner {
         groupIDComboBox.getItems().setAll(availableGroupsOL);
         linkColumnsWithAttributes();
         validateTextFields();
+        validateLengthTextField(48);
     }
     
     @FXML
@@ -199,6 +200,31 @@ public class ControllerAddPractitioner {
             }
         });
     }
+    
+    public void validateLengthTextField(final int maxlength) {
+        nameTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (nameTextField.getText().length() >= maxlength) {
+                        nameTextField.setText(nameTextField.getText().substring(0, maxlength));
+                    }
+                }
+            }
+        });
+        surnamesTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (surnamesTextField.getText().length() >= maxlength) {
+                        surnamesTextField.setText(surnamesTextField.getText().substring(0, maxlength));
+                    }
+                }
+            }
+        });
+   }
     
     private void cleanTextField() {
         usernameTextField.setText("");

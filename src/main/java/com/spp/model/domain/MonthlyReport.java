@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MonthlyReport extends Report {
     private List<String> activitiesTitle;
-    private List<String> activitiesDescriptionByPractitioner;
+    private List<String> activitiesDescription;
 
     public MonthlyReport() {
 
@@ -77,5 +77,13 @@ public class MonthlyReport extends Report {
 
     public List<String> getActivitiesTitle() {
         return activitiesTitle;
+    }
+    
+    public final void setActivitiesDescription(List<String> activitiesDescription) {
+        this.activitiesDescription = activitiesDescription;
+    }
+    
+    public final List<String> getActivitiesDescription() {
+        return activitiesDescription;
     }
 }

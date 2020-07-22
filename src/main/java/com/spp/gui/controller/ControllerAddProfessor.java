@@ -206,10 +206,11 @@ public class ControllerAddProfessor {
     }
 
     private void displayUsernameDialog(String username, String password) {
+        String title = String.format("Nombre de usuario: %s", username);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Nombre de usuario");
-        alert.setContentText(String.format("El usuario del Profesor registrado es: %s", username));
+        alert.setHeaderText(title);
+        //alert.setContentText(String.format("La cuenta del Profesor registrado es: %s ", username));
         alert.setContentText(String.format("La contraseña del Profesor registrado es: %s", password));
         alert.showAndWait();   
     }

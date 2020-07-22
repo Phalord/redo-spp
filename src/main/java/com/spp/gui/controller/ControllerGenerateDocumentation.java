@@ -47,14 +47,14 @@ public class ControllerGenerateDocumentation {
     @FXML
     private void generateMonthlyReport() {
         IActivityDAO iActivityDAO = new ActivityDAO();
-        List<Activity> deliveredActivities = iActivityDAO.getOpenPractitionerActivities(
-                topMenu.getText(), new Timestamp(System.currentTimeMillis()));
+        List<Activity> deliveredActivities = iActivityDAO
+                .getPractitionerDeliveredActivities(topMenu.getText());
         if (deliveredActivities == null) {
             displayConnectionError();
         } else if (deliveredActivities.isEmpty()) {
             displayNoActivitiesToReport();
         } else {
-            //displayGeneratePartialReport(deliveredActivities);
+            displayGenerateMonthlyReport(deliveredActivities);
         }
     }
 
@@ -101,6 +101,26 @@ public class ControllerGenerateDocumentation {
         Stage window = (Stage) borderPane.getScene().getWindow();
         window.setScene(new Scene(viewFile, 650, 400));
     }
+    
+    private void displayGenerateMonthlyReport(List<Activity> deliveredActivities) {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_GenerateMonthlyReport.fxml"));
+        Parent viewFile;
+        try {
+            viewFile = loader.load();
+        } catch (IOException ioException) {
+            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+                    .log(Level.SEVERE, ioException.getMessage(), ioException);
+            displaySomethingWentWrong();
+            return;
+        }
+        ControllerGenerateMonthlyReport controllerGenerateMonthlyReport = loader.getController();
+        controllerGenerateMonthlyReport.setTopMenuText(topMenu.getText());
+        controllerGenerateMonthlyReport.initialize(deliveredActivities);
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        window.setScene(new Scene(viewFile));
+    }
+    
 
     private void backScene() {
         FXMLLoader loader = new FXMLLoader(getClass()
