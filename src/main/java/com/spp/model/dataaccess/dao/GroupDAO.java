@@ -76,7 +76,7 @@ public final List<Group> getAvailableGroups() {
                 Group group = new Group();
                 group.setGroupID(resultSet.getInt("GroupID"));
                 group.setNrc(resultSet.getString("nrc"));
-                group.setShift("shift");
+                group.setShift(resultSet.getString("shift"));
                 groups.add(group);
             }
         } catch (SQLException sqlException) {

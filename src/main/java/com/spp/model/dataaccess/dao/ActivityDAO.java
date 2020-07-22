@@ -6,7 +6,6 @@ import com.spp.model.domain.PartialReport;
 import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

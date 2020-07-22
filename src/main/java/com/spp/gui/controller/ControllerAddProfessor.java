@@ -1,6 +1,7 @@
 package com.spp.gui.controller;
 
 import static com.spp.gui.Dialog.displayCancelConfirmation;
+import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
@@ -66,11 +67,13 @@ public class ControllerAddProfessor {
     public void initialize(List<Group> availableGroups) {
         observableListProfessor = FXCollections.observableArrayList();
         professorDAO.getProfessorInformation(observableListProfessor);
-        ObservableList<Group> availableGroupsOL = FXCollections.observableArrayList(availableGroups);
+        ObservableList<Group> availableGroupsOL = 
+                FXCollections.observableArrayList(availableGroups);
         professorTableView.setItems(observableListProfessor);
         groupIDComboBox.getItems().setAll(availableGroupsOL);
         linkColumnsWithAttributes();
         validateTextFields();
+        validateLengthTextField(48);
     }
     
     @FXML
@@ -81,36 +84,43 @@ public class ControllerAddProfessor {
             String surnames = this.surnamesTextField.getText();
             String password = this.professorPasswordField.getText();
             Group group = groupIDComboBox.getValue();
-            Professor professor = new Professor();
             if (validateProfessorEmployeeNumber(username)) {
-                professor.setUsername(username);
-                professor.setName(name);
-                professor.setSurnames(surnames);
-                professor.setPassword(password);
-                group.setLecturer(professor);
-                professor.setUserType("Professor");
-                professor.setActive(true);
-                if (displayRecordConfirmation()) {
-                    IUserDAO<Professor> iUserDAO = new ProfessorDAO();
-                    if (iUserDAO.addUser(professor)) {
-                        IGroupDAO iGroupDAO = new GroupDAO();
-                        if (iGroupDAO.assignLecturer(group)) {
-                            displayUsernameDialog(username, password);
-                            displayRecordSuccessDialog();
-                            refreshTableView();
-                            backScene();
-                        } else {
-                            displaySomethingWentWrong();
-                        }
-                    } else {
-                        displayRecordAlreadyExist();
-                    }
-                }
+                saveProfessor(username, name, surnames, password, group);
             } else {
                 displayNotValidPersonalNumber();
             }
         } else {
             displayEmptyFields();
+        }
+    }
+    
+    private void saveProfessor(String username, String name, String surnames, 
+            String password, Group group) {
+        Professor professor = new Professor();
+        professor.setUsername(username);
+        professor.setName(name);
+        professor.setSurnames(surnames);
+        professor.setPassword(password);
+        group.setLecturer(professor);
+        professor.setUserType("Professor");
+        professor.setActive(true);
+        if (displayRecordConfirmation()) {
+            IUserDAO<Professor> iUserDAO = new ProfessorDAO();
+            if (iUserDAO.existUser(username)){
+                displayRecordAlreadyExist();
+            } else if (iUserDAO.addUser(professor)) {
+                IGroupDAO iGroupDAO = new GroupDAO();
+                if (iGroupDAO.assignLecturer(group)) {
+                    displayUsernameDialog(username, password);
+                    displayRecordSuccessDialog();
+                    refreshTableView();
+                    backScene();
+                } else {
+                    displaySomethingWentWrong();
+                }
+            } else {
+                displayConnectionError();
+            }
         }
     }
 
@@ -187,6 +197,56 @@ public class ControllerAddProfessor {
                 }
             }
         });
+        professorPasswordField.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable,
+            String oldValue, String newValue) {
+                if (!newValue.matches("^[a-zA-Z0-9ñÑ]+")) {
+                    professorPasswordField.setText(newValue.replaceAll("^[a-zA-Z0-9ñÑ]+",""));
+                }
+            }
+        });
+    }
+    
+    public void validateLengthTextField(final int maxlength) {
+        nameTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (nameTextField.getText().length() >= maxlength) {
+                        nameTextField.setText(nameTextField.getText().substring(0, maxlength));
+                        displayMaxLengthCharactersDialog();
+                    }
+                }
+            }
+        });
+        surnamesTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (surnamesTextField.getText().length() >= maxlength) {
+                        surnamesTextField.setText(surnamesTextField.getText()
+                                .substring(0, maxlength));
+                        displayMaxLengthCharactersDialog();
+                    }
+                }
+            }
+        });
+        professorPasswordField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (professorPasswordField.getText().length() >= 10) {
+                        professorPasswordField.setText(professorPasswordField.getText()
+                                .substring(0, 10));
+                        displayMaxLengthCharactersDialog();
+                    }
+                }
+            }
+        });
     }
     
     private void refreshTableView() {
@@ -210,16 +270,23 @@ public class ControllerAddProfessor {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(title);
-        //alert.setContentText(String.format("La cuenta del Profesor registrado es: %s ", username));
         alert.setContentText(String.format("La contraseña del Profesor registrado es: %s", password));
         alert.showAndWait();   
     }
     
     private void displayNotValidPersonalNumber() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
         alert.setHeaderText("No. de personal invÃ¡lido");
         alert.setContentText("No. invÃ¡lido. La primera letra debe ser una p minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
+        alert.showAndWait(); 
+    }
+    
+    private void displayMaxLengthCharactersDialog() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("No se pueden ingresar más caracteres");
+        alert.setContentText("El número de caracteres sobrepasa la cantidad permitida");
         alert.showAndWait(); 
     }
 }

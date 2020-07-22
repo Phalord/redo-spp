@@ -4,7 +4,6 @@ import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Coordinator;
 import com.spp.model.domain.User;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,14 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserDAO implements IUserDAO<User> {
-    private final MySQLConnection mySQLConnection;
-
-    public UserDAO() {
-        mySQLConnection = new MySQLConnection();
-    }
+    private final MySQLConnection mySQLConnection = new MySQLConnection();
 
     @Override
-    public List<User> getAllUsers() {
+    public final List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT Username, userType";
         try (Connection connection = mySQLConnection.getConnection();
@@ -43,7 +38,7 @@ public class UserDAO implements IUserDAO<User> {
     }
 
     @Override
-    public User getUserByUsername(String studentEnrollment) {
+    public final User getUserByUsername(String studentEnrollment) {
         User user = null;
         String query = "SELECT * FROM User WHERE Username = ?";
         try (Connection connection = mySQLConnection.getConnection();
@@ -66,12 +61,29 @@ public class UserDAO implements IUserDAO<User> {
     }
 
     @Override
-    public boolean addUser(User user) {
+    public final boolean addUser(User user) {
         return false;
     }
 
     @Override
-    public boolean deleteUser(User user) {
+    public final boolean deleteUser(User user) {
         return false;
+    }
+    
+    @Override
+    public final boolean existUser(String studentEnrollment) {
+        boolean result = false;
+        String query = "SELECT Username FROM User WHERE Username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                result = resultSet.next();
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 }

@@ -4,7 +4,6 @@ import com.spp.model.dataaccess.idao.ICoordinatorDAO;
 import com.spp.model.domain.Coordinator;
 import com.spp.utils.MySQLConnection;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,6 +108,23 @@ public class CoordinatorDAO implements ICoordinatorDAO {
         } catch (SQLException sqlException) {
             Logger.getLogger(CoordinatorDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage());
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean existUser(String studentEnrollment) {
+        boolean result = false;
+        String query = "SELECT Username FROM User WHERE Username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                result = resultSet.next();
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
         return result;
     }

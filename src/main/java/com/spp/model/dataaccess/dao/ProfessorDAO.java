@@ -186,4 +186,21 @@ public class ProfessorDAO implements IProfessorDAO {
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
     }
+
+    @Override
+    public boolean existUser(String studentEnrollment) {
+        boolean result = false;
+        String query = "SELECT Username FROM User WHERE Username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                result = resultSet.next();
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
+    }
 }

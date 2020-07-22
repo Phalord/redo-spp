@@ -3,7 +3,6 @@ package com.spp.model.dataaccess.dao;
 import com.spp.model.dataaccess.idao.ISelfAppraisalDAO;
 import com.spp.model.domain.SelfAppraisal;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

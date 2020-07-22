@@ -18,13 +18,9 @@
 <BorderPane fx:id="monthlyReportBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spp.gui.controller.ControllerGenerateMonthlyReport">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false">
             <Menu fx:id="topMenu" mnemonicParsing="false">
                 <MenuItem mnemonicParsing="false" onAction="#logOut" text="Cerrar Sesión" />
             </Menu>
-          </Menu>
-        </menus>
       </MenuBar>
    </top>
    <center>
@@ -32,7 +28,7 @@
          <bottom>
             <AnchorPane prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="407.0" layoutY="14.0" mnemonicParsing="false" text="Generar Reporte" />
+                  <Button layoutX="407.0" layoutY="14.0" mnemonicParsing="false" onAction="#generateMonthlyReport" text="Generar Reporte" />
                   <Button layoutX="288.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="104.0" text="Cancelar" />
                </children>
             </AnchorPane>

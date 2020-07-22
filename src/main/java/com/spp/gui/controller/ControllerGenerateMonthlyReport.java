@@ -3,6 +3,8 @@ package com.spp.gui.controller;
 import static com.spp.gui.Dialog.displayCancelConfirmation;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import com.spp.model.dataaccess.dao.MonthlyReportDAO;
+import com.spp.model.dataaccess.idao.IMonthlyReportDAO;
 import com.spp.model.domain.Activity;
 import com.spp.model.domain.MonthlyReport;
 import java.io.IOException;
@@ -111,15 +113,17 @@ public class ControllerGenerateMonthlyReport {
             monthlyReport.setActivities(activities);
             monthlyReport.setActivitiesDescription(descriptions);
             monthlyReport.setReportType("Mensual");
-            monthlyReport.generateFolio(new Timestamp(System.currentTimeMillis()), topMenu.getText());
-            /*
-            if (addMonthlyReport(monthlyReport)) {
-                for (activities.size) {
-                    addDescription(monthlyReport);
-                }
-            } 
-            */
-            
+            monthlyReport.generateFolio(new Timestamp(System.currentTimeMillis()), 
+                    topMenu.getText());
+            IMonthlyReportDAO iMonthlyReportDAO = new MonthlyReportDAO();
+            if (iMonthlyReportDAO.addElement(monthlyReport)) {
+                displaySuccessDialog("¡Se guardo el reporte en la base de datos!");
+                setBackScene();
+            } else {
+                displaySomethingWentWrong();
+            }
+        } else {
+            displayNotActivitiesAddedDialog();
         }
     }
     
@@ -192,9 +196,17 @@ public class ControllerGenerateMonthlyReport {
     
     private void displayNotActivitiesSelectedDialog() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Information Dialog");
+        alert.setTitle("Warning Dialog");
         alert.setHeaderText("No se seleccionó ninguna actividad");
-        alert.setContentText("Debe seleccionar una actividad para añadirla");
+        alert.setContentText("Debe seleccionar una actividad con su descripción para añadirla");
+        alert.showAndWait(); 
+    }
+    
+    private void displayNotActivitiesAddedDialog() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("No se añadió ninguna actividad");
+        alert.setContentText("Debe seleccionar una actividad y añadirla para generar el reporte");
         alert.showAndWait(); 
     }
 }
