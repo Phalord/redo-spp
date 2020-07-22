@@ -4,6 +4,8 @@ import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.controller.ControllerPractitionerSection.displayNoAvailableGroups;
+import static com.spp.utils.MailSender.notifyDevelopers;
+
 import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.domain.Group;
@@ -58,15 +60,17 @@ public class ControllerProfessorSection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerAddProfessor controllerAddProfessor = loader.getController();
-            controllerAddProfessor.initialize(availableGroups);
-            controllerAddProfessor.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerAddProfessor controllerAddProfessor = loader.getController();
+        controllerAddProfessor.initialize(availableGroups);
+        controllerAddProfessor.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile));
     }
     
     @FXML
@@ -77,14 +81,16 @@ public class ControllerProfessorSection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerDeleteProfessor controllerDeleteProfessor = loader.getController();
-            controllerDeleteProfessor.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerDeleteProfessor controllerDeleteProfessor = loader.getController();
+        controllerDeleteProfessor.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile));
     }
     
     @FXML
@@ -99,14 +105,16 @@ public class ControllerProfessorSection {
         Parent viewFile;
         try {
             viewFile = loader.load();
-            ControllerAdministratorHome controllerAdministratorHome = loader.getController();
-            controllerAdministratorHome.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerAdministratorHome controllerAdministratorHome = loader.getController();
+        controllerAdministratorHome.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     private void closeWindow() {
@@ -120,6 +128,7 @@ public class ControllerProfessorSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
