@@ -9,7 +9,10 @@ import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.utils.MailSender.notifyDevelopers;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
+
+import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
+import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
@@ -118,11 +121,21 @@ public class ControllerAddPractitioner {
         if (displayRecordConfirmation()) {
             IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
             if (iUserDAO.addUser(practitioner)) {
-                if (sendEmail(practitioner, password)) {
-                    displayUsernameDialog(username);
-                    displayRecordSuccessDialog();
-                    refreshTableView();
-                    cleanTextField();
+                IGroupDAO iGroupDAO = new GroupDAO();
+                byte availableQuota = iGroupDAO.getAvailableQuota(groupID);
+                availableQuota--;
+                Group group = new Group();
+                group.setQuota(availableQuota);
+                group.setGroupID(groupID);
+                if (iGroupDAO.addPractitioner(group)) {
+                    if (sendEmail(practitioner, password)) {
+                        displayUsernameDialog(username);
+                        displayRecordSuccessDialog();
+                        refreshTableView();
+                        cleanTextField();
+                    } else {
+                        displayConnectionError();
+                    }
                 } else {
                     displayConnectionError();
                 }

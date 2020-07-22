@@ -144,6 +144,29 @@ public final List<Group> getAvailableGroups() {
     }
 
     @Override
+    public final byte getAvailableQuota(int groupID) {
+        int availableQuota = 0;
+        String query = "SELECT CG.quota FROM ClassGroup CG INNER JOIN Practitioner P on CG.GroupID = P.GroupID INNER JOIN User U on P.Username = U.Username WHERE CG.GroupID = ? AND U.status = TRUE";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, groupID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    availableQuota = resultSet.getInt("quota");
+                    availableQuota--;
+                }
+                while (resultSet.next()) {
+                    availableQuota--;
+                }
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return (byte) availableQuota;
+    }
+
+    @Override
     public final boolean addElement(Group group) {
         boolean result = false;
         String query = "INSERT INTO ClassGroup(educationalExperience, nrc, quota, shift, weeklyHours, availableQuota) VALUES (?,?,?,?,?,?)";
@@ -166,20 +189,36 @@ public final List<Group> getAvailableGroups() {
     
     @Override
     public final boolean assignLecturer(Group group) {
-    boolean result = false;
-    String query = "UPDATE ClassGroup SET lecturer = ? WHERE GroupID = ?";
-    try (Connection connection = mySQLConnection.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        preparedStatement.setString(1, group.getLecturer().getUsername());
-        preparedStatement.setInt(2, group.getGroupID());
-        int numberRowsAffected = preparedStatement.executeUpdate();
-        result = (numberRowsAffected > 0);
-    } catch (SQLException sqlException) {
-        Logger.getLogger(GroupDAO.class.getName())
-                .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        boolean result = false;
+        String query = "UPDATE ClassGroup SET lecturer = ? WHERE GroupID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, group.getLecturer().getUsername());
+            preparedStatement.setInt(2, group.getGroupID());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
-    return result;
-}
+
+    public final boolean addPractitioner(Group group) {
+        boolean result = false;
+        String query = "UPDATE ClassGroup SET availableQuota = ? WHERE GroupID = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setByte(1, group.getQuota());
+            preparedStatement.setInt(2, group.getGroupID());
+            int numberRowsAffected = preparedStatement.executeUpdate();
+            result = (numberRowsAffected > 0);
+        } catch (SQLException sqlException) {
+            Logger.getLogger(GroupDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
+    }
 
     @Override
     public boolean deleteElement(int id) {
