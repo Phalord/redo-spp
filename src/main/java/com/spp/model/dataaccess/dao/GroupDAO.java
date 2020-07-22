@@ -68,7 +68,7 @@ public final List<Group> getAvailableGroups() {
     @Override
     public final List<Group> getProfessorAvailableGroups() {
         List<Group> groups = new ArrayList<>();
-        String query = "SELECT CP.GroupID, CP.nrc, CP.shift FROM ClassGroup CP INNER JOIN Professor P on CP.Lecturer = P.Username INNER JOIN User U on P.Username = U.Username  WHERE availableQuota > 0 AND CP.Lecturer IS NULL OR U.status = false";
+        String query = "SELECT GroupID, nrc, shift FROM ClassGroup WHERE Lecturer IS NULL";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {

@@ -3,6 +3,8 @@ package com.spp.gui.controller;
 import static com.spp.gui.Dialog.displayCancelConfirmation;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.utils.MailSender.notifyDevelopers;
+
 import com.spp.model.dataaccess.dao.MonthlyReportDAO;
 import com.spp.model.dataaccess.idao.IMonthlyReportDAO;
 import com.spp.model.domain.Activity;
@@ -162,13 +164,22 @@ public class ControllerGenerateMonthlyReport {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) monthlyReportBorderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerGenerateMonthlyReport.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            notifyDevelopers(ioException);
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
 
     private void setBackScene() {
