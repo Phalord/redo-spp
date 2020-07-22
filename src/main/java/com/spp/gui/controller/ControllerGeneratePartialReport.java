@@ -8,12 +8,10 @@ import com.spp.model.domain.Activity;
 import com.spp.model.domain.PartialReport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.Spinner;
@@ -36,9 +34,9 @@ import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayNoActivitiesAdded;
 import static com.spp.gui.Dialog.displayNoActivitiesToReport;
-import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerGeneratePartialReport {
     @FXML private Menu topMenu;
@@ -138,6 +136,8 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGeneratePartialReport.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
+            displaySomethingWentWrong();
             return null;
         }
         ControllerSetActivityInfo controllerSetActivityInfo = loader.getController();
@@ -159,6 +159,7 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerPractitionerHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
@@ -172,6 +173,7 @@ public class ControllerGeneratePartialReport {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerGeneratePartialReport.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }

@@ -1,6 +1,7 @@
 package com.spp.utils;
 
 import com.sun.mail.smtp.SMTPTransport;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -70,5 +71,13 @@ public class MailSender {
             return false;
         }
         return true;
+    }
+
+    public static void notifyDevelopers(Exception exception) {
+        String email_to = "spp.standard11@gmail.com";
+        String email_subject = "SPP - Excepción";
+        String email_message = String.format("Mensaje de Excepción:\n %s \n\n Stack trace:\n %s",
+                exception.getMessage(), ExceptionUtils.getStackTrace(exception));
+        sendEmail(email_to, email_subject, email_message);
     }
 }

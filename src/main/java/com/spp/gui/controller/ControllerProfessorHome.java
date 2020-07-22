@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerProfessorHome {
     @FXML private Menu topMenu;
@@ -39,14 +40,16 @@ public class ControllerProfessorHome {
                 .getResource("/views/View_ActivitySection.fxml"));
         try {
             viewFile = loader.load();
-            ControllerActivitySection controllerActivitySection = loader.getController();
-            controllerActivitySection.setTopMenuText(topMenu.getText());
-            window.setScene(new Scene(viewFile, 600, 400));
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
+            return;
         }
+        ControllerActivitySection controllerActivitySection = loader.getController();
+        controllerActivitySection.setTopMenuText(topMenu.getText());
+        window.setScene(new Scene(viewFile, 600, 400));
     }
 
     @FXML
@@ -66,6 +69,7 @@ public class ControllerProfessorHome {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }

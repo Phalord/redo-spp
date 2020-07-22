@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerProjectSection {
     @FXML private Menu topMenu;
@@ -84,6 +85,7 @@ public class ControllerProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }
@@ -102,6 +104,7 @@ public class ControllerProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }
@@ -125,6 +128,7 @@ public class ControllerProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
         }
     }
@@ -165,6 +169,7 @@ public class ControllerProjectSection {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectSection.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
             displaySomethingWentWrong();
             return;
         }

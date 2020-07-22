@@ -33,6 +33,7 @@ import static com.spp.gui.Dialog.displayConfirmationDialog;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDialog;
+import static com.spp.utils.MailSender.notifyDevelopers;
 
 public class ControllerRequestProject {
     @FXML private Menu topMenu;
@@ -95,6 +96,8 @@ public class ControllerRequestProject {
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProjectInformation.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
+            notifyDevelopers(ioException);
+            displaySomethingWentWrong();
             return;
         }
         ControllerProjectInformation controllerProjectInformation = loader.getController();

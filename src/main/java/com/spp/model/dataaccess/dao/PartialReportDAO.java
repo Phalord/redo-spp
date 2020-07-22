@@ -7,7 +7,6 @@ import com.spp.utils.MySQLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,12 +40,11 @@ public class PartialReportDAO implements IPartialReportDAO {
 
     private boolean insertIntoReportTable(PartialReport partialReport) {
         boolean result = false;
-        String query = "INSERT INTO Report(ReportID, reportedAt, reportType) VALUES (?,?,?)";
+        String query = "INSERT INTO Report(ReportID, reportType) VALUES (?,?)";
         try (Connection connection = mySQLConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, partialReport.getReportID());
-            preparedStatement.setTimestamp(2, partialReport.getReportedAt());
-            preparedStatement.setString(3, partialReport.getReportType());
+            preparedStatement.setString(2, partialReport.getReportType());
             int numberRowsAffected = preparedStatement.executeUpdate();
             result = (numberRowsAffected > 0);
         } catch (SQLException sqlException) {
