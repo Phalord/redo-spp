@@ -191,8 +191,6 @@ public class ControllerGeneratePartialReport {
         window.setScene(new Scene(viewFile, 600, 400));
     }
 
-
-
     private boolean savePartialReport(PartialReport partialReport) {
         CRUD<PartialReport> partialReportCRUD = new PartialReportDAO();
         boolean result = false;

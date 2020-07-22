@@ -17,8 +17,8 @@
             <TableColumn fx:id="passwordColumn" prefWidth="110.0" resizable="false" text="Contraseña" />
             <TableColumn fx:id="nameColumn" prefWidth="120.0" resizable="false" text="Nombre(s)" />
             <TableColumn fx:id="surnameColumn" prefWidth="120.0" resizable="false" text="Apellidos" />
-            <TableColumn fx:id="groupNRCColumn" prefWidth="120.0" resizable="false" text="NRCGrupo" />
-            <TableColumn fx:id="statusColumn" prefWidth="120.0" resizable="false" text="Estado" />
+            <TableColumn fx:id="groupNRCColumn" prefWidth="160.0" resizable="false" text="NRCGrupo" />
+            <TableColumn fx:id="statusColumn" resizable="false" text="Estado" />
          </columns>
       </TableView>
    </center>

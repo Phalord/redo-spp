@@ -1,6 +1,5 @@
 package com.spp.model.dataaccess.idao;
 
-
 import java.util.List;
 
 public interface CRUD<T> {

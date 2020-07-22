@@ -4,7 +4,6 @@ import com.spp.model.dataaccess.idao.IProjectRequestDAO;
 import com.spp.model.domain.Project;
 import com.spp.model.domain.ProjectRequest;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

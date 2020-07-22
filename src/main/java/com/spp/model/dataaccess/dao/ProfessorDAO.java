@@ -163,7 +163,7 @@ public class ProfessorDAO implements IProfessorDAO {
     
     @Override
     public final void getProfessorInformation(ObservableList<Professor> listProfessor) {
-        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID, CG.nrc FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username where U.status = true";
+        String query = "SELECT P.Username, U.password, U.name, U.surname, U.status, CG.GroupID, CG.nrc, CG.shift FROM Professor P INNER JOIN ClassGroup CG on P.Username = CG.Lecturer INNER JOIN User U on P.Username = U.Username where U.status = true";
         try (Connection connection = mySQLConnection.getConnection();
              Statement instruction = connection.createStatement();
              ResultSet resultSet = instruction.executeQuery(query)) {
@@ -177,6 +177,7 @@ public class ProfessorDAO implements IProfessorDAO {
                 Group group = new Group();
                 group.setGroupID(resultSet.getInt("GroupID"));
                 group.setNrc(resultSet.getString("nrc"));
+                group.setShift(resultSet.getString("shift"));
                 professor.setGroup(group);
                 listProfessor.add(professor);
             }
@@ -184,5 +185,22 @@ public class ProfessorDAO implements IProfessorDAO {
             Logger.getLogger(ProfessorDAO.class.getName())
                     .log(Level.SEVERE, sqlException.getMessage(), sqlException);
         }
+    }
+
+    @Override
+    public boolean existUser(String studentEnrollment) {
+        boolean result = false;
+        String query = "SELECT Username FROM User WHERE Username = ?";
+        try (Connection connection = mySQLConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, studentEnrollment);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                result = resultSet.next();
+            }
+        } catch (SQLException sqlException) {
+            Logger.getLogger(PractitionerDAO.class.getName())
+                    .log(Level.SEVERE, sqlException.getMessage(), sqlException);
+        }
+        return result;
     }
 }

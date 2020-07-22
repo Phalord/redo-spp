@@ -4,9 +4,7 @@ import com.spp.model.domain.Activity;
 import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import org.junit.jupiter.api.Test;
-
 import java.sql.Timestamp;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 

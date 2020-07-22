@@ -1,7 +1,6 @@
 package com.spp.utils;
 
 import com.spp.model.dataaccess.DatabaseProperties;
-
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;

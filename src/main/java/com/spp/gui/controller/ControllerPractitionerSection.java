@@ -14,13 +14,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static com.spp.gui.Dialog.displayConnectionError;
+import static com.spp.gui.Dialog.displayNoAvailableGroups;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.utils.MailSender.notifyDevelopers;
 
@@ -39,18 +38,10 @@ public class ControllerPractitionerSection {
         if (availableGroups == null) {
             displayConnectionError();
         } else if (availableGroups.isEmpty()) {
-            displayNoAvailableGroups();
+            displayNoAvailableGroups("No se encontraron grupos con capacidad para otro Practicante.");
         } else {
             displayAddPractitionerScene(availableGroups);
         }
-    }
-
-    public static void displayNoAvailableGroups() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("No hay Grupos disponibles");
-        alert.setContentText("No se encontraron grupos con capacidad para otro Practicante.");
-        alert.showAndWait();
     }
 
     private void displayAddPractitionerScene(List<Group> availableGroups) {

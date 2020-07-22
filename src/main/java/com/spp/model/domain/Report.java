@@ -60,7 +60,7 @@ public abstract class Report {
         return grade;
     }
 
-    protected void generateFolio(Timestamp timestamp, String studentEnrollment) {
+    public void generateFolio(Timestamp timestamp, String studentEnrollment) {
         String timestampString = new SimpleDateFormat("yyyy-MM-dd hh:mm:s").format(timestamp);
         setReportID(String.format("%s-%s", timestampString, studentEnrollment));
     }

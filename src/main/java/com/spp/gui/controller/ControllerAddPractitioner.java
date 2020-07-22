@@ -6,7 +6,6 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
-import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.utils.MailSender.notifyDevelopers;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
 
@@ -78,11 +77,13 @@ public class ControllerAddPractitioner {
     public final void initialize(List<Group> availableGroups) {
         observableListPractitioner = FXCollections.observableArrayList();
         practitionerDAO.getPractitionerInformation(observableListPractitioner);
-        ObservableList<Group> availableGroupsOL = FXCollections.observableArrayList(availableGroups);
+        ObservableList<Group> availableGroupsOL =
+                FXCollections.observableArrayList(availableGroups);
         tableViewPractitioner.setItems(observableListPractitioner);
         groupIDComboBox.getItems().setAll(availableGroupsOL);
         linkColumnsWithAttributes();
         validateTextFields();
+        validateLengthTextField(48);
     }
     
     @FXML
@@ -107,7 +108,8 @@ public class ControllerAddPractitioner {
         }
     }
     
-    private void savePractitioner(String username, String name, String surnames, String radioButton, int groupID) {
+    private void savePractitioner(String username, String name, String surnames,
+            String radioButton, int groupID) {
         Practitioner practitioner = new Practitioner();
         practitioner.setUsername(username);
         practitioner.setName(name);
@@ -120,7 +122,9 @@ public class ControllerAddPractitioner {
         practitioner.setActive(true);  
         if (displayRecordConfirmation()) {
             IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
-            if (iUserDAO.addUser(practitioner)) {
+            if (iUserDAO.existUser(username)) {
+                displayRecordAlreadyExist();
+            } else if (iUserDAO.addUser(practitioner)) {
                 IGroupDAO iGroupDAO = new GroupDAO();
                 byte availableQuota = iGroupDAO.getAvailableQuota(groupID);
                 availableQuota--;
@@ -140,8 +144,8 @@ public class ControllerAddPractitioner {
                     displayConnectionError();
                 }
             } else {
-                displayRecordAlreadyExist();
-            }   
+                displayConnectionError();
+            }
         }  
     }
     
@@ -229,6 +233,34 @@ public class ControllerAddPractitioner {
         return MailSender.sendEmail(practitioner.generateEmail(), subject, message);
     }
     
+    public void validateLengthTextField(final int maxlength) {
+        nameTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (nameTextField.getText().length() >= maxlength) {
+                        nameTextField.setText(nameTextField.getText().substring(0, maxlength));
+                        displayMaxLengthCharactersDialog();
+                    }
+                }
+            }
+        });
+        surnamesTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number previousValue, Number currentValue) {
+                if (currentValue.intValue() > previousValue.intValue()) {
+                    if (surnamesTextField.getText().length() >= maxlength) {
+                        surnamesTextField.setText(surnamesTextField.getText()
+                                .substring(0, maxlength));
+                        displayMaxLengthCharactersDialog();
+                    }
+                }
+            }
+        });
+   }
+
     private void cleanTextField() {
         usernameTextField.setText("");
         nameTextField.setText("");
@@ -277,7 +309,15 @@ public class ControllerAddPractitioner {
         alert.setContentText("El practicante debe asignarse a un grupo del mismo turno");
         alert.showAndWait();
     }
-    
+
+    private void displayMaxLengthCharactersDialog() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("No se pueden ingresar más caracteres");
+        alert.setContentText("El número de caracteres sobrepasa la cantidad permitida");
+        alert.showAndWait();
+    }
+
     public String generatePassword() {
         return(RandomStringUtils.randomAlphanumeric(10));
     }

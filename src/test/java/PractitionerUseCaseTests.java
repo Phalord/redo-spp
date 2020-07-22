@@ -5,11 +5,9 @@ import com.spp.model.dataaccess.idao.IPartialReportDAO;
 import com.spp.model.domain.Activity;
 import com.spp.model.domain.PartialReport;
 import org.junit.jupiter.api.Test;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PractitionerUseCaseTests {
