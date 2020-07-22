@@ -64,13 +64,21 @@ public class ControllerProfessorHome {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) borderPane.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
             Logger.getLogger(ControllerProfessorHome.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
             notifyDevelopers(ioException);
-            displaySomethingWentWrong();
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
 }

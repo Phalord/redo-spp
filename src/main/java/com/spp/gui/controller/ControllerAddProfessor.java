@@ -7,12 +7,16 @@ import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
+
+import com.spp.model.Main;
 import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.dao.ProfessorDAO;
 import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Professor;
+
+import static com.spp.utils.MailSender.notifyDevelopers;
 import static com.spp.utils.TextValidator.validateProfessorEmployeeNumber;
 import java.io.IOException;
 import java.util.List;
@@ -143,13 +147,22 @@ public class ControllerAddProfessor {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) borderPaneAddProfessor.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerAddProfessor.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            notifyDevelopers(ioException);
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
     
     private void backScene() {

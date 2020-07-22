@@ -6,9 +6,12 @@ import static com.spp.gui.Dialog.displayEmptyFields;
 import static com.spp.gui.Dialog.displayRecordAlreadyExist;
 import static com.spp.gui.Dialog.displayRecordConfirmation;
 import static com.spp.gui.Dialog.displayRecordSuccessDialog;
-import static com.spp.gui.Dialog.displaySomethingWentWrong;
+import static com.spp.utils.MailSender.notifyDevelopers;
 import static com.spp.utils.TextValidator.validatePractitionerEnrollment;
+
+import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.dao.PractitionerDAO;
+import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
 import com.spp.model.domain.Group;
 import com.spp.model.domain.Practitioner;
@@ -16,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import com.spp.utils.MailSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -73,7 +77,7 @@ public class ControllerAddPractitioner {
     public final void initialize(List<Group> availableGroups) {
         observableListPractitioner = FXCollections.observableArrayList();
         practitionerDAO.getPractitionerInformation(observableListPractitioner);
-        ObservableList<Group> availableGroupsOL = 
+        ObservableList<Group> availableGroupsOL =
                 FXCollections.observableArrayList(availableGroups);
         tableViewPractitioner.setItems(observableListPractitioner);
         groupIDComboBox.getItems().setAll(availableGroupsOL);
@@ -104,7 +108,7 @@ public class ControllerAddPractitioner {
         }
     }
     
-    private void savePractitioner(String username, String name, String surnames, 
+    private void savePractitioner(String username, String name, String surnames,
             String radioButton, int groupID) {
         Practitioner practitioner = new Practitioner();
         practitioner.setUsername(username);
@@ -121,11 +125,21 @@ public class ControllerAddPractitioner {
             if (iUserDAO.existUser(username)) {
                 displayRecordAlreadyExist();
             } else if (iUserDAO.addUser(practitioner)) {
-                if (sendEmail(practitioner, password)) {
-                    displayUsernameDialog(username);
-                    displayRecordSuccessDialog();
-                    refreshTableView();
-                    cleanTextField();
+                IGroupDAO iGroupDAO = new GroupDAO();
+                byte availableQuota = iGroupDAO.getAvailableQuota(groupID);
+                availableQuota--;
+                Group group = new Group();
+                group.setQuota(availableQuota);
+                group.setGroupID(groupID);
+                if (iGroupDAO.addPractitioner(group)) {
+                    if (sendEmail(practitioner, password)) {
+                        displayUsernameDialog(username);
+                        displayRecordSuccessDialog();
+                        refreshTableView();
+                        cleanTextField();
+                    } else {
+                        displayConnectionError();
+                    }
                 } else {
                     displayConnectionError();
                 }
@@ -152,13 +166,22 @@ public class ControllerAddPractitioner {
     }
 
     private void displayLogin() {
+        Stage window = (Stage) borderPaneAddPractitioner.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_Login.fxml"));
+        Parent viewFile;
         try {
-            new ControllerLogin().display();
+            viewFile = loader.load();
         } catch (IOException ioException) {
-            Logger.getLogger(ControllerPractitionerHome.class.getName())
+            Logger.getLogger(ControllerAddPractitioner.class.getName())
                     .log(Level.SEVERE, ioException.getMessage(), ioException);
-            displaySomethingWentWrong();
+            notifyDevelopers(ioException);
+            return;
         }
+        ControllerLogin controllerLogin = loader.getController();
+        controllerLogin.display();
+        window.setScene(new Scene(viewFile, 300, 600));
+        window.setResizable(false);
+        window.show();
     }
     
     private void backScene() {
@@ -237,7 +260,7 @@ public class ControllerAddPractitioner {
             }
         });
    }
-    
+
     private void cleanTextField() {
         usernameTextField.setText("");
         nameTextField.setText("");
@@ -286,15 +309,15 @@ public class ControllerAddPractitioner {
         alert.setContentText("El practicante debe asignarse a un grupo del mismo turno");
         alert.showAndWait();
     }
-    
+
     private void displayMaxLengthCharactersDialog() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("No se pueden ingresar más caracteres");
         alert.setContentText("El número de caracteres sobrepasa la cantidad permitida");
-        alert.showAndWait(); 
+        alert.showAndWait();
     }
-    
+
     public String generatePassword() {
         return(RandomStringUtils.randomAlphanumeric(10));
     }
