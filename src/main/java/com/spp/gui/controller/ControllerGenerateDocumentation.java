@@ -85,15 +85,6 @@ public class ControllerGenerateDocumentation {
         displayLogin();
     }
 
-    //TODO: Una vez implementado estos 3 casos de uso, se borra este método. POR FA NO LO DEJEN!!!!!
-    private void notYetSupportedDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Funcionamiento sin implementar");
-        alert.setContentText("Lamentamos las molestias que esto pueda ocasionarle. Seguimos en desarrollo.");
-        alert.showAndWait();
-    }
-
     private void displayGeneratePartialReport(List<Activity> openActivities) {
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("/views/View_GeneratePartialReport.fxml"));
