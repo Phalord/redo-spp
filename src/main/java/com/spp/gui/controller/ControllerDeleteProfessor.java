@@ -7,7 +7,6 @@ import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDisableDialog;
 import com.spp.model.dataaccess.dao.ProfessorDAO;
 import com.spp.model.dataaccess.idao.IUserDAO;
-import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import java.io.IOException;
 import java.net.URL;
@@ -128,7 +127,8 @@ public class ControllerDeleteProfessor implements Initializable {
     public String getValueFromCell() {
         String username = null;
         if (professorTableView.getSelectionModel().getSelectedItem() != null) {
-            TablePosition position = professorTableView.getSelectionModel().getSelectedCells().get(0);
+            TablePosition position = professorTableView.getSelectionModel()
+                    .getSelectedCells().get(0);
             int row = position.getRow();
             Professor item = professorTableView.getItems().get(row);
             TableColumn column = userColumn;

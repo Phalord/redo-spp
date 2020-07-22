@@ -6,7 +6,6 @@ import com.spp.model.domain.PartialReport;
 import com.spp.model.domain.Practitioner;
 import com.spp.model.domain.Professor;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,7 +59,7 @@ public class ActivityDAO implements IActivityDAO {
                 while (resultSet.next()) {
                     Activity activity = new Activity();
                     activity.setActivityID(resultSet.getInt("ActivityID"));
-                    activity.setTitle("title");
+                    activity.setTitle(resultSet.getString("title"));
                     activity.setDueDate(resultSet.getTimestamp("dueDate"));
                     Practitioner deliveredBy = new Practitioner();
                     deliveredBy.setUsername(resultSet.getString("DeliveredBy"));

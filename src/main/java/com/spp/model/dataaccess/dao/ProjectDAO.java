@@ -5,7 +5,6 @@ import com.spp.model.domain.Project;
 import com.spp.model.domain.ProjectAssignment;
 import com.spp.model.domain.RelatedCompany;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -4,7 +4,6 @@ import com.spp.model.dataaccess.idao.IMonthlyReportDAO;
 import com.spp.model.domain.Activity;
 import com.spp.model.domain.MonthlyReport;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

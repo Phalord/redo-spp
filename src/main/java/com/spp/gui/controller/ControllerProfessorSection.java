@@ -1,11 +1,10 @@
 package com.spp.gui.controller;
 
 import static com.spp.gui.Dialog.displayConnectionError;
+import static com.spp.gui.Dialog.displayNoAvailableGroups;
 import static com.spp.gui.Dialog.displayNotYetSupportedDialog;
 import static com.spp.gui.Dialog.displaySomethingWentWrong;
-import static com.spp.gui.controller.ControllerPractitionerSection.displayNoAvailableGroups;
 import static com.spp.utils.MailSender.notifyDevelopers;
-
 import com.spp.model.dataaccess.dao.GroupDAO;
 import com.spp.model.dataaccess.idao.IGroupDAO;
 import com.spp.model.domain.Group;
@@ -47,7 +46,7 @@ public class ControllerProfessorSection {
         if (availableGroups == null) {
             displayConnectionError();
         } else if (availableGroups.isEmpty()) {
-            displayNoAvailableGroups();
+            displayNoAvailableGroups("No se encontraron grupos con capacidad para otro Profesor.");
         } else {
             displayAddProfessorScene(availableGroups);
         }

@@ -3,7 +3,6 @@ package com.spp.model.dataaccess.dao;
 import com.spp.model.dataaccess.idao.IProjectResponsibleDAO;
 import com.spp.model.domain.ProjectResponsible;
 import com.spp.utils.MySQLConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

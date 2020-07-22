@@ -130,4 +130,12 @@ public class Dialog {
         alert.setContentText("No ha añadido ninguna actividad para reportar.");
         alert.showAndWait();
     }
+    
+    public static void displayNoAvailableGroups(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("No hay Grupos disponibles");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
