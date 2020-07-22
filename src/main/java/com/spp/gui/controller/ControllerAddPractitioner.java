@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.spp.utils.MailSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -107,16 +109,19 @@ public class ControllerAddPractitioner {
         practitioner.setSurnames(surnames);
         practitioner.setShift(radioButton);
         practitioner.setGroupID(groupID);
-        practitioner.setPassword(generatePassword());
+        String password = generatePassword();
+        practitioner.setPassword(password);
         practitioner.setUserType("Practitioner");
         practitioner.setActive(true);  
         if (displayRecordConfirmation()) {
             IUserDAO<Practitioner> iUserDAO = new PractitionerDAO();
             if (iUserDAO.addUser(practitioner)) {
-                displayUsernameDialog(username);
-                displayRecordSuccessDialog();
-                refreshTableView();
-                cleanTextField();
+                if (sendEmail(practitioner, password)) {
+                    displayUsernameDialog(username);
+                    displayRecordSuccessDialog();
+                    refreshTableView();
+                    cleanTextField();
+                }
             } else {
                 displayRecordAlreadyExist();
             }   
@@ -179,25 +184,23 @@ public class ControllerAddPractitioner {
         groupIDColumn.setCellValueFactory(new PropertyValueFactory<>("groupID"));
     }
     
-    public void validateTextFields() {
-        nameTextField.textProperty().addListener(new ChangeListener<String>() {
-        @Override
-        public void changed(ObservableValue<? extends String> observable,
-            String oldValue, String newValue) {
+    public final void validateTextFields() {
+        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\sa-zA-Z*")) {
                     nameTextField.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
-            }
-        });
-        surnamesTextField.textProperty().addListener(new ChangeListener<String>() {
-        @Override
-        public void changed(ObservableValue<? extends String> observable,
-            String oldValue, String newValue) {
+            });
+        surnamesTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\sa-zA-Z*")) {
                     surnamesTextField.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
-            }
-        });
+            });
+    }
+
+    private boolean sendEmail(Practitioner practitioner, String password) {
+        String subject = "Registro Exitoso - Sistema de Prácticas Profesionales";
+        String message = String.format("Su contraseña de acceso es %s", password);
+        return MailSender.sendEmail(practitioner.generateEmail(), subject, message);
     }
     
     private void cleanTextField() {
