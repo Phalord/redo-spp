@@ -64,7 +64,7 @@ public class ControllerAddCompany {
                 company.setCity(companyCity);
                 company.setSector(companySector);
                 company.setPhone(companyPhone);
-                
+                company.setEmail(companyEmail);
                 ProjectResponsible responsible = new ProjectResponsible();
                 responsible.setName(responsibleName);
                 responsible.setSurname(responsibleSurname);
@@ -99,19 +99,22 @@ public class ControllerAddCompany {
         Stage window = (Stage) textFieldName.getScene().getWindow();
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_AddProject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_AddProject.fxml"));
             viewFile = loader.load();
             ControllerAddProject controllerAddProject = loader.getController();
             window.setScene(new Scene(viewFile));
         } catch (IOException exception){
-            Logger.getLogger(ControllerAddCompany.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerAddCompany.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
     
     public final void enterCorrectInformation(){
         textFieldName.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldName.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -119,7 +122,8 @@ public class ControllerAddCompany {
         });
         textFieldState.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldState.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -127,7 +131,8 @@ public class ControllerAddCompany {
         });
         textFieldCity.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldCity.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -135,7 +140,8 @@ public class ControllerAddCompany {
         });
         textFieldSector.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldSector.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -143,7 +149,8 @@ public class ControllerAddCompany {
         });
         textFieldPhone.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\d*")){
                     textFieldPhone.setText(newValue.replaceAll("[^0-9]", ""));
                 }
@@ -151,7 +158,8 @@ public class ControllerAddCompany {
         });
         textFieldNameResponsible.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldNameResponsible.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -159,7 +167,8 @@ public class ControllerAddCompany {
         });
         textFieldSurnameResponsible.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\sa-zA-Z*")){
                     textFieldSurnameResponsible.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
@@ -167,7 +176,8 @@ public class ControllerAddCompany {
         });
         textFieldPhoneResponsible.textProperty().addListener(new ChangeListener<String>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
                 if(!newValue.matches("\\d*")){
                     textFieldPhoneResponsible.setText(newValue.replaceAll("[^0-9]", ""));
                 }
@@ -176,10 +186,12 @@ public class ControllerAddCompany {
     }
     
     private boolean areFieldsEmpty(){
-        return (textFieldName.getText().isEmpty() || textFieldAddress.getText().isEmpty() || textFieldState.getText().isEmpty() ||
-                textFieldCity.getText().isEmpty() || textFieldSector.getText().isEmpty() || textFieldPhone.getText().isEmpty() ||
+        return (textFieldName.getText().isEmpty() || textFieldAddress.getText().isEmpty() ||
+                textFieldState.getText().isEmpty() || textFieldCity.getText().isEmpty() ||
+                textFieldSector.getText().isEmpty() || textFieldPhone.getText().isEmpty() ||
                 textFieldEmail.getText().isEmpty() || textFieldPhoneResponsible.getText().isEmpty() || 
-                textFieldEmailResponsible.getText().isEmpty() || textFieldNameResponsible.getText().isEmpty() ||
+                textFieldEmailResponsible.getText().isEmpty() ||
+                textFieldNameResponsible.getText().isEmpty() ||
                 textFieldSurnameResponsible.getText().isEmpty());
     }
     

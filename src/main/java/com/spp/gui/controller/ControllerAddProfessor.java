@@ -274,7 +274,8 @@ public class ControllerAddProfessor {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(title);
-        alert.setContentText(String.format("La contraseña del Profesor registrado es: %s", password));
+        alert.setContentText(String
+                .format("La contraseña del Profesor registrado es: %s", password));
         alert.showAndWait();   
     }
     
@@ -282,7 +283,7 @@ public class ControllerAddProfessor {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("No. de personal invÃ¡lido");
-        alert.setContentText("No. invÃ¡lido. La primera letra debe ser una p minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
+        alert.setContentText("No. inválido. La primera letra debe ser una 'p' minúscula seguida de 8 dígitos numéricos");
         alert.showAndWait(); 
     }
     

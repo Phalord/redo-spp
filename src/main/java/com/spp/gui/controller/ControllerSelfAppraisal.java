@@ -33,20 +33,20 @@ public class ControllerSelfAppraisal {
     @FXML
     private void generateSelfAppraisal() {
         if(!areRadioButtonsEmpty()){
-            RadioButton selectedToogleFirstValue = (RadioButton) rateGroupFirst.getSelectedToggle();
-            int firstValueParse = Integer.parseInt(selectedToogleFirstValue.getText());
+            RadioButton selectedToggleFirstValue = (RadioButton) rateGroupFirst.getSelectedToggle();
+            int firstValueParse = Integer.parseInt(selectedToggleFirstValue.getText());
             byte firstSentenceGrade = (byte) firstValueParse;
-            RadioButton selectedToogleSecondValue = (RadioButton) rateGroupSecond.getSelectedToggle();
-            int secondValueParse = Integer.parseInt(selectedToogleSecondValue.getText());
+            RadioButton selectedToggleSecondValue = (RadioButton) rateGroupSecond.getSelectedToggle();
+            int secondValueParse = Integer.parseInt(selectedToggleSecondValue.getText());
             byte secondSentenceGrade = (byte) secondValueParse;
-            RadioButton selectedToogleThirdValue = (RadioButton) rateGroupThird.getSelectedToggle();
-            int thirdValueParse = Integer.parseInt(selectedToogleThirdValue.getText());
+            RadioButton selectedToggleThirdValue = (RadioButton) rateGroupThird.getSelectedToggle();
+            int thirdValueParse = Integer.parseInt(selectedToggleThirdValue.getText());
             byte thirdSentenceGrade = (byte) thirdValueParse;
-            RadioButton selectedToogleFourthValue = (RadioButton) rateGroupFourth.getSelectedToggle();
-            int fourthValueParse = Integer.parseInt(selectedToogleFourthValue.getText());
+            RadioButton selectedToggleFourthValue = (RadioButton) rateGroupFourth.getSelectedToggle();
+            int fourthValueParse = Integer.parseInt(selectedToggleFourthValue.getText());
             byte fourthSentenceGrade = (byte) fourthValueParse;
-            RadioButton selectedToogleFifthValue = (RadioButton) rateGroupFifth.getSelectedToggle();
-            int fifthValueParse = Integer.parseInt(selectedToogleFifthValue.getText());
+            RadioButton selectedToggleFifthValue = (RadioButton) rateGroupFifth.getSelectedToggle();
+            int fifthValueParse = Integer.parseInt(selectedToggleFifthValue.getText());
             byte fifthSentenceGrade = (byte) fifthValueParse;
             
             SelfAppraisal selfAppraisal = new SelfAppraisal();
@@ -78,19 +78,23 @@ public class ControllerSelfAppraisal {
         Stage window = (Stage) container.getScene().getWindow();
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_GenerateDocumentation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_GenerateDocumentation.fxml"));
             viewFile = loader.load();
             ControllerGenerateDocumentation controllerGenerateDocumentation = loader.getController();
             controllerGenerateDocumentation.setTopMenuText(studentEnrollment);
             window.setScene(new Scene(viewFile));
         } catch (IOException exception) {
-            Logger.getLogger(ControllerSelfAppraisal.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerSelfAppraisal.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
     
     private boolean areRadioButtonsEmpty(){
-        return (rateGroupFirst.getSelectedToggle() == null || rateGroupSecond.getSelectedToggle() == null || 
-                rateGroupThird.getSelectedToggle() == null || rateGroupFourth.getSelectedToggle() == null ||
+        return (rateGroupFirst.getSelectedToggle() == null ||
+                rateGroupSecond.getSelectedToggle() == null ||
+                rateGroupThird.getSelectedToggle() == null ||
+                rateGroupFourth.getSelectedToggle() == null ||
                 rateGroupFifth.getSelectedToggle() == null);
     }
     

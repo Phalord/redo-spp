@@ -67,7 +67,6 @@ public class ControllerSetActivityInfo extends Stage {
             return change;
         };
         actualCompletionHours
-                .setTextFormatter(
-                        new TextFormatter<TextFormatter.Change>(rejectChange));
+                .setTextFormatter(new TextFormatter<TextFormatter.Change>(rejectChange));
     }
 }

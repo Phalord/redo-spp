@@ -3,7 +3,6 @@ package com.spp.gui.controller;
 import static com.spp.gui.Dialog.displayCancelConfirmation;
 import static com.spp.gui.Dialog.displayConnectionError;
 import static com.spp.gui.Dialog.displayDeleteConfirmation;
-import static com.spp.gui.Dialog.displaySomethingWentWrong;
 import static com.spp.gui.Dialog.displaySuccessDisableDialog;
 import static com.spp.utils.MailSender.notifyDevelopers;
 
@@ -140,11 +139,12 @@ public class ControllerDeletePractitioner implements Initializable {
     public final String getValueFromCell() {
         String username = null;
         if (tableViewPractitioner.getSelectionModel().getSelectedItem() != null) {
-            TablePosition position = tableViewPractitioner.getSelectionModel().getSelectedCells().get(0);
+            TablePosition position = tableViewPractitioner
+                    .getSelectionModel().getSelectedCells().get(0);
             int row = position.getRow();
             Practitioner item = tableViewPractitioner.getItems().get(row);
-            TableColumn column = userColumn;
-            username = (String) column.getCellObservableValue(item).getValue();
+            TableColumn<Practitioner, String> column = userColumn;
+            username = column.getCellObservableValue(item).getValue();
         }
         return username;
     }
@@ -172,7 +172,8 @@ public class ControllerDeletePractitioner implements Initializable {
             Alert selectPractitionerAlertDialog = new Alert(Alert.AlertType.WARNING);
             selectPractitionerAlertDialog.setTitle("Aviso");
             selectPractitionerAlertDialog.setHeaderText("No se seleccionó ningún practicante");
-            selectPractitionerAlertDialog.setContentText("Debe seleccionar un practicante para eliminar"); 
+            selectPractitionerAlertDialog
+                    .setContentText("Debe seleccionar un practicante para eliminar");
             selectPractitionerAlertDialog.showAndWait();
     }
 }
