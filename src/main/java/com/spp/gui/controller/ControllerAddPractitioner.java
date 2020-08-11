@@ -234,10 +234,10 @@ public class ControllerAddPractitioner {
     }
     
     public void validateLengthTextField(final int maxlength) {
-        nameTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+        nameTextField.lengthProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable,
-                    Number previousValue, Number currentValue) {
+                                Number previousValue, Number currentValue) {
                 if (currentValue.intValue() > previousValue.intValue()) {
                     if (nameTextField.getText().length() >= maxlength) {
                         nameTextField.setText(nameTextField.getText().substring(0, maxlength));
@@ -246,10 +246,10 @@ public class ControllerAddPractitioner {
                 }
             }
         });
-        surnamesTextField.lengthProperty().addListener(new ChangeListener<Number>() {
+        surnamesTextField.lengthProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable,
-                    Number previousValue, Number currentValue) {
+                                Number previousValue, Number currentValue) {
                 if (currentValue.intValue() > previousValue.intValue()) {
                     if (surnamesTextField.getText().length() >= maxlength) {
                         surnamesTextField.setText(surnamesTextField.getText()
@@ -297,8 +297,8 @@ public class ControllerAddPractitioner {
     private void displayNotValidEnrollment() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Matricula invÃ¡lida");
-        alert.setContentText("Matricula invÃ¡lida. La primera letra debe ser una s minÃºscula seguida de 8 dÃ­gitos numÃ©ricos");
+        alert.setHeaderText("Matricula inválida");
+        alert.setContentText("Matricula inválida. La primera letra debe ser una 's' minúscula seguida de 8 dígitos numéricos");
         alert.showAndWait(); 
     }
     

@@ -54,7 +54,8 @@ public class ControllerAddProject {
             ControllerAddCompany controllerAddCompany = loader.getController();
             window.setScene(new Scene(viewFile));
         } catch (IOException exception){
-            Logger.getLogger(ControllerAddProject.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerAddProject.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
 
@@ -91,12 +92,14 @@ public class ControllerAddProject {
         Stage window = (Stage) tableViewProject.getScene().getWindow();
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_ProjectSection.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_ProjectSection.fxml"));
             viewFile = loader.load();
             ControllerProjectSection controllerProjectSection = loader.getController();
             window.setScene(new Scene(viewFile));
-        } catch (IOException exception){
-            Logger.getLogger(ControllerAddProject.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+        } catch (IOException exception) {
+            Logger.getLogger(ControllerAddProject.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
 
@@ -108,7 +111,8 @@ public class ControllerAddProject {
         if(listProject == null){
             displaySomethingWentWrong();
         } else {
-            ObservableList<Project> projectObservableList = FXCollections.observableArrayList(listProject);
+            ObservableList<Project> projectObservableList =
+                    FXCollections.observableArrayList(listProject);
             tableViewProject.setItems(projectObservableList);
         }
     }
@@ -131,15 +135,17 @@ public class ControllerAddProject {
     }
     
     public final void initializeRelatedCompanyComboBox(List<RelatedCompany> companiesRegistered){
-        ObservableList<RelatedCompany> companiesRegisteredOL = FXCollections.observableArrayList(companiesRegistered);
+        ObservableList<RelatedCompany> companiesRegisteredOL =
+                FXCollections.observableArrayList(companiesRegistered);
         comboBoxCompany.getItems().setAll(companiesRegisteredOL);
     }
     
     public void enterCorrectInformation(){
-        textFieldTitle.textProperty().addListener(new ChangeListener<String>(){
+        textFieldTitle.textProperty().addListener(new ChangeListener<>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!newValue.matches("\\sa-zA-Z*")){
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
                     textFieldTitle.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
             }

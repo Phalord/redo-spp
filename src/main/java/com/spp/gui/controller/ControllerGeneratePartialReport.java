@@ -108,7 +108,8 @@ public class ControllerGeneratePartialReport {
                     partialReport.setReportNumber((byte) reportNumber);
                     prepareActivities();
                     partialReport.setActivities(activitiesToReportTable.getItems());
-                    partialReport.generateFolio(new Timestamp(System.currentTimeMillis()), topMenu.getText());
+                    partialReport.generateFolio(
+                            new Timestamp(System.currentTimeMillis()), topMenu.getText());
                     if (savePartialReport(partialReport)) {
                         displaySuccessDialog("El Reporte se ha guardado exitosamente.");
                         goBack();
@@ -129,7 +130,8 @@ public class ControllerGeneratePartialReport {
     }
 
     private Activity displaySetActivityInfo() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_SetActivityInfo.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/views/View_SetActivityInfo.fxml"));
         Parent viewFile;
         try {
             viewFile = loader.load();

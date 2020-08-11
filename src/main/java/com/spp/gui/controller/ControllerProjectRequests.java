@@ -57,7 +57,8 @@ public class ControllerProjectRequests {
 
                     {
                         button.setOnAction((ActionEvent event) -> {
-                            ProjectRequest projectRequest = getTableView().getItems().get(getIndex());
+                            ProjectRequest projectRequest =
+                                    getTableView().getItems().get(getIndex());
                             displayProjectRequest(projectRequest, pendingProjectRequests);
                         });
                     }

@@ -97,13 +97,15 @@ public class ControllerAddActivity{
         Stage window = (Stage) tableViewActivity.getScene().getWindow();
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_ActivitySection.fxml"));
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/views/View_ActivitySection.fxml"));
             viewFile = loader.load();
             ControllerActivitySection controllerActivitySection = loader.getController();
             controllerActivitySection.setTopMenuText(professorUsername);
             window.setScene(new Scene(viewFile));
         } catch (IOException exception) {
-            Logger.getLogger(ControllerAddActivity.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerAddActivity.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
 
@@ -115,7 +117,8 @@ public class ControllerAddActivity{
         if(listActivity == null){
             displaySomethingWentWrong();
         } else {
-            ObservableList<Activity> activityObservableList = FXCollections.observableArrayList(listActivity);
+            ObservableList<Activity> activityObservableList =
+                    FXCollections.observableArrayList(listActivity);
             tableViewActivity.setItems(activityObservableList);
         }
     }
@@ -124,23 +127,26 @@ public class ControllerAddActivity{
         columnID.setCellValueFactory(new PropertyValueFactory<> ("activityID"));
         columnTitle.setCellValueFactory(new PropertyValueFactory<> ("title"));
         columnDueDate.setCellValueFactory(new PropertyValueFactory<> ("dueDate"));
-        columnEstimatedHours.setCellValueFactory(new PropertyValueFactory<> ("estimatedCompletionHours"));
+        columnEstimatedHours
+                .setCellValueFactory(new PropertyValueFactory<> ("estimatedCompletionHours"));
         columnPractitioner.setCellValueFactory(new PropertyValueFactory<> ("deliveredBy"));
     }
     
     public final void enterCorrectInformation(){
-        textFieldTitle.textProperty().addListener(new ChangeListener<String>(){
+        textFieldTitle.textProperty().addListener(new ChangeListener<>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!newValue.matches("\\sa-zA-Z*")){
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
                     textFieldTitle.setText(newValue.replaceAll("[^\\sa-zA-Z]", ""));
                 }
             }
         });
-        textFieldEstimatedHours.textProperty().addListener(new ChangeListener<String>(){
+        textFieldEstimatedHours.textProperty().addListener(new ChangeListener<>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(!newValue.matches("\\d*")){
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
                     textFieldEstimatedHours.setText(newValue.replaceAll("[^0-9]", ""));
                 }
             }
@@ -148,7 +154,8 @@ public class ControllerAddActivity{
     }
     
     public final void initializePractitionerComboBox(List<Practitioner> availablePractitioners) {
-        ObservableList<Practitioner> availablePractitionersOL = FXCollections.observableArrayList(availablePractitioners);
+        ObservableList<Practitioner> availablePractitionersOL =
+                FXCollections.observableArrayList(availablePractitioners);
         comboBoxPractitioner.getItems().setAll(availablePractitionersOL);
     }
     

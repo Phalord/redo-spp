@@ -29,13 +29,15 @@ public class ControllerCoordinatorProjectSection {
         Stage window = (Stage) borderPane.getScene().getWindow();
         Parent viewFile;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/View_AddProject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/views/View_AddProject.fxml"));
             viewFile = loader.load();
             ControllerAddProject controllerAddProject = loader.getController();
             controllerAddProject.initialize();
             window.setScene(new Scene(viewFile));
         } catch (IOException exception){
-            Logger.getLogger(ControllerCoordinatorProjectSection.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerCoordinatorProjectSection.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
 

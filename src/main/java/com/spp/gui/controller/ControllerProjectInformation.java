@@ -47,7 +47,8 @@ public class ControllerProjectInformation {
     private void setResponsibleInformation(Project project) {
         IProjectResponsibleDAO iProjectResponsibleDAO = new ProjectResponsibleDAO();
         ProjectResponsible projectResponsible =
-                iProjectResponsibleDAO.getResponsibleByCompanyID(project.getRequestedBy().getRelatedCompanyID());
+                iProjectResponsibleDAO.getResponsibleByCompanyID(project
+                        .getRequestedBy().getRelatedCompanyID());
         if (projectResponsible != null) {
             projectResponsibleName.setText(String
                     .format("%s %s", projectResponsible.getName(), projectResponsible.getSurname()));

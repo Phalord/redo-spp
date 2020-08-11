@@ -70,7 +70,8 @@ public class ControllerGenerateDocumentation {
             controllerSelfAppraisal.setPractitionerEnrollment(topMenu.getText());
             window.setScene(new Scene(viewFile));
         } catch (IOException exception) {
-            Logger.getLogger(ControllerGenerateDocumentation.class.getName()).log(Level.SEVERE,exception.getMessage(), exception);
+            Logger.getLogger(ControllerGenerateDocumentation.class.getName())
+                    .log(Level.SEVERE,exception.getMessage(), exception);
         }
     }
 
